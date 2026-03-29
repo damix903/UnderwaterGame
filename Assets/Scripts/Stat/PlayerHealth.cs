@@ -22,7 +22,7 @@ public class PlayerHealth : EntityHealth
 
     private void HandelDeathEvent(DeathEvent e)
     {
-        AddHealth(10f);
+        AddHealth(5f);
     }
 
     public override void AddHealth(float amount)

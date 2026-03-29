@@ -39,7 +39,8 @@ public class PlayerController2 : MonoBehaviour
     private void Update()
     {
         _stateMachine.Update();
-        _movement.SetMovementInput(_input.MoveInput);
+        _movement.SetMovementInput(new Vector2(_input.MoveInput.x, 0f));
+        //_movement.SetMovementInput(_input.MoveInput);
     }
 
     private void OnAttackStarted(bool started)

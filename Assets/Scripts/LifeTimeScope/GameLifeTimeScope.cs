@@ -15,6 +15,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterMessageBroker<DeathEvent>(options);
 
         builder.RegisterComponentInHierarchy<UI>();
+        builder.RegisterComponentInHierarchy<PlayerStatsManager>();
     }
 }
 

@@ -50,7 +50,7 @@ public class EntityHealth : MonoBehaviour, IDamageable
 
     protected virtual void OnDeath(DamageInfo info)
     {
-        _publisher?.Publish(new DeathEvent(gameObject, info.Attacker, teamID));
+        _publisher?.Publish(new DeathEvent(gameObject, teamID, info));
         Destroy(gameObject);
     }
 }

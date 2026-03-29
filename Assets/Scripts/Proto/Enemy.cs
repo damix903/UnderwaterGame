@@ -28,7 +28,12 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (chasePlayer) _dir = (player.transform.position - transform.position).normalized;
+        if (chasePlayer)
+        {
+            var vector = player.transform.position - transform.position;
+            if (vector.magnitude > 10f) return;
+            _dir = vector.normalized;
+        }
         var pos = transform.position;
         transform.position = (Vector2)pos + _dir * speed * Time.deltaTime;
     }

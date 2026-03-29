@@ -37,14 +37,14 @@ public struct DamageResult
 public struct DeathEvent
 {
     public readonly GameObject Target;
-    public readonly GameObject Attacker;
     public readonly TeamID TeamID;
+    public readonly DamageInfo Info;
     
-    public DeathEvent(GameObject target, GameObject attacker, TeamID teamID)
+    public DeathEvent(GameObject target, TeamID teamID, DamageInfo info)
     {
         Target = target;
-        Attacker = attacker;
         TeamID = teamID;
+        Info = info;
     }
 }
 

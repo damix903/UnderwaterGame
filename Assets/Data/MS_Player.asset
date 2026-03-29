@@ -15,7 +15,7 @@ MonoBehaviour:
   movementMaxSpeed: 3.5
   upwardMaxSpeed: 6
   groundAccel: 5
-  airAccel: 3
+  airAccel: 5
   groundDecel: 5
   airDecel: 2
   maxSpeed: 8

@@ -75,8 +75,7 @@ public class CharacterMovement : MonoBehaviour
     {
         _currentStats = baseStats.Stats;
         _frameVelocity = _rb.linearVelocity;
-        //var gravity = _frameVelocity.y
-        
+
         HandleCollisionDetection();
         //_currentStats = baseStats.Stats;
         if (_modifier != null) _currentStats = _modifier.Apply(_currentStats);
@@ -98,14 +97,14 @@ public class CharacterMovement : MonoBehaviour
         
         var finalVel = _frameVelocity + _constantVelocity;
 
-        float gravity = _input.y > 0f ? _currentStats.upwardGravityScale : _currentStats.defaultGravityScale;
-        //finalVel.y -= gravity * Time.fixedDeltaTime;
+        float gravity = finalVel.y > 0f ? _currentStats.upwardGravityScale : _currentStats.defaultGravityScale;
+        finalVel.y -= gravity * Time.fixedDeltaTime;
         
         finalVel.x = Mathf.Clamp(finalVel.x, -_currentStats.maxSpeed, _currentStats.maxSpeed);
         finalVel.y = Mathf.Clamp(finalVel.y, -_currentStats.maxSpeed, _currentStats.maxSpeed);
         
         _rb.linearVelocity = finalVel;
-        //Debug.Log($"{_frameVelocity} : {_rb.linearVelocity}");
+        Debug.Log($"{_frameVelocity} : {_rb.linearVelocity}");
     }
 
     private void HandleNoneMove()
@@ -127,14 +126,15 @@ public class CharacterMovement : MonoBehaviour
     {
         Vector2 effectiveInput = _movementBlockTimer > 0f ? _input * _inputMul : _input;
         Vector2 speed = Vector2.one * _currentStats.movementMaxSpeed;
-        //if (effectiveInput.y > 0f) speed.y = _currentStats.upwardMaxSpeed;
         Vector2 targetSpeed = effectiveInput * speed;
 
         if (Mathf.Abs(_input.magnitude) > 0.01f && Mathf.Abs(effectiveInput.magnitude) > 0.01f)
         {
             float accel = IsGrounded ? _currentStats.groundAccel : _currentStats.airAccel;
             // 現在の速度を目標速度に近づける
-            _frameVelocity = Vector2.MoveTowards(_frameVelocity, targetSpeed, accel * Time.fixedDeltaTime);
+            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, targetSpeed.x, accel * Time.deltaTime);
+            if (_input.y > 0f) _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, targetSpeed.y, accel * Time.deltaTime);
+            else if (_input.y < 0f) _frameVelocity.y -= accel * Time.deltaTime;
         }
         // インプットがないときの減速処理
         else
