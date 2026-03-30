@@ -15,31 +15,18 @@ public class PlayerController : MonoBehaviour, IInputProvider
     private ProjectileShooter _shooter;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float input = 1.5f;
-
-    private bool moving;
-    private bool jumping;
+    
     private void Awake()
     {
         _movement = GetComponent<CharacterMovement>();
         _input = new PlayerInputActions();
         _shooter = GetComponent<ProjectileShooter>();
-
-        var idle = new TestIdle();
-        var move = new TestMove();
-        var jump = new TestJump();
-        _stateMachine = new StateMachine();
-        
-        _stateMachine.AddTransition(idle, move, new FuncPredicate(() => moving));
-        _stateMachine.AddTransition(move, idle, new FuncPredicate(() => !moving));
-        _stateMachine.AddAnyTransition(jump, new FuncPredicate(() => jumping));
-        _stateMachine.AddAnyTransition(idle, new FuncPredicate(() => !jumping && !moving));
-        _stateMachine.SetInitialState(idle);
     }
 
     private void Update()
     {
         _mousePos = Mouse.current.position.ReadValue();
-        _stateMachine.Update();
+        //_stateMachine.Update();
     }
 
     private void OnEnable()
@@ -72,7 +59,6 @@ public class PlayerController : MonoBehaviour, IInputProvider
         Vector2 moveInput = context.ReadValue<Vector2>();
         _movement.SetMovementInput(moveInput);
         //_resolver.SetDirectionalInput(moveInput);
-        moving = true;
         MoveInput = moveInput;
     }
     
@@ -81,19 +67,14 @@ public class PlayerController : MonoBehaviour, IInputProvider
         _movement.SetMovementInput(Vector2.zero);
         //_resolver.CancelDirectionalInput();
         MoveInput = Vector2.zero;
-        moving = false;
     }
 
     private void OnJumpStarted(InputAction.CallbackContext context)
     {
-        //_movement.JumpStart();
-        jumping = true;
     }
     
     private void OnJumpEnded(InputAction.CallbackContext context)
     {
-        //_movement.JumpEnd();
-        jumping = false;
     }
 
     private void OnAttackStarted(InputAction.CallbackContext context)

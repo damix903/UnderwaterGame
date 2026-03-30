@@ -11,5 +11,7 @@ public class EnemyLifeTimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<EntityHealth>().UnderTransform(transform).AsImplementedInterfaces()
             .AsSelf();
+
+        builder.RegisterComponentInHierarchy<AnimationSystem>().UnderTransform(transform).AsImplementedInterfaces();
     }
 }

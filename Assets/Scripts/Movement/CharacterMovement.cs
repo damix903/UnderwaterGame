@@ -23,8 +23,6 @@ public class CharacterMovement : MonoBehaviour
 
     private Vector2 _input;
 
-    private bool _isGrounded;
-    private bool _isWallDetected;
     private float _flipScale;
     private float _movementBlockTimer;
     private bool _shouldBlockY;
@@ -36,27 +34,32 @@ public class CharacterMovement : MonoBehaviour
     
     #endregion
 
-    public void SetMovementInput(Vector2 input) => _input = input;
-    public Vector2 GetVelocity => _rb.linearVelocity;
-    public bool IsGrounded => _isGrounded;
-    public bool IsFalling => !_isGrounded && _rb.linearVelocity.y < 0f;
-    public bool IsWallDetected() => _isWallDetected;
-    public void SetMovementModifier(IMovementModifier modifier) => _modifier = modifier;
+    public Vector2 Velocity => _rb.linearVelocity;
+    public bool IsGrounded { get; private set; }
+    public bool IsWallDetected { get; private set; }
+    public bool IsFalling => !IsGrounded && _rb.linearVelocity.y < 0f;
     
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _currentStats = baseStats.Stats;
+        if (_rb == null) _rb = gameObject.AddComponent<Rigidbody2D>();
         _rb.gravityScale = 0f;
+        _rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        _rb.freezeRotation = true;
 
+        _currentStats = baseStats.Stats;
         _flipScale = isFacingRight ? 180f : -180f;
     }
-    
+
+    public void SetMovementInput(Vector2 input) => _input = input;
+    public void SetMovementModifier(IMovementModifier modifier) => _modifier = modifier;
+
     public void AddImpulseForce(Vector2 force, bool overwrite = false)
     {
-        _impulseVelocity += force;
+        _impulseVelocity = overwrite ? force : _impulseVelocity + force;
     }
-    
+
     public void AddConstantForce(Vector2 force) => _constantVelocity += force * Time.fixedDeltaTime;
     public void RemoveConstantForce(Vector2 force) => _constantVelocity -= force * Time.fixedDeltaTime;
 
@@ -133,8 +136,12 @@ public class CharacterMovement : MonoBehaviour
             float accel = IsGrounded ? _currentStats.groundAccel : _currentStats.airAccel;
             // 現在の速度を目標速度に近づける
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, targetSpeed.x, accel * Time.deltaTime);
-            if (_input.y > 0f) _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, targetSpeed.y, accel * Time.deltaTime);
-            else if (_input.y < 0f) _frameVelocity.y -= accel * Time.deltaTime;
+            
+            if (_input.y == 0) return;
+            _frameVelocity.y += _input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.deltaTime;
+            float absY = Mathf.Abs(targetSpeed.y);
+            _frameVelocity.y = _input.y > 0f ? Mathf.Clamp(_frameVelocity.y, -absY, absY) 
+                : _frameVelocity.y;
         }
         // インプットがないときの減速処理
         else
@@ -154,14 +161,14 @@ public class CharacterMovement : MonoBehaviour
     
     private void HandleCollisionDetection()
     {
-        _isGrounded = Physics2D.Raycast(
+        IsGrounded = Physics2D.Raycast(
             GetOffsetPos(baseStats.groundCheckOffset),
             Vector2.down,
             baseStats.groundCheckDist,
             groundLayer
         );
 
-        _isWallDetected = Physics2D.Raycast(
+        IsWallDetected = Physics2D.Raycast(
             GetOffsetPos(baseStats.wallCheckOffset),
             transform.right,
             baseStats.wallCheckDist,

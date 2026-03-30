@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 using Unity.Cinemachine;
-// using MessagePipe;
-// using VContainer;
+using MessagePipe;
+using VContainer;
+
 
 [RequireComponent(typeof(CinemachineImpulseSource), typeof(CinemachineImpulseListener))]
 public class CameraManager : MonoBehaviour
 {
-    //[Inject] private ISubscriber<DamageResult> _sub;
+    [Inject] private ISubscriber<DamageResult> _sub;
     [SerializeField] private CameraShakeData lightData;
     [SerializeField] private CameraShakeData heavyData;
 
@@ -20,12 +21,11 @@ public class CameraManager : MonoBehaviour
     {
         _impulseSource = GetComponent<CinemachineImpulseSource>();
         _impulseListener = GetComponent<CinemachineImpulseListener>();
-        //_subscription = _sub?.Subscribe(HandleDamageEvent);
+        _subscription = _sub?.Subscribe(HandleDamageEvent);
     }
 
-    public void ShakeCamera(CameraShakeEvent e, Vector3 position = default)
+    public void ShakeCamera(CameraShakeData data, Vector3 position = default)
     {
-        var data = ResolveData(e);
         if (data == null) return;
         
         _impulseListener.Gain = data.Gain;
@@ -39,19 +39,19 @@ public class CameraManager : MonoBehaviour
 
     private void HandleDamageEvent(DamageResult result)
     {
-        ShakeCamera(result.DamageInfo.EffectData.CameraShake, result.HitPoint);
+        ShakeCamera(result.DamageInfo.EffectData.CameraShakeData, result.Defender.transform.position);
     }
 
-    private CameraShakeData ResolveData(CameraShakeEvent e)
-    {
-        return e.Type switch
-        {
-            CameraShakeType.Light => lightData,
-            CameraShakeType.Heavy => heavyData,
-            CameraShakeType.Custom => e.Data,
-            _ => null
-        };
-    }
+    // private CameraShakeData ResolveData(CameraShakeEvent e)
+    // {
+    //     return e.Type switch
+    //     {
+    //         CameraShakeType.Light => lightData,
+    //         CameraShakeType.Heavy => heavyData,
+    //         CameraShakeType.Custom => e.Data,
+    //         _ => null
+    //     };
+    // }
 
     private void OnDestroy()
     {
@@ -59,16 +59,16 @@ public class CameraManager : MonoBehaviour
     }
 }
 
-public enum CameraShakeType {None, Light, Heavy, Custom }
-
-public struct CameraShakeEvent
-{
-    public readonly CameraShakeType Type;
-    public readonly CameraShakeData Data;
-
-    public CameraShakeEvent(CameraShakeType type, CameraShakeData data)
-    {
-        Type = type;
-        Data = data;
-    }
-}
+// public enum CameraShakeType {None, Light, Heavy, Custom }
+//
+// public struct CameraShakeEvent
+// {
+//     public readonly CameraShakeType Type;
+//     public readonly CameraShakeData Data;
+//
+//     public CameraShakeEvent(CameraShakeType type, CameraShakeData data)
+//     {
+//         Type = type;
+//         Data = data;
+//     }
+// }

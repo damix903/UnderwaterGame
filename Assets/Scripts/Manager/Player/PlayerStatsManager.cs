@@ -41,7 +41,7 @@ public class PlayerStatsManager : MonoBehaviour
         if (_comboCounter < 5) return;
         var amount = _comboCounter / 3f;
         amount = Mathf.Min(amount, 10f);
-        playerHealth.AddHealth(amount);
+        playerHealth.Heal(amount);
     }
     
     private void ChangeText() => text.text = $"{_comboCounter} : {_comboTimer}";

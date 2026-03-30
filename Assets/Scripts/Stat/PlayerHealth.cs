@@ -22,28 +22,18 @@ public class PlayerHealth : EntityHealth
 
     private void HandelDeathEvent(DeathEvent e)
     {
-        AddHealth(5f);
+        ChangeHealth(5f);
     }
 
-    public override void AddHealth(float amount)
+    protected override void ChangeHealth(float amount)
     {
-        base.AddHealth(amount);
-        PublishHealthChange(amount);
-    }
-
-    protected override void OnDamaged(DamageInfo info)
-    {
-        base.OnDamaged(info);
-        PublishHealthChange(-info.Damage);
-    }
-
-    private void PublishHealthChange(float amount)
-    {
+        base.ChangeHealth(amount);
         _publisher?.Publish(EventPublisher.Player, new HealthChangeEventArgs(
             CurrentHealth,
             maxHealth,
             amount
         ));
+        
     }
 }
 

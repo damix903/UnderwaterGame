@@ -3,10 +3,13 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public bool TakeDamage(DamageInfo info);
     public TeamID TeamID { get; }
     public bool IsAlive { get; }
     public DefenseState DefenseState { get; set; }
+    public bool TakeDamage(DamageInfo info);
+    public void Heal(float amount);
+    public event Action<DamageResult> OnDamaged;
+    public event Action<DeathEvent> OnDeath;
 }
 
 public struct DamageInfo
@@ -30,7 +33,6 @@ public struct DamageResult
     public DamageInfo DamageInfo;
     public GameObject Defender;
     public float AppliedDamage;
-    public Vector2 HitPoint;
     public bool IsJust;
 }
 
@@ -55,13 +57,13 @@ public enum DefenseState {None, Invincible, Just }
 public struct EffectData
 {
     public readonly HitStopEvent HitStop;
-    public readonly CameraShakeEvent CameraShake;
+    public readonly CameraShakeData CameraShakeData;
     //public readonly DamageReactionData ReactionData;
 
-    public EffectData(HitStopEvent hitStop, CameraShakeEvent cameraShake)//, DamageReactionData damageReactionData)
+    public EffectData(HitStopEvent hitStop, CameraShakeData data)//, DamageReactionData damageReactionData)
     {
         HitStop = hitStop;
-        CameraShake = cameraShake;
+        CameraShakeData = data;
         //ReactionData = damageReactionData;
     }
 }

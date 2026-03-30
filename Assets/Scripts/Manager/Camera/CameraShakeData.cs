@@ -23,12 +23,11 @@ public class CameraShakeData : ScriptableObject
 
     public CinemachineImpulseDefinition CreateDefinition()
     {
-        var def = new CinemachineImpulseDefinition
+        return new CinemachineImpulseDefinition
         {
             ImpulseType = CinemachineImpulseDefinition.ImpulseTypes.Uniform,
             ImpulseDuration = duration,
             ImpulseShape = shape
         };
-        return def;
     }
 }

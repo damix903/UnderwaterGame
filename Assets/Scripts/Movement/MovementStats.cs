@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Data / Movement / Base Stats")]
+[CreateAssetMenu(menuName = "Data/Movement/Base Stats")]
 public class MovementStats : ScriptableObject
 {
     [Header("Move")]
@@ -12,7 +12,7 @@ public class MovementStats : ScriptableObject
     [SerializeField] private float airDecel = 20f;
     [SerializeField] private float maxSpeed = 8f;
 
-    [Header("Jump")]
+    [Header("Gravity")]
     [SerializeField] private float defaultGravityScale = 2f;
     [SerializeField] private float upwardGravityScale = 2f;
     
@@ -21,9 +21,6 @@ public class MovementStats : ScriptableObject
     public float groundCheckDist;
     public Vector2 wallCheckOffset;
     public float wallCheckDist;
-    
-    [Header("Others")]
-    public float friction = 10f;
 
     public MovementRuntimeStats Stats => new MovementRuntimeStats
     {

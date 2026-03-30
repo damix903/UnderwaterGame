@@ -23,24 +23,12 @@ public class PlayerController2 : MonoBehaviour
         _input = new InputReader();
         _input.EnableActions(transform);
         _input.OnAttack += OnAttackStarted;
-
-        var idle = new TestIdle();
-        var move = new TestMove();
-        var jump = new TestJump();
-        _stateMachine = new StateMachine();
-        
-        _stateMachine.AddTransition(idle, move, new FuncPredicate(() => moving));
-        _stateMachine.AddTransition(move, idle, new FuncPredicate(() => !moving));
-        _stateMachine.AddAnyTransition(jump, new FuncPredicate(() => jumping));
-        _stateMachine.AddAnyTransition(idle, new FuncPredicate(() => !jumping && !moving));
-        _stateMachine.SetInitialState(idle);
     }
 
     private void Update()
     {
-        _stateMachine.Update();
+        //_stateMachine.Update();
         _movement.SetMovementInput(new Vector2(_input.MoveInput.x, 0f));
-        //_movement.SetMovementInput(_input.MoveInput);
     }
 
     private void OnAttackStarted(bool started)
