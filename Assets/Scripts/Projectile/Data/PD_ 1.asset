@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37423b21233d4f0a95b4b9a275f153b3, type: 3}
-  m_Name: PD_
+  m_Name: PD_ 1
   m_EditorClassIdentifier: Assembly-CSharp::NormalProjectileData
   prefab: {fileID: 499275246228415040, guid: 2de3305a4f6b6a047ba06deae0b77490, type: 3}
   maxSpeed: 8

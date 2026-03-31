@@ -16,6 +16,10 @@ public class GameLifeTimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<UI>();
         builder.RegisterComponentInHierarchy<PlayerStatsManager>();
+
+        builder.RegisterComponentOnNewGameObject<ProjectileSpawnManager>(Lifetime.Singleton, "Proj").UnderTransform(transform);
+        builder.RegisterComponentOnNewGameObject<ObjectPoolManager>(Lifetime.Singleton, "Pool").UnderTransform(transform);
+        builder.Register<PoolableEntityFactory<ProjectileBase>>(Lifetime.Singleton).As<IEntityFactory<ProjectileBase>>();
     }
 }
 

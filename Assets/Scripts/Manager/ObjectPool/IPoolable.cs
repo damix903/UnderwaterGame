@@ -3,5 +3,7 @@ using System;
 
 public interface IPoolable
 {
-    void InitializePool(Action returnAction);
+    public int DefaultCapacity { get; }
+    public int MaxSize { get; }
+    public void InitializePool(Action release);
 }

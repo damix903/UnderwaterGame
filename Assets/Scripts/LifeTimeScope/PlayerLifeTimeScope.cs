@@ -11,5 +11,7 @@ public class PlayerLifeTimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<PlayerHealth>().UnderTransform(transform).AsImplementedInterfaces()
             .AsSelf();
+
+        builder.RegisterComponentInHierarchy<ProjectileShooter>().UnderTransform(transform);
     }
 }

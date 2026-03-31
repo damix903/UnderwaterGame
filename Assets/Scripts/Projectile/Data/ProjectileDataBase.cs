@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class ProjectileDataBase : ScriptableObject, IProjectileBehaviour
+public abstract class ProjectileDataBase : EntityData, IProjectileBehaviour
 {
     [SerializeField] private float maxSpeed;
     [SerializeField] private float damage;

@@ -107,7 +107,7 @@ public class CharacterMovement : MonoBehaviour
         finalVel.y = Mathf.Clamp(finalVel.y, -_currentStats.maxSpeed, _currentStats.maxSpeed);
         
         _rb.linearVelocity = finalVel;
-        Debug.Log($"{_frameVelocity} : {_rb.linearVelocity}");
+        //Debug.Log($"{_frameVelocity} : {_rb.linearVelocity}");
     }
 
     private void HandleNoneMove()

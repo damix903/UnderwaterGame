@@ -7,49 +7,57 @@ using UnityEngine.Pool;
 
 public class ObjectPoolManager : MonoBehaviour
 {
-    [SerializeField] private List<PoolData> poolConfigs;
-
-    private readonly Dictionary<PoolType, IObjectPool<GameObject>> _pools = new();
-
-    private void Awake()
+    private readonly Dictionary<string, IObjectPool<GameObject>> _pools = new();
+    
+    public T Get<T>(GameObject prefab) where T : MonoBehaviour, IPoolable
     {
-        foreach (var data in poolConfigs)
+        if (!_pools.TryGetValue(prefab.name, out var pool))
         {
-            var pool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(data.prefab),
-                actionOnGet: (obj) => obj.SetActive(true),
-                actionOnRelease: (obj) => obj.SetActive(false),
-                actionOnDestroy: (obj) => Destroy(obj),
-                collectionCheck: true,
-                defaultCapacity: data.defaultCapacity,
-                maxSize: data.maxSize
-            );
-            
-            _pools.Add(data.poolType, pool);
+            pool = CreatePool(prefab);
+            if (pool == null) return null;
         }
-    }
-
-    public GameObject Get(PoolType poolType)
-    {
-        if (!_pools.TryGetValue(poolType, out var pool)) return null;
         
         var obj = pool.Get();
-        if (obj.TryGetComponent<IPoolable>(out var poolable))
+
+        if (!obj.TryGetComponent<T>(out var poolable))
         {
-            poolable.InitializePool(() => pool.Release(obj));
+            Debug.LogError($"{prefab.name} does not have an IPoolable");
+            return null;
         }
 
-        return obj;
+        poolable.InitializePool(() => pool.Release(obj));
+        return poolable;
+    }
+
+    public void ClearPool(GameObject prefab)
+    {
+        if (!_pools.TryGetValue(prefab.name, out var pool)) return;
+        
+        pool.Clear();
+        _pools.Remove(prefab.name);
+    }
+    
+    public void ClearAllPools() => _pools.Clear();
+
+    private IObjectPool<GameObject> CreatePool(GameObject prefab)
+    {
+        if (!prefab.TryGetComponent<IPoolable>(out var poolable))
+        {
+            Debug.LogError($"{prefab.gameObject.GetType()} does not have an IPoolable");
+            return null;
+        }
+            
+        var pool = new ObjectPool<GameObject>(
+            createFunc: () => Instantiate(prefab),
+            actionOnGet: (obj) => obj.SetActive(true),
+            actionOnRelease: (obj) => obj.SetActive(false),
+            actionOnDestroy: (obj) => Destroy(obj),
+            collectionCheck: true,
+            defaultCapacity: poolable.DefaultCapacity,
+            maxSize: poolable.MaxSize
+        );
+
+        _pools.Add(prefab.name, pool);
+        return pool;
     }
 }
-
-[Serializable]
-public struct PoolData
-{
-    public PoolType poolType;
-    public GameObject prefab;
-    public int defaultCapacity;
-    public int maxSize;
-}
-
-public enum PoolType {VFX, Projectile}

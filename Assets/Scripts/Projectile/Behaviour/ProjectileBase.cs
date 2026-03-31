@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class ProjectileBase : MonoBehaviour, IPoolable
+public class ProjectileBase : PoolableEntity
 {
     private Rigidbody2D _rb;
 
@@ -36,7 +36,7 @@ public class ProjectileBase : MonoBehaviour, IPoolable
     private IEnumerator SetLifeTime(float lifeTime)
     {
         yield return new WaitForSeconds(lifeTime);
-        ReturnToPool();
+        Release();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -54,9 +54,6 @@ public class ProjectileBase : MonoBehaviour, IPoolable
         OnHit();
     }
 
-    public void InitializePool(Action returnAction) => _returnAction = returnAction;
-    protected void ReturnToPool() => _returnAction?.Invoke();
-
     protected virtual void OnHitToDamageable(IDamageable damageable)
     {
         var info = new DamageInfo(
@@ -69,12 +66,12 @@ public class ProjectileBase : MonoBehaviour, IPoolable
 
     protected virtual void OnHit()
     {
-        ReturnToPool();
+        Release();
     }
 
     protected virtual void OnLifeTimeReached()
     {
-        ReturnToPool();
+        Release();
     }
 }
 

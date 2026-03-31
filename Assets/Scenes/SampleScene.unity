@@ -1618,55 +1618,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e07ece84d2b778c43818ed5fa1279030, type: 3}
---- !u!1 &860755413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 860755415}
-  - component: {fileID: 860755414}
-  m_Layer: 0
-  m_Name: ObjectPoolManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &860755414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860755413}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1722058895d4a41b61070cdce48bc59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ObjectPoolManager
-  poolConfigs:
-  - poolType: 1
-    prefab: {fileID: 499275246228415040, guid: 2de3305a4f6b6a047ba06deae0b77490, type: 3}
-    defaultCapacity: 5
-    maxSize: 10
---- !u!4 &860755415
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 860755413}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.61057, y: 7.20683, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &952788982
 GameObject:
   m_ObjectHideFlags: 0
@@ -2714,8 +2665,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00f98d692cddf12448e11bcf65e4ec9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileShooter
-  poolManager: {fileID: 860755414}
-  bulletData: {fileID: 11400000, guid: c6cf456402d9d7248932840453a5c5dd, type: 2}
+  poolManager: {fileID: 0}
+  bulletData: {fileID: 11400000, guid: e651004be274c924590938e81dd48826, type: 2}
+  data: {fileID: 0}
   detectionLayer:
     serializedVersion: 2
     m_Bits: 192
@@ -6306,7 +6258,6 @@ SceneRoots:
   - {fileID: 995478647}
   - {fileID: 117137848}
   - {fileID: 2137618489}
-  - {fileID: 860755415}
   - {fileID: 1872966430}
   - {fileID: 1244709925}
   - {fileID: 1411466058}
