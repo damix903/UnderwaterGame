@@ -6,9 +6,3 @@ public class EntityData : ScriptableObject
     
     public GameObject Prefab => prefab;
 }
-
-[CreateAssetMenu(fileName = "EntityData", menuName = "Data/Entity/Projectile")]
-public class ProjectileData : EntityData
-{
-    
-}

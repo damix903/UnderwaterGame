@@ -57,6 +57,7 @@ public class AIController : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (detectable == null) return;
         detectable.OnTargetDetected -= HandleTargetDetect;
         detectable.OnTargetLost -= HandleTargetLost;
     }

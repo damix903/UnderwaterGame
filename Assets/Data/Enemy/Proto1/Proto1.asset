@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c20d9e13b1149d1ad1d22ef1929d169, type: 3}
+  m_Name: Proto1
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  prefab: {fileID: 7419926818705587296, guid: e07ece84d2b778c43818ed5fa1279030, type: 3}

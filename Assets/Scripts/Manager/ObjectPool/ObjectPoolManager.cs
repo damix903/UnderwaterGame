@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using VContainer;
+using VContainer.Unity;
 
 
 public class ObjectPoolManager : MonoBehaviour
 {
     private readonly Dictionary<string, IObjectPool<GameObject>> _pools = new();
+    [Inject] private IObjectResolver _resolver;
     
     public T Get<T>(GameObject prefab) where T : MonoBehaviour, IPoolable
     {
@@ -48,7 +51,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
             
         var pool = new ObjectPool<GameObject>(
-            createFunc: () => Instantiate(prefab),
+            createFunc: () => _resolver.Instantiate(prefab),
             actionOnGet: (obj) => obj.SetActive(true),
             actionOnRelease: (obj) => obj.SetActive(false),
             actionOnDestroy: (obj) => Destroy(obj),
@@ -56,7 +59,7 @@ public class ObjectPoolManager : MonoBehaviour
             defaultCapacity: poolable.DefaultCapacity,
             maxSize: poolable.MaxSize
         );
-
+        
         _pools.Add(prefab.name, pool);
         return pool;
     }
