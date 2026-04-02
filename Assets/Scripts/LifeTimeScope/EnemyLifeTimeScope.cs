@@ -14,5 +14,6 @@ public class EnemyLifeTimeScope : LifetimeScope
 
         builder.RegisterComponentInHierarchy<AnimationSystem>().UnderTransform(transform).AsImplementedInterfaces();
         builder.RegisterComponentInHierarchy<Enemy>().UnderTransform(transform);
+        builder.RegisterComponentInHierarchy<AIController>().UnderTransform(transform);
     }
 }

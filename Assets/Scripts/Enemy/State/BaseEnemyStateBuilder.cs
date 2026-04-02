@@ -2,5 +2,5 @@ using UnityEngine;
 
 public abstract class BaseEnemyStateBuilder : ScriptableObject
 {
-    public abstract StateMachine Build(AIController controller);
+    public abstract StateMachine Build(AIController controller, BaseAnimData animData);
 }

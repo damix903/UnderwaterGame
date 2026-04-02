@@ -6,9 +6,9 @@ public class CharacterMovement : MonoBehaviour
 {
     private enum MovementMode { None, Normal}
     private MovementMode _movementMode = MovementMode.Normal;
-    
+
+    [SerializeField] private bool shouldFlip = true;
     [SerializeField] private bool isFacingRight = true;
-    [SerializeField] private float coyoteTime = .2f;
     
     [Header("Collision Check")]
     [SerializeField] private LayerMask groundLayer;
@@ -18,6 +18,7 @@ public class CharacterMovement : MonoBehaviour
     private IMovementModifier _modifier;
     
     private Rigidbody2D _rb;
+    private IHandleInputStrategy _strategy;
 
     #region Private Fields
 
@@ -50,6 +51,8 @@ public class CharacterMovement : MonoBehaviour
 
         _currentStats = baseStats.Stats;
         _flipScale = isFacingRight ? 180f : -180f;
+
+        _strategy = baseStats.Strategy();
     }
 
     public void SetMovementInput(Vector2 input) => _input = input;
@@ -128,27 +131,29 @@ public class CharacterMovement : MonoBehaviour
     private void HandleInput()
     {
         Vector2 effectiveInput = _movementBlockTimer > 0f ? _input * _inputMul : _input;
-        Vector2 speed = Vector2.one * _currentStats.movementMaxSpeed;
-        Vector2 targetSpeed = effectiveInput * speed;
+        _strategy.HandleInput(effectiveInput, _currentStats, IsGrounded, ref _frameVelocity);
+        
+        // Vector2 speed = Vector2.one * _currentStats.movementMaxSpeed;
+        // Vector2 targetSpeed = effectiveInput * speed;
 
-        if (Mathf.Abs(_input.magnitude) > 0.01f && Mathf.Abs(effectiveInput.magnitude) > 0.01f)
-        {
-            float accel = IsGrounded ? _currentStats.groundAccel : _currentStats.airAccel;
-            // 現在の速度を目標速度に近づける
-            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, targetSpeed.x, accel * Time.deltaTime);
-            
-            if (_input.y == 0) return;
-            _frameVelocity.y += _input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.deltaTime;
-            float absY = Mathf.Abs(targetSpeed.y);
-            _frameVelocity.y = _input.y > 0f ? Mathf.Clamp(_frameVelocity.y, -absY, absY) 
-                : _frameVelocity.y;
-        }
-        // インプットがないときの減速処理
-        else
-        {
-            float decel = IsGrounded ? _currentStats.groundDecel : _currentStats.airDecel;
-            _frameVelocity = Vector2.MoveTowards(_frameVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
-        }
+        // if (Mathf.Abs(_input.magnitude) > 0.01f && Mathf.Abs(effectiveInput.magnitude) > 0.01f)
+        // {
+        //     float accel = IsGrounded ? _currentStats.groundAccel : _currentStats.airAccel;
+        //     // 現在の速度を目標速度に近づける
+        //     _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, targetSpeed.x, accel * Time.deltaTime);
+        //     
+        //     if (_input.y == 0) return;
+        //     _frameVelocity.y += _input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.deltaTime;
+        //     float absY = Mathf.Abs(targetSpeed.y);
+        //     _frameVelocity.y = _input.y > 0f ? Mathf.Clamp(_frameVelocity.y, -absY, absY) 
+        //         : _frameVelocity.y;
+        // }
+        // // インプットがないときの減速処理
+        // else
+        // {
+        //     float decel = IsGrounded ? _currentStats.groundDecel : _currentStats.airDecel;
+        //     _frameVelocity = Vector2.MoveTowards(_frameVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
+        // }
     }
 
     private void HandleImpulseForce()
@@ -183,6 +188,8 @@ public class CharacterMovement : MonoBehaviour
 
     public void HandleFlip()
     {
+        if (!shouldFlip) return;
+        
         if ((transform.right.x > 0 && _input.x < 0f)
             || (transform.right.x < 0 && _input.x > 0f))
             transform.Rotate(0f, _flipScale, 0f);
@@ -203,4 +210,3 @@ public class CharacterMovement : MonoBehaviour
     }
 #endif
 }
-

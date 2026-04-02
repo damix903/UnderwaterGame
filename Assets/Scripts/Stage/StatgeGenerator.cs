@@ -16,9 +16,9 @@ public class StatgeGenerator : MonoBehaviour
     public Transform StageStartPoint {get; private set;}
     public Transform StageEndPoint {get; private set;}
     private Transform _lastEndPoint;
-
-    [Inject] private IEntityFactory<Enemy> _enemyFactory;
+    
     [Inject] private IPublisher<ReleaseType> _publisher;
+    [Inject] private EnemySpawner _spawner;
 
     [Inject]
     public void Construct(IEntityFactory<Room> factory)
@@ -70,27 +70,17 @@ public class StatgeGenerator : MonoBehaviour
         var amountToMove = _lastEndPoint.position - room.StartPoint.position;
         room.transform.position += amountToMove;
         _lastEndPoint = room.EndPoint;
-        SpawnEnemies(room);
+        
+        var enemies = stageConfig.Enemies;
+        foreach (var e in data.AdditiveEnemies)
+        {
+            enemies.Add(e);
+        }
+        
+        _spawner.Spawn(enemies, room);
     }
 
     private List<EnemySpawnPoint> _points = new();
-    
-    private void SpawnEnemies(Room room)
-    {
-        _points.Clear();
-        foreach (var p in room.SpawnPoints)
-        {
-            _points.Add(p);
-        }
- 
-        while (_points.Count > 0)
-        {
-            var point = _points[Random.Range(0, _points.Count)];
-            var enemy = stageConfig.Enemies[Random.Range(0, stageConfig.Enemies.Count)];
-            _enemyFactory.Create(enemy, point.SpawnPoint);
-            _points.Remove(point);
-        }
-    }
 }
 
 public enum ReleaseType { Room, Enemy}

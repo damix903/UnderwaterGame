@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d94b292802493e82f7dd29b2ba100a, type: 3}
+  m_Name: BAD_Proto3
+  m_EditorClassIdentifier: Assembly-CSharp::BaseAnimData
+  idleClip: {fileID: 7400000, guid: 52788241ccae0344bbfb28359902e2e2, type: 2}
+  moveClip: {fileID: 7400000, guid: 18e65ac53a2fd3a45b7cc1044f899c45, type: 2}
+  fallClip: {fileID: 0}

@@ -6,17 +6,20 @@ using Random = UnityEngine.Random;
 public class AIController : MonoBehaviour
 {
     private StateMachine _stateMachine;
-    
-    [SerializeField] private LayerMask detectionLayer;
-    [SerializeField] private float damage;
-    [SerializeField] private BaseAnimData animData;
-    [SerializeField] private BaseEnemyStateBuilder stateBuilder;
+
     public GameObject Target { get; private set; }
     private IDetectable detectable;
+    private EnemyData _enemyData;
+
+    public void Initialize(EnemyData data)
+    {
+        _enemyData = data;
+        StartCoroutine(Wait(Random.Range(0f, 3f)));
+    }
 
     private void Start()
     {
-        StartCoroutine(Wait(Random.Range(0f, 3f)));
+        //StartCoroutine(Wait(Random.Range(0f, 3f)));
     }
 
     private IEnumerator Wait(float duration)
@@ -27,7 +30,7 @@ public class AIController : MonoBehaviour
         detectable.OnTargetDetected += HandleTargetDetect;
         detectable.OnTargetLost += HandleTargetLost;
 
-        _stateMachine = stateBuilder.Build(this);
+        _stateMachine = _enemyData.StateBuilder.Build(this, _enemyData.AnimData);
     }
 
     private void HandleTargetDetect(GameObject obj) => Target = obj;
@@ -41,18 +44,6 @@ public class AIController : MonoBehaviour
     private void FixedUpdate()
     {
         _stateMachine?.FixedUpdate();
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if ((detectionLayer.value & (1 << other.gameObject.layer)) > 0)
-        {
-            if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
-            {
-                if (damageable.TeamID == TeamID.Player)
-                    damageable.TakeDamage(new DamageInfo(gameObject, damage, new EffectData()));
-            }
-        }
     }
 
     private void OnDestroy()

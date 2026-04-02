@@ -19,10 +19,10 @@ MonoBehaviour:
   groundDecel: 5
   airDecel: 2
   maxSpeed: 8
+  strategy: 1
   defaultGravityScale: 2.6
   upwardGravityScale: 2
   groundCheckOffset: {x: 0, y: 0}
-  groundCheckDist: 1.1
+  groundCheckDist: 0.1
   wallCheckOffset: {x: 0, y: 0}
   wallCheckDist: 0
-  friction: 20

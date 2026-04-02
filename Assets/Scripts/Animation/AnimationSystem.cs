@@ -69,6 +69,7 @@ public class AnimationSystem : MonoBehaviour, IAnimPlayable
         _basePlayable = AnimationClipPlayable.Create(_graph, clip);
         _graph.Connect(_basePlayable, 0, _mixer, BaseLayer);
         _basePlayable.Play();
+        _baseClip = clip;
     }
 
     private void DestroyBasePlayable()

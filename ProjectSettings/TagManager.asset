@@ -12,11 +12,11 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Damageable
-  - Projectile
   - Player
-  - 
-  - 
+  - Enemy
+  - Enemy_IgnoreWall
+  - Invincible
+  - Projectile
   - 
   - 
   - 

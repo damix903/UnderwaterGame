@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -11,4 +12,6 @@ public abstract class Entity : MonoBehaviour
     }
 
     protected virtual void OnInitialize() { }
+
+    protected virtual void OnCollisionEnter2D(Collision2D other) { }
 }

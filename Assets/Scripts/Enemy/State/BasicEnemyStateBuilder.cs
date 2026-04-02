@@ -3,12 +3,11 @@
 [CreateAssetMenu(fileName = "ESB_", menuName = "Data/State/BasicEnemy")]
 public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
 {
-    [SerializeField] private BaseAnimData animData;
     [SerializeField] private MoveStrategy moveStrategy;
     [SerializeField] private Vector2 moveDirection;
     [SerializeField] private bool canChase;
     
-    public override StateMachine Build(AIController controller)
+    public override StateMachine Build(AIController controller, BaseAnimData animData)
     {
         var anim = controller.GetComponentInChildren<AnimationSystem>();
 

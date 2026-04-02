@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c20d9e13b1149d1ad1d22ef1929d169, type: 3}
+  m_Name: ED_Proto3
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  prefab: {fileID: 3455810939790289845, guid: d6f604a88669dfc4f9fa12528bd87377, type: 3}
+  enemyType: 1
+  stateBuilder: {fileID: 11400000, guid: c3b806bfa6ec39341add1652360883c5, type: 2}
+  animData: {fileID: 11400000, guid: a0f021d4e795b3d49a1a4076e5bda362, type: 2}

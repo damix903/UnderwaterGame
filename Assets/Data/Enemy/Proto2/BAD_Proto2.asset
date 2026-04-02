@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5d94b292802493e82f7dd29b2ba100a, type: 3}
-  m_Name: BAD_Proto
+  m_Name: BAD_Proto2
   m_EditorClassIdentifier: Assembly-CSharp::BaseAnimData
-  idleClip: {fileID: 7400000, guid: 7ee31afa7e88e0041ad2b56937a678c9, type: 2}
-  moveClip: {fileID: 7400000, guid: 2852710d40e6bd548b57c379e1f8a5c3, type: 2}
+  idleClip: {fileID: 7400000, guid: bd8b1b59547c8c94aa4a2e3c161e3e88, type: 2}
+  moveClip: {fileID: 7400000, guid: 03242c146b8e75843b714e2bb1b010cf, type: 2}
   fallClip: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8682288841236431677}
   - component: {fileID: 4005609956530981415}
   - component: {fileID: 4220857635741704586}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,9 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e22555c011530774ebe1c3657594911d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletBehaviour
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 192
+  defaultCapacity: 10
+  maxSize: 100
 --- !u!58 &4220857635741704586
 CircleCollider2D:
   m_ObjectHideFlags: 0

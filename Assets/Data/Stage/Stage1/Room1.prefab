@@ -2391,13 +2391,17 @@ MonoBehaviour:
   maxSize: 4
   startPoint: {fileID: 9024065892391121763}
   endPoint: {fileID: 6122338762715504828}
+  maxSpawnCount: 1
   spawnPoints:
   - SpawnPoint: {fileID: 2023459720638335089}
     Probability: 0
+    AvailableTypes: 0000000001000000
   - SpawnPoint: {fileID: 8593335155279046801}
     Probability: 0
+    AvailableTypes: 01000000
   - SpawnPoint: {fileID: 3937564712662982463}
     Probability: 0
+    AvailableTypes: 01000000
 --- !u!1 &2187988011738273380
 GameObject:
   m_ObjectHideFlags: 0

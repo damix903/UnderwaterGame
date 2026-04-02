@@ -5,12 +5,12 @@ public class MovementStats : ScriptableObject
 {
     [Header("Move")]
     [SerializeField] private float movementMaxSpeed = 3f;
-    [SerializeField] private float upwardMaxSpeed = 5f;
     [SerializeField] private float groundAccel = 60f;
     [SerializeField] private float airAccel = 30f;
     [SerializeField] private float groundDecel = 50f;
     [SerializeField] private float airDecel = 20f;
     [SerializeField] private float maxSpeed = 8f;
+    [SerializeField] private InputStrategy strategy = InputStrategy.MoveToward;
 
     [Header("Gravity")]
     [SerializeField] private float defaultGravityScale = 2f;
@@ -33,6 +33,18 @@ public class MovementStats : ScriptableObject
         defaultGravityScale = defaultGravityScale,
         upwardGravityScale = upwardGravityScale,
     };
+
+    public IHandleInputStrategy Strategy()
+    {
+        return strategy switch
+        {
+            InputStrategy.MoveToward => new MoveToward(),
+            InputStrategy.YAdditive => new YAdditive(),
+            _ => null
+        };
+    }
+    
+    private enum InputStrategy { MoveToward, YAdditive}
 
 }
 
