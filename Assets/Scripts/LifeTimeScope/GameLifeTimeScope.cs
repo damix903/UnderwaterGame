@@ -23,7 +23,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentOnNewGameObject<ProjectileSpawnManager>(Lifetime.Singleton, "Proj").UnderTransform(transform);
         builder.RegisterComponentOnNewGameObject<ObjectPoolManager>(Lifetime.Singleton, "Pool").UnderTransform(transform);
         builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
-        builder.Register<PoolableEntityFactory<ProjectileBase>>(Lifetime.Singleton).As<IEntityFactory<ProjectileBase>>();
+        builder.Register<PoolableEntityFactory<Projectile>>(Lifetime.Singleton).As<IEntityFactory<Projectile>>();
 
         builder.RegisterComponentInHierarchy<StatgeGenerator>();
         builder.Register<PoolableEntityFactory<Room>>(Lifetime.Singleton).As<IEntityFactory<Room>>();

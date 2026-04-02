@@ -1762,10 +1762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00f98d692cddf12448e11bcf65e4ec9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileShooter
-  bulletData: {fileID: 11400000, guid: e651004be274c924590938e81dd48826, type: 2}
-  detectionLayer:
-    serializedVersion: 2
-    m_Bits: 832
+  data: {fileID: 11400000, guid: e54220c5765db6340b5503452e696b77, type: 2}
 --- !u!114 &1663461056
 MonoBehaviour:
   m_ObjectHideFlags: 0

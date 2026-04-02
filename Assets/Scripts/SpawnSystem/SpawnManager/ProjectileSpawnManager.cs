@@ -6,7 +6,7 @@ using VContainer;
 public class ProjectileSpawnManager : MonoBehaviour
 {
     [SerializeField] private ObjectPoolManager _objectPoolManager;
-    private IEntityFactory<ProjectileBase>  _factory;
+    private IEntityFactory<Projectile>  _factory;
 
     private void Awake()
     {
@@ -14,12 +14,12 @@ public class ProjectileSpawnManager : MonoBehaviour
     }
 
     [Inject]
-    public void Construct(IEntityFactory<ProjectileBase> factory)
+    public void Construct(IEntityFactory<Projectile> factory)
     {
         _factory = factory;
     }
 
-    public ProjectileBase Spawn(EntityData data, Transform spawnPoint)
+    public Projectile Spawn(EntityData data, Transform spawnPoint)
     {
         var proj = _factory.Create(data, spawnPoint);
         Debug.Log(proj);

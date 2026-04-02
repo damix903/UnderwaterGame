@@ -2,7 +2,7 @@
 
 public interface ILayerConfig
 {
-    public LayerMask DamageableLayer { get; }
+    public LayerMask AllDamageableLayer { get; }
     public LayerMask InvincibleLayer { get; }
-    public LayerMask IgnoreWallLayer { get; }
+    public LayerMask GroundLayer { get; }
 }

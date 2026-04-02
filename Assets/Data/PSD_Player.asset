@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee71954d52248fc87c1410448104f23, type: 3}
+  m_Name: PSD_Player
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileShooterData
+  recoil: 5
+  cost: 5
+  cooldown: 0.5
+  projectileData: {fileID: 11400000, guid: c6cf456402d9d7248932840453a5c5dd, type: 2}
+  shootCenter: {x: 0, y: 1.62}
+  shootRadius: 1.53

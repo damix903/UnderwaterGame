@@ -13,3 +13,13 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfigData
   damage: 10
+  cameraShake: {fileID: 0}
+  allDamageableLayer:
+    serializedVersion: 2
+    m_Bits: 896
+  invincibleLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64

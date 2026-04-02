@@ -2,5 +2,5 @@
 
 public interface IProjectileBehaviour
 {
-    public void OnUpdate(Rigidbody2D rb, ProjectileBase proj);
+    public void OnUpdate(Rigidbody2D rb, Projectile proj);
 }

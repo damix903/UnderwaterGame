@@ -1,19 +1,19 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class ProjectileBase : PoolableEntity
+public class Projectile : PoolableEntity
 {
     private Rigidbody2D _rb;
 
-    private ProjectileDataBase _projData;
-    private ProjectileSpawnParams _spawnParams;
-
+    private BaseProjectileData _projData;
     private IProjectileBehaviour _behaviour;
-    private Action _returnAction;
-    
+
+    private Coroutine _lifeTimeCo;
+
+    public ProjectileSpawnParams SpawnParams { get; private set; }
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -25,51 +25,58 @@ public class ProjectileBase : PoolableEntity
         _behaviour?.OnUpdate(_rb, this);
     }
 
-    public void Initialize(ProjectileDataBase data, ProjectileSpawnParams param, IProjectileBehaviour behaviour)
+    public void Initialize(BaseProjectileData projData, ProjectileSpawnParams param, IProjectileBehaviour behaviour)
     {
-        _projData = data;
+        _projData = projData;
         _behaviour = behaviour;
-        _spawnParams = param;
-        StartCoroutine(SetLifeTime(data.LifeTime));
+        SpawnParams = param;
+        
+        StopLifeTime();
+        _lifeTimeCo = StartCoroutine(SetLifeTime(projData.LifeTime));
     }
 
     private IEnumerator SetLifeTime(float lifeTime)
     {
         yield return new WaitForSeconds(lifeTime);
-        Release();
+        OnLifeTimeReached();
+    }
+
+    private void StopLifeTime()
+    {
+        if (_lifeTimeCo != null) StopCoroutine(_lifeTimeCo);
+        _lifeTimeCo = null;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == _spawnParams.Owner || ((_spawnParams.DetectionLayer.value & (1 << other.gameObject.layer)) <= 0)) return;
+        if (other.gameObject == SpawnParams.Owner || ((SpawnParams.DetectionLayer.value & (1 << other.gameObject.layer)) <= 0)) return;
         
         if (other.gameObject.TryGetComponent<IDamageable>(out var damageable))
         {
-            if (damageable.TeamID != _spawnParams.OwnerTeamID)
-            {
+            if (damageable.TeamID != SpawnParams.OwnerTeamID)
                 OnHitToDamageable(damageable);
-            }
         }
         
         OnHit();
     }
 
-    protected virtual void OnHitToDamageable(IDamageable damageable)
+    private void OnHitToDamageable(IDamageable damageable)
     {
         var info = new DamageInfo(
-            _spawnParams.Owner,
+            SpawnParams.Owner,
             _projData.Damage,
             new EffectData()
         );
         damageable.TakeDamage(info);
     }
 
-    protected virtual void OnHit()
+    private void OnHit()
     {
         Release();
+        StopLifeTime();
     }
 
-    protected virtual void OnLifeTimeReached()
+    private void OnLifeTimeReached()
     {
         Release();
     }
