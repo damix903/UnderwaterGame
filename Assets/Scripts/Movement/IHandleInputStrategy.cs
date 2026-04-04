@@ -2,12 +2,12 @@
 
 public interface IHandleInputStrategy
 {
-    void HandleInput(Vector2 input, MovementRuntimeStats stats, bool isGrounded, ref Vector2 frameVelocity);
+    void HandleInput(Vector2 input, MovementRuntimeStats stats, bool isGrounded, ref Vector2 inputVelocity);
 }
 
 public class MoveToward : IHandleInputStrategy
 {
-    public void HandleInput(Vector2 input, MovementRuntimeStats stats, bool isGrounded, ref Vector2 frameVelocity)
+    public void HandleInput(Vector2 input, MovementRuntimeStats stats, bool isGrounded, ref Vector2 inputVelocity)
     {
         Vector2 speed = Vector2.one * stats.movementMaxSpeed;
         Vector2 targetSpeed = input * speed;
@@ -16,13 +16,13 @@ public class MoveToward : IHandleInputStrategy
         {
             float accel = isGrounded ? stats.groundAccel : stats.airAccel;
             // 現在の速度を目標速度に近づける
-            frameVelocity = Vector2.MoveTowards(frameVelocity, targetSpeed, accel * Time.fixedDeltaTime);
+            inputVelocity = Vector2.MoveTowards(inputVelocity, targetSpeed, accel * Time.fixedDeltaTime);
         }
         // インプットがないときの減速処理
         else
         {
             float decel = isGrounded ? stats.groundDecel : stats.airDecel;
-            frameVelocity = Vector2.MoveTowards(frameVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
+            inputVelocity = Vector2.MoveTowards(inputVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
         }
     }
 }

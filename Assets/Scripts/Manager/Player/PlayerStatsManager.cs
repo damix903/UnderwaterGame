@@ -6,17 +6,21 @@ using VContainer;
 
 public class PlayerStatsManager : MonoBehaviour
 {
-    [Inject] private ISubscriber<DeathEvent> _subscriber;
-    
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private float comboTime = 5f;
+    
+    [Inject] private IPublisher<EventPublisher, ComboEvent> _publisher;
 
+    private IDisposable _subscription;
     private int _comboCounter;
     private float _comboTimer;
-    
-    private void Start()
+
+    [Inject]
+    public void Construct(ISubscriber<DeathEvent> subscriber)
     {
-        _subscriber?.Subscribe(HandleDeathEvent);
+        if (_subscription != null) return;
+        _subscription = subscriber.Subscribe(HandleDeathEvent);
         _comboCounter = 0;
         _comboTimer = 0f;
     }
@@ -25,9 +29,8 @@ public class PlayerStatsManager : MonoBehaviour
     {
         _comboTimer = Mathf.Max(0f, _comboTimer - Time.deltaTime);
         if (_comboTimer <= 0f && _comboCounter != 0)
-        {
-            _comboCounter = 0;
-        }
+            ChangeComboCount(true);
+
         ChangeText();
     }
 
@@ -35,14 +38,41 @@ public class PlayerStatsManager : MonoBehaviour
     {
         if (e.TeamID != TeamID.Enemy) return;
 
-        _comboTimer = 5f;
-        _comboCounter++;
+        ChangeComboCount();
+    }
+
+    private void ChangeComboCount(bool isReset = false)
+    {
+        if (isReset)
+        {
+            _comboCounter = 0;
+            _comboTimer = 0f;
+        }
+        else
+        {
+            _comboCounter++;
+            _comboTimer = comboTime;
+        }
         
-        if (_comboCounter < 5) return;
-        var amount = _comboCounter / 3f;
-        amount = Mathf.Min(amount, 10f);
-        playerHealth.Heal(amount);
+        _publisher?.Publish(EventPublisher.System, new ComboEvent(_comboCounter, _comboTimer));
     }
     
     private void ChangeText() => text.text = $"{_comboCounter} : {_comboTimer}";
+
+    private void OnDestroy()
+    {
+        _subscription?.Dispose();
+    }
+}
+
+public struct ComboEvent
+{
+    public readonly int Count;
+    public readonly float Time;
+
+    public ComboEvent(int count, float time)
+    {
+        Count = count;
+        Time = time;
+    }
 }

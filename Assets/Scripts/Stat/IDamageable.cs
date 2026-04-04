@@ -56,14 +56,14 @@ public enum DefenseState {None, Invincible, Just }
 
 public struct EffectData
 {
-    public readonly HitStopEvent HitStop;
+    public readonly HitStopData HitStopData;
     public readonly CameraShakeData CameraShakeData;
     //public readonly DamageReactionData ReactionData;
 
-    public EffectData(HitStopEvent hitStop, CameraShakeData data)//, DamageReactionData damageReactionData)
+    public EffectData(HitStopData hitStop, CameraShakeData cameraShake)//, DamageReactionData damageReactionData)
     {
-        HitStop = hitStop;
-        CameraShakeData = data;
+        HitStopData = hitStop;
+        CameraShakeData = cameraShake;
         //ReactionData = damageReactionData;
     }
 }

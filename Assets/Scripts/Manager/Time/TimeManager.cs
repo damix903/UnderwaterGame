@@ -1,28 +1,49 @@
 using System;
+using System.Collections;
 using UnityEngine;
 // using Cysharp.Threading.Tasks;
-// using MessagePipe;
-// using VContainer;
+using MessagePipe;
+using VContainer;
 
 public class TimeManager : MonoBehaviour
 {
-    //[Inject] private ISubscriber<DamageResult> _subscriber;
-    [SerializeField] private HitStopDefinition definition;
+    [Inject] private ISubscriber<DamageResult> _subscriber;
+    private Coroutine _hitStopCoroutine;
 
     private void Awake()
     {
-        //_subscriber?.Subscribe(HandleDamageEvent);
+        _subscriber?.Subscribe(HandleDamageEvent);
     }
 
     private void HandleDamageEvent(DamageResult e)
     {
-        if (definition == null) return;
-        var hit = e.DamageInfo.EffectData.HitStop;
-        var info = hit.Type == HitStopType.Custom ? hit.Info : definition.GetHitStopInfo(hit.Type);
+        var data = e.DamageInfo.EffectData.HitStopData;
+        if (data == null)　return;
+        
+        StartHitStop(data);
 
-        Time.timeScale = info.TimeScale;
         //Stop(info.Duration).Forget();
         //Debug.Log($"{info.Duration}, {info.TimeScale}");
+    }
+
+    public void StartHitStop(HitStopData data)
+    {
+        StopHitStopCoroutine();
+        _hitStopCoroutine = StartCoroutine(HitStopCoroutine(data));
+    }
+
+    private IEnumerator HitStopCoroutine(HitStopData data)
+    {
+        Time.timeScale = data.TimeScale;
+        yield return new WaitForSecondsRealtime(data.Duration);
+        Time.timeScale = 1f;
+    }
+
+    private void StopHitStopCoroutine()
+    {
+        if (_hitStopCoroutine != null) StopCoroutine(_hitStopCoroutine);
+        _hitStopCoroutine = null;
+        Time.timeScale = 1f;
     }
 
     // private async UniTaskVoid Stop(float duration)
@@ -30,16 +51,4 @@ public class TimeManager : MonoBehaviour
     //     await UniTask.Delay(TimeSpan.FromSeconds(duration), DelayType.UnscaledDeltaTime, cancellationToken: this.GetCancellationTokenOnDestroy());
     //     Time.timeScale = 1f;
     // }
-}
-
-public struct HitStopEvent
-{
-    public readonly HitStopType Type;
-    public readonly HitStopInfo Info;
-
-    public HitStopEvent(HitStopType type, HitStopInfo info)
-    {
-        Type = type;
-        Info = info;
-    }
 }

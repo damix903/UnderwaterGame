@@ -13,15 +13,14 @@ MonoBehaviour:
   m_Name: MS_Player
   m_EditorClassIdentifier: Assembly-CSharp::MovementStats
   movementMaxSpeed: 3.5
-  upwardMaxSpeed: 6
   groundAccel: 5
   airAccel: 5
   groundDecel: 5
   airDecel: 2
   maxSpeed: 8
-  strategy: 1
-  defaultGravityScale: 2.6
-  upwardGravityScale: 2
+  strategy: 0
+  defaultGravityScale: 1
+  upwardGravityScale: 0.2
   groundCheckOffset: {x: 0, y: 0}
   groundCheckDist: 0.1
   wallCheckOffset: {x: 0, y: 0}

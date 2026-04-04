@@ -2,13 +2,15 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement2 : MonoBehaviour
 {
     private enum MovementMode { None, Normal}
     private MovementMode _movementMode = MovementMode.Normal;
 
     [SerializeField] private bool shouldFlip = true;
     [SerializeField] private bool isFacingRight = true;
+    [SerializeField] private bool enableGravity = true;
+    [SerializeField] private float friction = 5f;
     
     [Header("Collision Check")]
     [SerializeField] private LayerMask groundLayer;
@@ -29,7 +31,8 @@ public class CharacterMovement : MonoBehaviour
     private bool _shouldBlockY;
     private float _inputMul;
     
-    private Vector2 _frameVelocity;
+    private Vector2 _finalVelocity;
+    private Vector2 _inputVelocity;
     private Vector2 _impulseVelocity;
     private Vector2 _constantVelocity;
     
@@ -80,8 +83,6 @@ public class CharacterMovement : MonoBehaviour
     private void FixedUpdate()
     {
         _currentStats = baseStats.Stats;
-        _frameVelocity = _rb.linearVelocity;
-
         HandleCollisionDetection();
         //_currentStats = baseStats.Stats;
         if (_modifier != null) _currentStats = _modifier.Apply(_currentStats);
@@ -101,11 +102,12 @@ public class CharacterMovement : MonoBehaviour
 
         HandleImpulseForce();
         
-        var finalVel = _frameVelocity + _constantVelocity;
+        var finalVel = enableGravity ? new Vector2(0f, _rb.linearVelocity.y) : Vector2.zero;
+        finalVel += _inputVelocity + _constantVelocity;// + _impulseVelocity;
 
         float gravity = finalVel.y > 0f ? _currentStats.upwardGravityScale : _currentStats.defaultGravityScale;
-        //finalVel.y -= gravity * Time.fixedDeltaTime;
-        _rb.gravityScale = gravity;
+        finalVel.y -= gravity * Time.fixedDeltaTime;
+        //_rb.gravityScale = gravity;
         
         finalVel.x = Mathf.Clamp(finalVel.x, -_currentStats.maxSpeed, _currentStats.maxSpeed);
         finalVel.y = Mathf.Clamp(finalVel.y, -_currentStats.maxSpeed, _currentStats.maxSpeed);
@@ -119,7 +121,7 @@ public class CharacterMovement : MonoBehaviour
         if (_shouldBlockY)
         {
             _rb.gravityScale = 0f;
-            _frameVelocity.y = 0f;
+            //_frameVelocity.y = 0f;
         }
         
         _movementBlockTimer -= Time.fixedDeltaTime;
@@ -132,36 +134,15 @@ public class CharacterMovement : MonoBehaviour
     private void HandleInput()
     {
         Vector2 effectiveInput = _movementBlockTimer > 0f ? _input * _inputMul : _input;
-        _strategy.HandleInput(effectiveInput, _currentStats, IsGrounded, ref _frameVelocity);
-        
-        // Vector2 speed = Vector2.one * _currentStats.movementMaxSpeed;
-        // Vector2 targetSpeed = effectiveInput * speed;
-
-        // if (Mathf.Abs(_input.magnitude) > 0.01f && Mathf.Abs(effectiveInput.magnitude) > 0.01f)
-        // {
-        //     float accel = IsGrounded ? _currentStats.groundAccel : _currentStats.airAccel;
-        //     // 現在の速度を目標速度に近づける
-        //     _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, targetSpeed.x, accel * Time.deltaTime);
-        //     
-        //     if (_input.y == 0) return;
-        //     _frameVelocity.y += _input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.deltaTime;
-        //     float absY = Mathf.Abs(targetSpeed.y);
-        //     _frameVelocity.y = _input.y > 0f ? Mathf.Clamp(_frameVelocity.y, -absY, absY) 
-        //         : _frameVelocity.y;
-        // }
-        // // インプットがないときの減速処理
-        // else
-        // {
-        //     float decel = IsGrounded ? _currentStats.groundDecel : _currentStats.airDecel;
-        //     _frameVelocity = Vector2.MoveTowards(_frameVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
-        // }
+        _strategy.HandleInput(effectiveInput, _currentStats, IsGrounded, ref _inputVelocity);
     }
 
     private void HandleImpulseForce()
     {
         if (_impulseVelocity == Vector2.zero) return;
 
-        _frameVelocity += _impulseVelocity;
+        //_impulseVelocity = Vector2.MoveTowards(_impulseVelocity, Vector2.zero, friction * Time.fixedDeltaTime);
+        _inputVelocity += _impulseVelocity;
         _impulseVelocity = Vector2.zero;
     }
     

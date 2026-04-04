@@ -16,7 +16,7 @@ MonoBehaviour:
   cameraShake: {fileID: 0}
   allDamageableLayer:
     serializedVersion: 2
-    m_Bits: 896
+    m_Bits: 4992
   invincibleLayer:
     serializedVersion: 2
     m_Bits: 1024

@@ -2,7 +2,7 @@
 
 public class YAdditive : IHandleInputStrategy
 {
-    public void HandleInput(Vector2 input, MovementRuntimeStats stats, bool isGrounded, ref Vector2 frameVelocity)
+    public void HandleInput(Vector2 input, MovementRuntimeStats stats, bool isGrounded, ref Vector2 inputVelocity)
     {
         Vector2 speed = Vector2.one * stats.movementMaxSpeed;
         Vector2 targetSpeed = input * speed;
@@ -11,19 +11,20 @@ public class YAdditive : IHandleInputStrategy
         {
             float accel = isGrounded ? stats.groundAccel : stats.airAccel;
             // 現在の速度を目標速度に近づける
-            frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, targetSpeed.x, accel * Time.fixedDeltaTime);
+            inputVelocity.x = Mathf.MoveTowards(inputVelocity.x, targetSpeed.x, accel * Time.fixedDeltaTime);
             
             if (input.y == 0) return;
-            frameVelocity.y += input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.fixedDeltaTime;
+            inputVelocity.y += input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.fixedDeltaTime;
             float absY = Mathf.Abs(targetSpeed.y);
-            frameVelocity.y = input.y > 0f ? Mathf.Clamp(frameVelocity.y, -absY, absY) 
-                : frameVelocity.y;
+            inputVelocity.y = input.y > 0f ? Mathf.Clamp(inputVelocity.y, -absY, absY) 
+                : inputVelocity.y;
         }
         // インプットがないときの減速処理
         else
         {
             float decel = isGrounded ? stats.groundDecel : stats.airDecel;
-            frameVelocity = Vector2.MoveTowards(frameVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
+            inputVelocity = Vector2.MoveTowards(inputVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
+            //frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, 0f, decel * Time.fixedDeltaTime);
         }
     }
 }

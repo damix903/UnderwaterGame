@@ -18,7 +18,7 @@ public class GameConfigData : ScriptableObject, ICollisionConfig, ILayerConfig
 
     private void OnValidate()
     {
-        EffectData = new EffectData(new HitStopEvent(), cameraShake);
+        EffectData = new EffectData(null, cameraShake);
     }
 
     public LayerMask AllDamageableLayer => allDamageableLayer;

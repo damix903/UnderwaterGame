@@ -274,6 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
   playerHealth: {fileID: 1663461056}
   text: {fileID: 695607585}
+  comboTime: 5
 --- !u!4 &151334189
 Transform:
   m_ObjectHideFlags: 0
@@ -1645,6 +1646,7 @@ GameObject:
   - component: {fileID: 1663461056}
   - component: {fileID: 1663461057}
   - component: {fileID: 1663461058}
+  - component: {fileID: 1663461059}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -1659,7 +1661,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663461048}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8fd4ad13fa903b84aa27c73cb96ae15b, type: 3}
   m_Name: 
@@ -1805,9 +1807,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d4326c746048c98cbcd99b38a2c71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController2
-  speed: 5
-  input: 1.5
   animData: {fileID: 11400000, guid: f85001a1cac0b8c4eb29d4af7630e87f, type: 2}
+--- !u!114 &1663461059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663461048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f421aa3691b46d68e9bccce0d9ab52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterMovement2
+  shouldFlip: 0
+  isFacingRight: 1
+  enableGravity: 1
+  friction: 5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  baseStats: {fileID: 11400000, guid: 9bc049a37720fb1478c96b83859f39a0, type: 2}
 --- !u!1 &1872966426
 GameObject:
   m_ObjectHideFlags: 0

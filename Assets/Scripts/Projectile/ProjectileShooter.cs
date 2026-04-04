@@ -39,6 +39,7 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
         
         _movement.AddImpulseForce(-_aimDir * data.Recoil, true);
         _movement.BlockMovement(.5f, 1f);
+        GetComponent<CharacterMovement2>().AddImpulseForce(-_aimDir * data.Recoil, true);
         GetComponent<PlayerHealth>().TakeDamage(new DamageInfo(gameObject, data.Cost, new EffectData()));
         _cooldownTimer = data.Cooldown;
     }
