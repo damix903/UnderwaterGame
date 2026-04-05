@@ -1,11 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class CharacterMovement : MonoBehaviour
 {
-    private enum MovementMode { None, Normal}
-    private MovementMode _movementMode = MovementMode.Normal;
 
     [SerializeField] private bool shouldFlip = true;
     [SerializeField] private bool isFacingRight = true;
@@ -13,22 +12,27 @@ public class CharacterMovement : MonoBehaviour
     [Header("Collision Check")]
     [SerializeField] private LayerMask groundLayer;
     
-    [SerializeField] private MovementStats baseStats;
-    private MovementRuntimeStats _currentStats;
-    private IMovementModifier _modifier;
+    [SerializeField] private BaseMovementStats baseStats;
+    
+    #region Private Fields
     
     private Rigidbody2D _rb;
     private IHandleInputStrategy _strategy;
-
-    #region Private Fields
-
-    private Vector2 _input;
-
+    
+    private enum MovementMode { None, Normal}
+    private MovementMode _movementMode = MovementMode.Normal;
+    
+    private MovementRuntimeStats _currentStats;
+    private readonly List<IMovementModifier> _modifiers = new();
+    private bool _isDirty;
+    
     private float _flipScale;
     private float _movementBlockTimer;
     private bool _shouldBlockY;
     private float _inputMul;
+    private bool _isOverwriteX, _isOverwriteY;
     
+    private Vector2 _input;
     private Vector2 _frameVelocity;
     private Vector2 _impulseVelocity;
     private Vector2 _constantVelocity;
@@ -49,18 +53,31 @@ public class CharacterMovement : MonoBehaviour
         _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         _rb.freezeRotation = true;
 
-        _currentStats = baseStats.Stats;
         _flipScale = isFacingRight ? 180f : -180f;
 
         _strategy = baseStats.Strategy();
+        _isDirty = true;
     }
 
     public void SetMovementInput(Vector2 input) => _input = input;
-    public void SetMovementModifier(IMovementModifier modifier) => _modifier = modifier;
 
-    public void AddImpulseForce(Vector2 force, bool overwrite = false)
+    public void AddModifier(IMovementModifier modifier)
     {
-        _impulseVelocity = overwrite ? force : _impulseVelocity + force;
+        _modifiers.Add(modifier);
+        _isDirty = true;
+    }
+
+    public void RemoveModifier(IMovementModifier modifier)
+    {
+        _modifiers.Remove(modifier);
+        _isDirty = true;
+    } 
+
+    public void AddImpulseForce(Vector2 force, bool overwriteX = false, bool overwriteY = false)
+    {
+        _impulseVelocity = force;
+        _isOverwriteX = overwriteX;
+        _isOverwriteY = overwriteY;
     }
 
     public void AddConstantForce(Vector2 force) => _constantVelocity += force * Time.fixedDeltaTime;
@@ -83,8 +100,14 @@ public class CharacterMovement : MonoBehaviour
         _frameVelocity = _rb.linearVelocity;
 
         HandleCollisionDetection();
-        //_currentStats = baseStats.Stats;
-        if (_modifier != null) _currentStats = _modifier.Apply(_currentStats);
+        if (_isDirty)
+        {
+            _currentStats = baseStats.Stats;
+            foreach (var m in _modifiers)
+                m.Apply(ref _currentStats);
+
+            _isDirty = false;
+        }
 
         switch (_movementMode)
         {
@@ -104,11 +127,11 @@ public class CharacterMovement : MonoBehaviour
         var finalVel = _frameVelocity + _constantVelocity;
 
         float gravity = finalVel.y > 0f ? _currentStats.upwardGravityScale : _currentStats.defaultGravityScale;
-        //finalVel.y -= gravity * Time.fixedDeltaTime;
-        _rb.gravityScale = gravity;
+        finalVel.y -= gravity * Time.fixedDeltaTime;
+        //_rb.gravityScale = gravity;
         
         finalVel.x = Mathf.Clamp(finalVel.x, -_currentStats.maxSpeed, _currentStats.maxSpeed);
-        finalVel.y = Mathf.Clamp(finalVel.y, -_currentStats.maxSpeed, _currentStats.maxSpeed);
+        finalVel.y = Mathf.Clamp(finalVel.y, -_currentStats.maxFallSpeed, _currentStats.maxFallSpeed);
         
         _rb.linearVelocity = finalVel;
         //Debug.Log($"{_frameVelocity} : {_rb.linearVelocity}");
@@ -133,35 +156,14 @@ public class CharacterMovement : MonoBehaviour
     {
         Vector2 effectiveInput = _movementBlockTimer > 0f ? _input * _inputMul : _input;
         _strategy.HandleInput(effectiveInput, _currentStats, IsGrounded, ref _frameVelocity);
-        
-        // Vector2 speed = Vector2.one * _currentStats.movementMaxSpeed;
-        // Vector2 targetSpeed = effectiveInput * speed;
-
-        // if (Mathf.Abs(_input.magnitude) > 0.01f && Mathf.Abs(effectiveInput.magnitude) > 0.01f)
-        // {
-        //     float accel = IsGrounded ? _currentStats.groundAccel : _currentStats.airAccel;
-        //     // 現在の速度を目標速度に近づける
-        //     _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, targetSpeed.x, accel * Time.deltaTime);
-        //     
-        //     if (_input.y == 0) return;
-        //     _frameVelocity.y += _input.y > 0f ? accel * Time.fixedDeltaTime : -accel * Time.deltaTime;
-        //     float absY = Mathf.Abs(targetSpeed.y);
-        //     _frameVelocity.y = _input.y > 0f ? Mathf.Clamp(_frameVelocity.y, -absY, absY) 
-        //         : _frameVelocity.y;
-        // }
-        // // インプットがないときの減速処理
-        // else
-        // {
-        //     float decel = IsGrounded ? _currentStats.groundDecel : _currentStats.airDecel;
-        //     _frameVelocity = Vector2.MoveTowards(_frameVelocity, Vector2.zero, decel * Time.fixedDeltaTime);
-        // }
     }
 
     private void HandleImpulseForce()
     {
         if (_impulseVelocity == Vector2.zero) return;
 
-        _frameVelocity += _impulseVelocity;
+        _frameVelocity.x = _isOverwriteX ? _impulseVelocity.x : _frameVelocity.x + _impulseVelocity.x;
+        _frameVelocity.y = _isOverwriteY ? _impulseVelocity.y : _frameVelocity.y + _impulseVelocity.y;
         _impulseVelocity = Vector2.zero;
     }
     

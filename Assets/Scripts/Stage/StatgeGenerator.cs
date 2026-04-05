@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MessagePipe;
 using UnityEngine;
+using Utility.Lottery;
 using VContainer;
 using Random = UnityEngine.Random;
 
@@ -49,14 +50,18 @@ public class StatgeGenerator : MonoBehaviour
     {
         var entrance = _factory.Create(stageConfig.EntranceRoom, transform);
         StageStartPoint = entrance.StartPoint;
+        _lastEndPoint = entrance.EndPoint;
         
         int count = 0;
-        _lastEndPoint = entrance.EndPoint;
+        var lastRoomData = stageConfig.EntranceRoom;
         while (count < roomCount)
         {
-            var data = stageConfig.Rooms[Random.Range(0, stageConfig.Rooms.Count)];
+            var data = RandomSelector.SelectWithWeight(stageConfig.Rooms);
+            //var data = stageConfig.Rooms[Random.Range(0, stageConfig.Rooms.Count)];
+            if (data == lastRoomData) continue;
 
             GenerateRoom(data);
+            lastRoomData = data;
             count++;
         }
         
@@ -69,18 +74,17 @@ public class StatgeGenerator : MonoBehaviour
         var room = _factory.Create(data, _lastEndPoint);
         var amountToMove = _lastEndPoint.position - room.StartPoint.position;
         room.transform.position += amountToMove;
+        
+        bool shouldFlip = Random.Range(0f, 1f) < data.FlipChance;
+        if (shouldFlip) room.transform.Rotate(0f, 180f, 0f);
         _lastEndPoint = room.EndPoint;
         
-        var enemies = stageConfig.Enemies;
+        var enemies = new List<EnemyData>(stageConfig.Enemies);
         foreach (var e in data.AdditiveEnemies)
-        {
             enemies.Add(e);
-        }
         
         _spawner.Spawn(enemies, room);
     }
-
-    private List<EnemySpawnPoint> _points = new();
 }
 
 public enum ReleaseType { Room, Enemy}

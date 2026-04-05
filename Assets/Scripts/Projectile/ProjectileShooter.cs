@@ -5,6 +5,7 @@ using VContainer;
 public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
 {
     [SerializeField] private ProjectileShooterData data;
+    //[SerializeField] private float 
 
     private CharacterMovement _movement;
     [Inject] private ProjectileSpawnManager _manager;
@@ -36,8 +37,9 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
         obj.transform.position = ShootPos;
         obj.transform.right = _aimDir;
         obj.Initialize(data.ProjectileData, new ProjectileSpawnParams(gameObject, dir, detectionLayer, TeamID.Player), data.ProjectileData);
-        
-        _movement.AddImpulseForce(-_aimDir * data.Recoil, true);
+
+        bool overwrite = _movement.Velocity.x * dir.x > 0f;
+        _movement.AddImpulseForce(-_aimDir * data.Recoil, overwrite);
         _movement.BlockMovement(.5f, 1f);
         GetComponent<CharacterMovement2>().AddImpulseForce(-_aimDir * data.Recoil, true);
         GetComponent<PlayerHealth>().TakeDamage(new DamageInfo(gameObject, data.Cost, new EffectData()));
@@ -53,7 +55,7 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
     {
         if (Camera.main == null) return;
 
-        if (!runInEditMode)
+        if (!Application.isPlaying)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position + (Vector3)data.ShootCenter, data.ShootRadius);

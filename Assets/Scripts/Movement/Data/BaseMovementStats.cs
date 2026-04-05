@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Movement/Base Stats")]
-public class MovementStats : ScriptableObject
+public class BaseMovementStats : ScriptableObject
 {
     [Header("Move")]
     [SerializeField] private float movementMaxSpeed = 3f;
@@ -10,6 +10,7 @@ public class MovementStats : ScriptableObject
     [SerializeField] private float groundDecel = 50f;
     [SerializeField] private float airDecel = 20f;
     [SerializeField] private float maxSpeed = 8f;
+    [SerializeField] private float maxFallSpeed = 8f;
     [SerializeField] private InputStrategy strategy = InputStrategy.MoveToward;
 
     [Header("Gravity")]
@@ -30,6 +31,7 @@ public class MovementStats : ScriptableObject
         groundDecel = groundDecel,
         airDecel = airDecel,
         maxSpeed = maxSpeed,
+        maxFallSpeed = maxFallSpeed,
         defaultGravityScale = defaultGravityScale,
         upwardGravityScale = upwardGravityScale,
     };
@@ -39,7 +41,7 @@ public class MovementStats : ScriptableObject
         return strategy switch
         {
             InputStrategy.MoveToward => new MoveToward(),
-            InputStrategy.YAdditive => new YAdditive(),
+            InputStrategy.YAdditive => new IgnoreY(),
             _ => null
         };
     }
@@ -56,6 +58,7 @@ public struct MovementRuntimeStats
     public float groundDecel;
     public float airDecel;
     public float maxSpeed;
+    public float maxFallSpeed;
     public float defaultGravityScale;
     public float upwardGravityScale;
 }

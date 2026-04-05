@@ -17,10 +17,11 @@ MonoBehaviour:
   airAccel: 5
   groundDecel: 5
   airDecel: 2
-  maxSpeed: 8
-  strategy: 0
-  defaultGravityScale: 1
-  upwardGravityScale: 0.2
+  maxSpeed: 10
+  maxFallSpeed: 7
+  strategy: 1
+  defaultGravityScale: 2.6
+  upwardGravityScale: 2
   groundCheckOffset: {x: 0, y: 0}
   groundCheckDist: 0.1
   wallCheckOffset: {x: 0, y: 0}

@@ -15,7 +15,7 @@ public class CharacterMovement2 : MonoBehaviour
     [Header("Collision Check")]
     [SerializeField] private LayerMask groundLayer;
     
-    [SerializeField] private MovementStats baseStats;
+    [SerializeField] private BaseMovementStats baseStats;
     private MovementRuntimeStats _currentStats;
     private IMovementModifier _modifier;
     
@@ -30,6 +30,7 @@ public class CharacterMovement2 : MonoBehaviour
     private float _movementBlockTimer;
     private bool _shouldBlockY;
     private float _inputMul;
+    private bool _isOverwrite;
     
     private Vector2 _finalVelocity;
     private Vector2 _inputVelocity;
@@ -63,7 +64,8 @@ public class CharacterMovement2 : MonoBehaviour
 
     public void AddImpulseForce(Vector2 force, bool overwrite = false)
     {
-        _impulseVelocity = overwrite ? force : _impulseVelocity + force;
+        _impulseVelocity = force;
+        _isOverwrite = overwrite;
     }
 
     public void AddConstantForce(Vector2 force) => _constantVelocity += force * Time.fixedDeltaTime;
@@ -85,7 +87,7 @@ public class CharacterMovement2 : MonoBehaviour
         _currentStats = baseStats.Stats;
         HandleCollisionDetection();
         //_currentStats = baseStats.Stats;
-        if (_modifier != null) _currentStats = _modifier.Apply(_currentStats);
+        //if (_modifier != null) _currentStats = _modifier.Apply(_currentStats);
 
         switch (_movementMode)
         {
@@ -106,14 +108,14 @@ public class CharacterMovement2 : MonoBehaviour
         finalVel += _inputVelocity + _constantVelocity;// + _impulseVelocity;
 
         float gravity = finalVel.y > 0f ? _currentStats.upwardGravityScale : _currentStats.defaultGravityScale;
-        finalVel.y -= gravity * Time.fixedDeltaTime;
+        if(enableGravity) finalVel.y -= gravity * Time.fixedDeltaTime;
         //_rb.gravityScale = gravity;
         
         finalVel.x = Mathf.Clamp(finalVel.x, -_currentStats.maxSpeed, _currentStats.maxSpeed);
         finalVel.y = Mathf.Clamp(finalVel.y, -_currentStats.maxSpeed, _currentStats.maxSpeed);
         
         _rb.linearVelocity = finalVel;
-        //Debug.Log($"{_frameVelocity} : {_rb.linearVelocity}");
+        //Debug.Log($"{_inputVelocity} : {_rb.linearVelocity}");
     }
 
     private void HandleNoneMove()
@@ -142,7 +144,7 @@ public class CharacterMovement2 : MonoBehaviour
         if (_impulseVelocity == Vector2.zero) return;
 
         //_impulseVelocity = Vector2.MoveTowards(_impulseVelocity, Vector2.zero, friction * Time.fixedDeltaTime);
-        _inputVelocity += _impulseVelocity;
+        _inputVelocity = _isOverwrite ? _impulseVelocity : _inputVelocity + _impulseVelocity;
         _impulseVelocity = Vector2.zero;
     }
     

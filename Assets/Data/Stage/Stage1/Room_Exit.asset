@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: Room_Exit
   m_EditorClassIdentifier: Assembly-CSharp::RoomData
   prefab: {fileID: 4971926380350328600, guid: abc28c4030f88e74186d4a5477f24228, type: 3}
+  weight: 0
+  flipChance: 0
+  additiveEnemies: []

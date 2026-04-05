@@ -1,4 +1,4 @@
 ﻿public interface IMovementModifier
 {
-    MovementRuntimeStats Apply(MovementRuntimeStats stats);
+    public void Apply(ref MovementRuntimeStats stats);
 }

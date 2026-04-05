@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9dffc0d3b5264708bcc056de01a80401, type: 3}
-  m_Name: Room_Entrance
+  m_Name: Room3
   m_EditorClassIdentifier: Assembly-CSharp::RoomData
-  prefab: {fileID: 6619405439201197900, guid: 7729dc5457816284695a6d3cd6a92359, type: 3}
-  weight: 0
-  flipChance: 0
+  prefab: {fileID: 730017914848621737, guid: f5817ee6ad66fb6458168ac0e38afa53, type: 3}
+  weight: 10
+  flipChance: 0.2
   additiveEnemies: []

@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         //_stateMachine.Update();
-        //_movement.SetMovementInput(new Vector2(_input.MoveInput.x, 0f));
+        _movement.SetMovementInput(new Vector2(_input.MoveInput.x, 0f));
         _movement2.SetMovementInput(_input.MoveInput);
         
         HandleFlip();

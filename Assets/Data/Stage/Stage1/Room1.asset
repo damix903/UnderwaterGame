@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dffc0d3b5264708bcc056de01a80401, type: 3}
   m_Name: Room1
   m_EditorClassIdentifier: Assembly-CSharp::RoomData
-  prefab: {fileID: 1980083895080065614, guid: afe9ef225d9a7eb40921de563511ab2f, type: 3}
+  prefab: {fileID: 8052975917811813001, guid: b31c325d3df07a14fadc326e429d9858, type: 3}
+  weight: 20
+  flipChance: 0.5
+  additiveEnemies: []
