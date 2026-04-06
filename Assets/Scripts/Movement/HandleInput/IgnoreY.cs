@@ -14,14 +14,14 @@ public class IgnoreY : IHandleInputStrategy
             float accel = isGrounded ? stats.groundAccel : stats.airAccel;
             // 現在の速度を目標速度に近づける
             frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, targetSpeed.x, accel * Time.fixedDeltaTime);
-            Debug.Log("Accel");
+            //Debug.Log("Accel");
         }
         // インプットがないときの減速処理
         else
         {
             float decel = isGrounded ? stats.groundDecel : stats.airDecel;
             frameVelocity.x = Mathf.MoveTowards(frameVelocity.x, 0f, decel * Time.fixedDeltaTime);
-            Debug.Log("Decel");
+            //Debug.Log("Decel");
         }
     }
 }

@@ -14,4 +14,9 @@ public abstract class Entity : MonoBehaviour
     protected virtual void OnInitialize() { }
 
     protected virtual void OnCollisionEnter2D(Collision2D other) { }
+
+    protected virtual void Awake() { }
+    protected virtual void OnEnable() { }
+    protected virtual void OnDisable() { }
+    protected virtual void OnDestroy() { }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Stat;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Entity/Item/Heal")]
@@ -8,9 +9,9 @@ public class HealItemData : ItemData
     
     public override void ApplyEffect(ItemManager manager, ItemEvent e)
     {
-        if (e.Target.TryGetComponent<IDamageable>(out var damageable))
+        if (e.Target.TryGetComponent<IHealth>(out var health))
         {
-            damageable.Heal(healAmount);
+            health.ChangeHealth(healAmount);
         }
     }
 }

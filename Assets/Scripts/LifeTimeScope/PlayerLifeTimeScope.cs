@@ -16,5 +16,6 @@ public class PlayerLifeTimeScope : LifetimeScope
         builder.Register<InputReader>(Lifetime.Singleton).AsImplementedInterfaces();
         builder.RegisterComponentInHierarchy<PlayerController>().UnderTransform(transform);
         builder.RegisterComponentInHierarchy<AnimParamHandler>().UnderTransform(transform);
+        builder.RegisterComponentInHierarchy<Player>().UnderTransform(transform);
     }
 }

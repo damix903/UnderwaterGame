@@ -7,7 +7,6 @@ public interface IDamageable
     public bool IsAlive { get; }
     public DefenseState DefenseState { get; set; }
     public bool TakeDamage(DamageInfo info);
-    public void Heal(float amount);
     public event Action<DamageResult> OnDamaged;
     public event Action<DeathEvent> OnDeath;
 }

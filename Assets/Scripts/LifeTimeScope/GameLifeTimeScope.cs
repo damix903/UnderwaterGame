@@ -34,6 +34,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.Register<PoolableEntityFactory<Item>>(Lifetime.Singleton).As<IEntityFactory<Item>>();
         builder.Register<Room>(Lifetime.Transient);
         builder.Register<Item>(Lifetime.Transient);
+        builder.Register<Enemy>(Lifetime.Transient);
 
         builder.RegisterInstance(gameConfigData).AsImplementedInterfaces();
     }

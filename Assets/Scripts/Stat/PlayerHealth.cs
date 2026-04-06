@@ -5,6 +5,7 @@ using VContainer;
 
 public class PlayerHealth : EntityHealth
 {
+    [SerializeField] private float invincibleTime = 1f;
     [Inject] private IPublisher<EventPublisher, HealthChangeEventArgs> _publisher;
 
     private IDisposable _subscription;
@@ -28,7 +29,7 @@ public class PlayerHealth : EntityHealth
         if (e.Count < 5) return;
         var amount = e.Count / 3f;
         amount = Mathf.Min(amount, 10f);
-        Heal(amount);
+        ChangeHealth(amount);
     }
 
     private void OnDestroy()
@@ -39,29 +40,5 @@ public class PlayerHealth : EntityHealth
     private void HandelDeathEvent(DeathEvent e)
     {
         ChangeHealth(5f);
-    }
-
-    protected override void ChangeHealth(float amount)
-    {
-        base.ChangeHealth(amount);
-        _publisher?.Publish(EventPublisher.Player, new HealthChangeEventArgs(
-            CurrentHealth,
-            maxHealth,
-            amount
-        ));
-    }
-}
-
-public struct HealthChangeEventArgs
-{
-    public readonly float Current;
-    public readonly float Max;
-    public readonly float ChangedAmount;
-
-    public HealthChangeEventArgs(float current, float max, float changedAmount)
-    {
-        Current = current;
-        Max = max;
-        ChangedAmount = changedAmount;
     }
 }
