@@ -1,4 +1,5 @@
 using System;
+using Stat;
 using UnityEngine;
 using VContainer;
 
@@ -10,6 +11,7 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
     private CharacterMovement _movement;
     [Inject] private ProjectileSpawnManager _manager;
     [Inject] private ILayerConfig _layerConfig;
+    [Inject] private PlayerHealthManager _health;
 
     private float _cooldownTimer;
     private Vector2 _aimDir;
@@ -41,8 +43,9 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
         bool overwrite = _movement.Velocity.x * dir.x > 0f;
         _movement.AddImpulseForce(-_aimDir * data.Recoil, overwrite);
         _movement.BlockMovement(.5f, 1f);
-        GetComponent<CharacterMovement2>().AddImpulseForce(-_aimDir * data.Recoil, true);
-        GetComponent<PlayerHealth>().TakeDamage(new DamageInfo(gameObject, data.Cost, new EffectData()));
+        // GetComponent<CharacterMovement2>().AddImpulseForce(-_aimDir * data.Recoil, true);
+        // GetComponent<IHealth>().ChangeHealth(-data.Cost);
+        _health.Consume(data.Cost);
         _cooldownTimer = data.Cooldown;
     }
     
@@ -53,7 +56,7 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
     #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (Camera.main == null) return;
+        //if (Camera.main == null) return;
 
         if (!Application.isPlaying)
         {
@@ -62,8 +65,8 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
         }
         
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(ShootPos, .3f);
-        Gizmos.DrawRay(ShootPos, _aimDir * 1.5f);
+        Gizmos.DrawWireSphere(ShootPos, .2f);
+        Gizmos.DrawRay(ShootPos, _aimDir * 1f);
     }
     #endif
 }

@@ -11,12 +11,11 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
     
     public float CurrentHealth { get; private set; }
     public float MaxHealth => maxHealth;
-
-    public event Action<HealthChangeEventArgs> OnHealthChanged;
+    public event Action<HealthChangeEvent> OnHealthChanged;
+    
     public TeamID TeamID => teamID;
     public bool IsAlive => CurrentHealth > 0;
     public DefenseState DefenseState { get; set; }
-
     public event Action<DamageResult> OnDamaged;
     public event Action<DeathEvent> OnDeath;
 
@@ -40,7 +39,7 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
     public void ChangeHealth(float amount)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, maxHealth);
-        OnHealthChanged?.Invoke(new HealthChangeEventArgs(CurrentHealth, maxHealth, amount));
+        OnHealthChanged?.Invoke(new HealthChangeEvent(CurrentHealth, maxHealth, amount));
     }
 
     protected virtual void OnDamageTaken(DamageInfo info)

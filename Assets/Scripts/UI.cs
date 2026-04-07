@@ -5,19 +5,17 @@ using VContainer;
 
 public class UI : MonoBehaviour
 {
-    private Slider _slider;
-    [SerializeField] private PlayerHealth _health;
-    [Inject] private ISubscriber<EventPublisher, HealthChangeEventArgs> _subscriber;
+    [Inject] private ISubscriber<EventPublisher, HealthChangeEvent> _subscriber;
+    private HealthBar _healthBar;
     
     void Start()
     {
-        _slider = GetComponent<Slider>();
-
         _subscriber?.Subscribe(EventPublisher.Player, HandleHealthChangeEvent);
+        _healthBar = GetComponentInChildren<HealthBar>();
     }
 
-    private void HandleHealthChangeEvent(HealthChangeEventArgs args)
+    private void HandleHealthChangeEvent(HealthChangeEvent args)
     {
-        _slider.value = args.Current / args.Max;
+        _healthBar.ChangeBar(args.Current, args.Max, args.ChangedAmount);
     }
 }

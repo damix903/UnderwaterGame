@@ -6,7 +6,7 @@ using VContainer;
 public class PlayerHealth : EntityHealth
 {
     [SerializeField] private float invincibleTime = 1f;
-    [Inject] private IPublisher<EventPublisher, HealthChangeEventArgs> _publisher;
+    [Inject] private IPublisher<EventPublisher, HealthChangeEvent> _publisher;
 
     private IDisposable _subscription;
 

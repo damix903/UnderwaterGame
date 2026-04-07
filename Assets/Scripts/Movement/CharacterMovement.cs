@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : MonoBehaviour, ICollisionDetectable
 {
 
     [SerializeField] private bool shouldFlip = true;
@@ -42,6 +42,8 @@ public class CharacterMovement : MonoBehaviour
     public Vector2 Velocity => _rb.linearVelocity;
     public bool IsGrounded { get; private set; }
     public bool IsWallDetected { get; private set; }
+    public event Action OnLanded;
+    public event Action OnWallDetected;
     public bool IsFalling => !IsGrounded && _rb.linearVelocity.y < 0f;
     
     private void Awake()
@@ -169,19 +171,28 @@ public class CharacterMovement : MonoBehaviour
     
     private void HandleCollisionDetection()
     {
-        IsGrounded = Physics2D.Raycast(
+        bool currentGrounded = Physics2D.Raycast(
             GetOffsetPos(baseStats.groundCheckOffset),
             Vector2.down,
             baseStats.groundCheckDist,
             groundLayer
         );
 
-        IsWallDetected = Physics2D.Raycast(
+        bool currentWallDetected = Physics2D.Raycast(
             GetOffsetPos(baseStats.wallCheckOffset),
             transform.right,
             baseStats.wallCheckDist,
             groundLayer
         );
+        
+        if (currentGrounded && !IsGrounded)
+            OnLanded?.Invoke();
+
+        if (currentWallDetected && !IsWallDetected)
+            OnWallDetected?.Invoke();
+        
+        IsGrounded = currentGrounded;
+        IsWallDetected = currentWallDetected;
     }
 
     private Vector2 GetOffsetPos(Vector2 offset)

@@ -9,8 +9,8 @@ public class PlayerLifeTimeScope : LifetimeScope
     {
         base.Configure(builder);
 
-        builder.RegisterComponentInHierarchy<PlayerHealth>().UnderTransform(transform).AsImplementedInterfaces()
-            .AsSelf();
+        //builder.RegisterComponentInHierarchy<PlayerHealth>().UnderTransform(transform).AsImplementedInterfaces()
+          //  .AsSelf();
 
         builder.RegisterComponentInHierarchy<ProjectileShooter>().UnderTransform(transform);
         builder.Register<InputReader>(Lifetime.Singleton).AsImplementedInterfaces();
