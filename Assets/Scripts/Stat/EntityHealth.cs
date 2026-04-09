@@ -23,9 +23,17 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
     {
         CurrentHealth = maxHealth;
     }
+
+    public void Initialize(float maxHealth, TeamID teamID)
+    {
+        this.maxHealth = maxHealth;
+        this.teamID = teamID;
+        ChangeHealth(maxHealth);
+    }
     
     public bool TakeDamage(DamageInfo info)
     {
+        if (!IsAlive) return false;
         if (DefenseState == DefenseState.Invincible) return false;
         
         OnDamageTaken(info);

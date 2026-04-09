@@ -1,12 +1,11 @@
-﻿using Unity.VisualScripting.FullSerializer;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class CharacterBaseState : IState
 {
-    private readonly IAnimPlayable Anim;
+    protected readonly IAnimPlayable Anim;
     private readonly AnimationClip Clip;
 
-    public CharacterBaseState(IAnimPlayable anim, AnimationClip clip)
+    public CharacterBaseState(IAnimPlayable anim, AnimationClip clip = null)
     {
         Anim = anim;
         Clip = clip;
@@ -20,4 +19,15 @@ public abstract class CharacterBaseState : IState
     public virtual void Update(){}
     public virtual void FixedUpdate(){}
     public virtual void OnExit(){}
+}
+
+public abstract class CharacterBaseState<T> : CharacterBaseState where T : class, ICharacterController
+{
+    protected readonly T owner;
+
+
+    protected CharacterBaseState(T owner, IAnimPlayable anim, AnimationClip clip = null) : base(anim, clip)
+    {
+        this.owner = owner;
+    }
 }

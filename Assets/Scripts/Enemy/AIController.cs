@@ -3,17 +3,21 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class AIController : MonoBehaviour
+public class AIController : MonoBehaviour, ICharacterController
 {
     private StateMachine _stateMachine;
 
-    public GameObject Target { get; private set; }
-    private IDetectable detectable;
-    private EnemyData _enemyData;
+    public GameObject GameObject => gameObject;
 
-    public void Initialize(EnemyData data)
+    public Transform Target { get; private set; }
+
+    private IDetectable detectable;
+    //private EnemyData _enemyData;
+    private EnemyContext _ctx;
+
+    public void Initialize(EnemyContext ctx)
     {
-        _enemyData = data;
+        _ctx = ctx;
         StartCoroutine(Wait(Random.Range(0f, 3f)));
     }
 
@@ -30,10 +34,10 @@ public class AIController : MonoBehaviour
         detectable.OnTargetDetected += HandleTargetDetect;
         detectable.OnTargetLost += HandleTargetLost;
 
-        _stateMachine = _enemyData.StateBuilder.Build(this, _enemyData.AnimData);
+        _stateMachine = _ctx.Data.StateBuilder.Build(this, _ctx);
     }
 
-    private void HandleTargetDetect(GameObject obj) => Target = obj;
+    private void HandleTargetDetect(GameObject obj) => Target = obj.transform;
     private void HandleTargetLost() => Target = null;
 
     private void Update()

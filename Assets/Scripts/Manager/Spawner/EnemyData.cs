@@ -1,4 +1,5 @@
 using System;
+using Attack;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Entity/Enemy")]
@@ -7,10 +8,14 @@ public class EnemyData : EntityData
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private BaseEnemyStateBuilder stateBuilder;
     [SerializeField] private BaseAnimData animData;
+    [SerializeField] private float maxHealth = 1f;
+    [SerializeField] private EnemyBaseAttackData attackData;
 
     public EnemyType EnemyType => enemyType;
     public BaseEnemyStateBuilder StateBuilder => stateBuilder;
     public BaseAnimData AnimData => animData;
+    public float MaxHealth => maxHealth;
+    public EnemyBaseAttackData AttackData => attackData;
 }
 
 [Serializable]

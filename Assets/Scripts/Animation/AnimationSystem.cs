@@ -29,6 +29,11 @@ public class AnimationSystem : MonoBehaviour, IAnimPlayable
 
     private CancellationTokenSource _overlayCts = new();
 
+    public void Initialize(IAnimEventListenable listener)
+    {
+        _listener = listener;
+    }
+    
     private void Awake()
     {
         _anim = GetComponent<Animator>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "OAD_", menuName = "Data / Animation / Overlay", order = 0)]
+[CreateAssetMenu(fileName = "OAD_", menuName = "Data/Animation/Overlay", order = 0)]
 public class OverlayAnimData : ScriptableObject
 {
     [SerializeField] private AnimationClip clip;
@@ -22,11 +22,7 @@ public class OverlayAnimData : ScriptableObject
     public enum AnimationEventType
     {
         HitScan,
-        ComboWindow,
-        Invincible,
-        ActionCancel,
         CanTransition,
-        ModeChange,
         MoveForAttack
     }
 
