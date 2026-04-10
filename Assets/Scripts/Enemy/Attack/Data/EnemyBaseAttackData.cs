@@ -2,18 +2,17 @@
 
 namespace Attack
 {
-    [CreateAssetMenu(fileName = "EAD", menuName = "Data/Enemy/Attack", order = 0)]
     public abstract class EnemyBaseAttackData : ScriptableObject
     {
-        [SerializeField] private OverlayAnimData animData;
         [SerializeField] private float range;
         [SerializeField] private float cooldown;
-        //[SerializeField] private float 
-        
-        public OverlayAnimData AnimData => animData;
+        [SerializeField] private float stopDuration;
+
         public float Range => range;
         public float Cooldown => cooldown;
-        public abstract AttackType Type { get; }
+        public float StopDuration => stopDuration;
+
+        public abstract IAttackable2 CreateAttack(Transform parent, IAnimEventListenable listener);
     }
     
     public enum AttackType { Melee, Ranged }

@@ -26,7 +26,7 @@ public class Enemy : PoolableEntity
         _health = GetComponent<EntityHealth>();
         _movement = GetComponent<CharacterMovement>();
         _anim = GetComponentInChildren<AnimationSystem>();
-        _listener = new AnimEventHandler();
+        _listener = GetComponentInChildren<IAnimEventListenable>();
     }
 
     protected override void OnInitialize()

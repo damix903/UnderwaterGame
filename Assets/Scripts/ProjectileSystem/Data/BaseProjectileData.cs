@@ -1,4 +1,5 @@
 using System;
+using ProjectileSystem;
 using UnityEngine;
 
 public abstract class BaseProjectileData : EntityData, IProjectileBehaviour

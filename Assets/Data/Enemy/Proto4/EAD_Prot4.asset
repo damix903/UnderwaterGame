@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62dfcbb28294b889a47af54d1f391af, type: 3}
-  m_Name: ESB_Proto4
-  m_EditorClassIdentifier: Assembly-CSharp::BasicEnemyStateBuilder
-  moveStrategy: 1
-  moveDirection: {x: 0.001, y: 0}
-  canChase: 1
+  m_Script: {fileID: 11500000, guid: c02a837b7bd944ce89f66bb3d03e34ec, type: 3}
+  m_Name: EAD_Prot4
+  m_EditorClassIdentifier: Assembly-CSharp::Attack.MeleeAttackData
+  range: 10
+  cooldown: 3
+  stopDuration: 0

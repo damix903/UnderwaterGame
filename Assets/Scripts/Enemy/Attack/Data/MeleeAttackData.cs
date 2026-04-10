@@ -3,8 +3,11 @@
 namespace Attack
 {
     [CreateAssetMenu(fileName = "EAD", menuName = "Data/Enemy/Attack/Melee", order = 0)]
-    public abstract class MeleeAttackData : EnemyBaseAttackData
+    public class MeleeAttackData : EnemyBaseAttackData
     {
-        public override AttackType Type => AttackType.Melee;
+        public override IAttackable2 CreateAttack(Transform parent, IAnimEventListenable listener)
+        {
+            return new MeleeAttack(parent, this, listener);
+        }
     }
 }

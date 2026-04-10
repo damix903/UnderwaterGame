@@ -8,10 +8,12 @@ public class BaseAnimData : ScriptableObject
     [SerializeField] private AnimationClip idleClip;
     [SerializeField] private AnimationClip moveClip;
     [SerializeField] private AnimationClip fallClip;
+    [SerializeField] private AnimationClip attackClip;
     
     public AnimationClip IdleClip => idleClip;
     public AnimationClip MoveClip => moveClip;
     public AnimationClip FallClip => fallClip;
+    public AnimationClip AttackClip => attackClip;
     
     // private Dictionary<BaseAnimationType, AnimationClip> _baseAnimsCache;
     //

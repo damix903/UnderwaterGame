@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d62dfcbb28294b889a47af54d1f391af, type: 3}
-  m_Name: ESB_Proto4
-  m_EditorClassIdentifier: Assembly-CSharp::BasicEnemyStateBuilder
-  moveStrategy: 1
-  moveDirection: {x: 0.001, y: 0}
-  canChase: 1
+  m_Script: {fileID: 11500000, guid: 11ce99bd2eb944fd8a5bfccf211995e8, type: 3}
+  m_Name: PM_Pierce
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileSystem.PierceModifier
+  pierceCount: 3

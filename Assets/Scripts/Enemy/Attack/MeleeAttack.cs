@@ -7,5 +7,10 @@ namespace Attack
         public MeleeAttack(Transform owner, EnemyBaseAttackData attackData, IAnimEventListenable listener) : base(owner, attackData, listener)
         {
         }
+
+        protected override void AttackInternal(Transform target)
+        {
+            
+        }
     }
 }

@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
+using ProjectileSystem;
 using Stat;
 using UnityEngine;
 using VContainer;
 
-public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
+namespace ProjectileSystem
+{
+    public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
 {
     [SerializeField] private ProjectileShooterData data;
-    //[SerializeField] private float 
+    [SerializeField] private PierceModifier mod1; 
 
     private CharacterMovement _movement;
     [Inject] private ProjectileSpawnManager _manager;
@@ -38,7 +42,10 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
         
         obj.transform.position = ShootPos;
         obj.transform.right = _aimDir;
-        obj.Initialize(data.ProjectileData, new ProjectileSpawnParams(gameObject, dir, detectionLayer, TeamID.Player), data.ProjectileData);
+        var param = new ProjectileSpawnParams(gameObject, dir, detectionLayer, TeamID.Player);
+        var mods = new List<IProjectileModifier>();
+        mods.Add(mod1);
+        obj.Initialize(data.ProjectileData, param , data.ProjectileData, mods);
 
         bool overwrite = _movement.Velocity.x * dir.x > 0f;
         _movement.AddImpulseForce(-_aimDir * data.Recoil, overwrite);
@@ -69,4 +76,6 @@ public class ProjectileShooter : MonoBehaviour, IAimable, IAttackable
         Gizmos.DrawRay(ShootPos, _aimDir * 1f);
     }
     #endif
+}
+
 }

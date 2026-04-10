@@ -23,7 +23,8 @@ public class OverlayAnimData : ScriptableObject
     {
         HitScan,
         CanTransition,
-        MoveForAttack
+        MoveForAttack,
+        FinishAnim
     }
 
     [System.Serializable]

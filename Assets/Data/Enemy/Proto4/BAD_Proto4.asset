@@ -15,3 +15,4 @@ MonoBehaviour:
   idleClip: {fileID: 7400000, guid: ed457e45d1fa05640a3fa8188e7630c4, type: 2}
   moveClip: {fileID: 7400000, guid: 7b492ba9b8613114bbb1aa8f38c3c626, type: 2}
   fallClip: {fileID: 0}
+  attackClip: {fileID: 7400000, guid: 5a420c52814c1ec43bcc1ebc16f8fdf4, type: 2}

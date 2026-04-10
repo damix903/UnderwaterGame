@@ -1,4 +1,5 @@
 using System;
+using ProjectileSystem;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PD_", menuName = "Data/Projectile/Normal")]

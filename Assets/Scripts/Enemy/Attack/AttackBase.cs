@@ -9,6 +9,7 @@ namespace Attack
         protected readonly IAnimEventListenable listener;
         
         private float _lastAttackTime;
+        protected bool IsInCoolDown => Time.time - _lastAttackTime < attackData.Cooldown;
         
         public AttackBase(Transform owner, EnemyBaseAttackData attackData, IAnimEventListenable listener)
         {
@@ -26,20 +27,30 @@ namespace Attack
             }
         }
         
-        public virtual void Attack(Transform target)
+        public void Attack(Transform target)
         {
+            listener?.Register(AnimationEventType.FinishAnim, OnAnimFinished);
+            IsCompleted = false;
+            AttackInternal(target);
+        }
+
+        protected virtual void OnAnimFinished(bool obj)
+        {
+            IsCompleted = true;
             _lastAttackTime = Time.time;
         }
 
         public virtual bool CanAttack(Transform target)
         {
             if (target == null || owner == null) return false;
-            if (Time.time - _lastAttackTime < attackData.Cooldown) return false;
+            if (IsInCoolDown) return false;
             
             float distance = Vector3.Distance(owner.position, target.position);
             return distance <= attackData.Range;
         }
 
-        public virtual bool IsCompleted => true;
+
+        protected abstract void AttackInternal(Transform target);
+        public virtual bool IsCompleted { get; protected set; }
     }
 }

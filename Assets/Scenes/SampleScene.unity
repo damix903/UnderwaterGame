@@ -1323,6 +1323,7 @@ GameObject:
   - component: {fileID: 1148581584}
   - component: {fileID: 1148581583}
   - component: {fileID: 1148581585}
+  - component: {fileID: 1148581586}
   m_Layer: 0
   m_Name: Lower
   m_TagString: Untagged
@@ -1438,6 +1439,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62c8299202e9564d82e39a43c0b65a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationSystem
+--- !u!114 &1148581586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148581581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a7562cb4f424f3d8d097c50f9219c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animation.AnimEventReceiver
 --- !u!1 &1244709922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,6 +1816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileShooter
   data: {fileID: 11400000, guid: e54220c5765db6340b5503452e696b77, type: 2}
+  mod1: {fileID: 11400000, guid: dbfb3cea1cd1ae34089b42d34d014151, type: 2}
 --- !u!114 &1663461056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1893,6 +1907,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntityHealth
   maxHealth: 100
   teamID: 1
+--- !u!1 &1791375171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1791375173}
+  - component: {fileID: 1791375172}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1791375172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791375171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee26db8fc9544b85a0c87f0a716724ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeManager
+  _upGradeSetting: {fileID: 11400000, guid: 8a08de537b2f8fe45a24ff7e765bd38d, type: 2}
+  _currentUpGradeList: []
+--- !u!4 &1791375173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791375171}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 245.09483, y: 924.392, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1872966426
 GameObject:
   m_ObjectHideFlags: 0
@@ -10294,3 +10354,4 @@ SceneRoots:
   - {fileID: 6638130367943028860}
   - {fileID: 53237380051122827}
   - {fileID: 1108454188344415300}
+  - {fileID: 1791375173}

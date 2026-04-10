@@ -20,20 +20,18 @@ public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
         if (canChase)
         {
             var chase = new ChaseState(controller, ctx.Anim, ctx.Data.AnimData.MoveClip, new Chase(ctx.Movement, controller.GameObject.transform));
-            stateMachine.AddAnyTransition(chase, new FuncPredicate(() => controller.Target != null));
-            stateMachine.AddTransition(chase, idle, new FuncPredicate(() => controller.Target == null));
-            
             var attackData = ctx.Data.AttackData;
             if (attackData != null)
             {
-                var attackable = ResolveAttackable(controller.GameObject.transform, attackData, ctx.EventListenable);
-                var attack = new AttackState(controller, ctx.Anim, attackable, attackData.AnimData);
-                stateMachine.AddTransition(chase, attack, new FuncPredicate(()=> controller.Target != null && attackable.CanAttack(controller.Target)));
+                var attackable = ctx.Data.AttackData.CreateAttack(controller.GameObject.transform, ctx.EventListenable);
+                var attack = new AttackState(controller, ctx.Anim, ctx.Data.AnimData.AttackClip, attackable);
+                stateMachine.AddAnyTransition(attack, new FuncPredicate(()=> controller.Target != null && attackable.CanAttack(controller.Target)));
                 stateMachine.AddTransition(attack, idle, new FuncPredicate(() => attackable.IsCompleted));
             }
+            stateMachine.AddAnyTransition(chase, new FuncPredicate(() => controller.Target != null));
+            stateMachine.AddTransition(chase, idle, new FuncPredicate(() => controller.Target == null));
+            
         }
-
-        
         
         stateMachine.SetInitialState(idle);
 
@@ -55,14 +53,4 @@ public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
     }
     
     private enum MoveStrategy {Straight, Flip }
-
-    private IAttackable2 ResolveAttackable(Transform owner, EnemyBaseAttackData data, IAnimEventListenable listenable)
-    {
-        return data.Type switch
-        {
-            AttackType.Melee => new MeleeAttack(owner, data, listenable),
-            //AttackType.Ranged => new RangedAttack(data),
-            _ => null
-        };
-    }
 }

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 103088f9189f40c0b9da0cb70e95a163, type: 3}
+  m_Name: UpGradeList
+  m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeSetting
+  upGradeCount: 3
+  upGradeList:
+  - {fileID: 11400000, guid: 1a7ebcbf1d92292478e451bada96ffa4, type: 2}
+  - {fileID: 11400000, guid: cab710921f419ee49b69bb78c6f82eb7, type: 2}
+  - {fileID: 11400000, guid: cdbaf3ab0ad4f48499fb0a32fca56591, type: 2}
+  - {fileID: 11400000, guid: e737a4e010878ec4d8d516be6aa0d13a, type: 2}
