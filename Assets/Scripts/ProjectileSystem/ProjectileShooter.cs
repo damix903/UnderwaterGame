@@ -15,7 +15,7 @@ namespace ProjectileSystem
     private CharacterMovement _movement;
     [Inject] private ProjectileSpawnManager _manager;
     [Inject] private ILayerConfig _layerConfig;
-    [Inject] private PlayerHealthManager _health;
+    [Inject] private ICostable _health;
 
     private float _cooldownTimer;
     private Vector2 _aimDir;
@@ -26,6 +26,7 @@ namespace ProjectileSystem
     {
         detectionLayer = _layerConfig.AllDamageableLayer | _layerConfig.GroundLayer;
         _movement = GetComponent<CharacterMovement>();
+        Debug.Log(_health.GetType());
     }
 
     private void Update()

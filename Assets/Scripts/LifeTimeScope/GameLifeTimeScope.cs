@@ -29,9 +29,11 @@ public class GameLifeTimeScope : LifetimeScope
         builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
 
         builder.RegisterComponentInHierarchy<UI>();
-        builder.RegisterInstance(health).AsImplementedInterfaces();
+        //builder.RegisterInstance(health).AsImplementedInterfaces();
         //builder.Register<PlayerHealthManager>(Lifetime.Singleton);
-        builder.RegisterEntryPoint<PlayerHealthManager>(Lifetime.Singleton).AsSelf();
+        //builder.RegisterEntryPoint<PlayerHealthManager>(Lifetime.Singleton).AsSelf();
+        builder.Register<EntityHealth>(Lifetime.Transient).AsImplementedInterfaces();
+        builder.Register<EmptyCostable>(Lifetime.Transient).AsImplementedInterfaces();
 
         builder.RegisterComponentOnNewGameObject<ProjectileSpawnManager>(Lifetime.Singleton, "Proj").UnderTransform(transform);
         builder.RegisterComponentOnNewGameObject<ObjectPoolManager>(Lifetime.Singleton, "Pool").UnderTransform(transform);

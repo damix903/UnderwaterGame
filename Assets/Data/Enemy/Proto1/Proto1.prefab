@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8812418733961770621}
   - component: {fileID: 3585680780109625511}
   - component: {fileID: 1277778933151001471}
+  - component: {fileID: 4390979654703787911}
   m_Layer: 8
   m_Name: Proto1
   m_TagString: Untagged
@@ -209,6 +210,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   defaultCapacity: 10
   maxSize: 100
+--- !u!114 &4390979654703787911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7419926818705587296}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f98d692cddf12448e11bcf65e4ec9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileSystem.ProjectileShooter
+  data: {fileID: 11400000, guid: e54220c5765db6340b5503452e696b77, type: 2}
+  mod1: {fileID: 0}
 --- !u!1 &9039997669209011133
 GameObject:
   m_ObjectHideFlags: 0

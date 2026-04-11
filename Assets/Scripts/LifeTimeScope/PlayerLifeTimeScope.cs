@@ -18,5 +18,8 @@ public class PlayerLifeTimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<PlayerController>().UnderTransform(transform);
         builder.RegisterComponentInHierarchy<AnimParamHandler>().UnderTransform(transform);
         builder.RegisterComponentInHierarchy<Player>().UnderTransform(transform);
+
+        builder.Register<PlayerHealthManager>(Lifetime.Scoped).AsImplementedInterfaces();
+        builder.RegisterComponentInHierarchy<IDamageable>().UnderTransform(transform).AsImplementedInterfaces();
     }
 }

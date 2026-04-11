@@ -4,7 +4,19 @@ using Stat;
 using UnityEngine;
 using VContainer.Unity;
 
-public class PlayerHealthManager : IDisposable, ITickable
+public interface ICostable
+{
+    void Recover(float amount, int comboCount = 0);
+    void Consume(float amount);
+}
+
+public class EmptyCostable : ICostable
+{
+    public void Recover(float amount, int comboCount = 0) { }
+    public void Consume(float amount) { }
+}
+
+public class PlayerHealthManager : IDisposable, ITickable, ICostable
 {
     private IHealth _health;
     private IDisposable _subscription;
