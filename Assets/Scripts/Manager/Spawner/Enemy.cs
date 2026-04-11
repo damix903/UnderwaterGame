@@ -1,4 +1,5 @@
 ﻿using System;
+using EnemyAI;
 using MessagePipe;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,39 +7,39 @@ using VContainer;
 
 public class Enemy : PoolableEntity
 {
-    [Inject] private ISubscriber<ReleaseType> _subscriber;
     [Inject] private ICollisionConfig _collisionConfig;
-    [Inject] private IPublisher<DamageResult> _damagePub;
-    [Inject] private IPublisher<DeathEvent> _deathPub;
-    
-    private IDisposable _subscription;
+    [Inject] private EnemyMessageBroker _messageBroker;
 
     private AIController _controller;
     private EntityHealth _health;
-    private CharacterMovement _movement;
-    private AnimationSystem _anim;
-    private IAnimEventListenable _listener;
+    
+    private EnemyContext _ctx;
 
     protected override void Awake()
     {
         base.Awake();
         _controller = GetComponent<AIController>();
         _health = GetComponent<EntityHealth>();
-        _movement = GetComponent<CharacterMovement>();
-        _anim = GetComponentInChildren<AnimationSystem>();
-        _listener = GetComponentInChildren<IAnimEventListenable>();
+        
+        _ctx = new EnemyContext.Builder()
+            .WithMovement(GetComponent<CharacterMovement>())
+            .WithAnim(GetComponentInChildren<IAnimPlayable>())
+            .WithEventListenable(GetComponentInChildren<IAnimEventListenable>())
+            .Build();
     }
 
+    // when i use object pool, dependency injection should bd done every time on spawn?
+    //
     protected override void OnInitialize()
     {
         base.OnInitialize();
 
         if (data is EnemyData enemyData)
         {
-            var ctx = new EnemyContext(enemyData, _movement, _anim, _listener);
-            _controller.Initialize(ctx);
+            _ctx.SetData(enemyData);
+            _controller.Initialize(_ctx);
             _health.Initialize(enemyData.MaxHealth, TeamID.Enemy);
-            _anim.Initialize(_listener);
+            _ctx.Anim.Initialize(_ctx.EventListenable);
         }
     }
 
@@ -50,11 +51,13 @@ public class Enemy : PoolableEntity
             _health.OnDeath += HandleDeathEvent;
             _health.OnDamaged += HandleDamageEvent;
         }
-        
-        _subscription = _subscriber?.Subscribe((type) =>
-        {
-            if (type == ReleaseType.Enemy) Release();
-        });
+        _messageBroker.OnRelease += HandleRelease;
+    }
+
+    private void HandleRelease(ReleaseType obj)
+    {
+        if (obj == ReleaseType.Enemy) Release();
+        Debug.Log("Enemy received release message: " + obj);
     }
 
     protected override void OnDisable()
@@ -66,17 +69,16 @@ public class Enemy : PoolableEntity
             _health.OnDamaged -= HandleDamageEvent;
         }
         
-        _subscription?.Dispose();
+        _messageBroker.OnRelease -= HandleRelease;
     }
 
     private void HandleDamageEvent(DamageResult result)
     {
-        
     }
 
     private void HandleDeathEvent(DeathEvent e)
     {
-        _deathPub?.Publish(e);
+        _messageBroker?.Publish(e);
         Release();
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public interface IAnimPlayable
 {
+    public void Initialize(IAnimEventListenable listener);
     public void PlayBaseClip(AnimationClip clip);
     public UniTask<bool> PlayOverlayAnimation(OverlayAnimData data, CancellationToken ct = default);
 }

@@ -1,5 +1,7 @@
-﻿using MessagePipe;
-using ProjectileSystem;
+﻿using EnemyAI;
+using Manager.UpGrade;
+using MessagePipe;
+using PlayerSystem;
 using ProjectileSystem;
 using UnityEngine;
 using VContainer;
@@ -24,6 +26,8 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterMessageBroker<EventPublisher, DamageResult>(options);
         builder.RegisterMessageBroker<EventPublisher, LandedEvent>(options);
 
+        builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
+
         builder.RegisterComponentInHierarchy<UI>();
         builder.RegisterInstance(health).AsImplementedInterfaces();
         //builder.Register<PlayerHealthManager>(Lifetime.Singleton);
@@ -34,6 +38,7 @@ public class GameLifeTimeScope : LifetimeScope
         builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
         builder.RegisterComponentOnNewGameObject<ItemManager>(Lifetime.Singleton).UnderTransform(transform);
         builder.RegisterComponentInHierarchy<PlayerStatsManager>();
+        builder.RegisterComponentInHierarchy<UpGradeManager>();
         builder.Register<PoolableEntityFactory<Projectile>>(Lifetime.Singleton).As<IEntityFactory<Projectile>>();
 
         builder.RegisterComponentInHierarchy<StatgeGenerator>();
@@ -43,6 +48,8 @@ public class GameLifeTimeScope : LifetimeScope
         builder.Register<Room>(Lifetime.Transient);
         builder.Register<Item>(Lifetime.Transient);
         builder.Register<Enemy>(Lifetime.Transient);
+
+        builder.Register<EnemyMessageBroker>(Lifetime.Transient);
 
         builder.RegisterInstance(gameConfigData).AsImplementedInterfaces();
     }

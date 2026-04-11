@@ -1918,7 +1918,7 @@ GameObject:
   - component: {fileID: 1791375173}
   - component: {fileID: 1791375172}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: UpGrade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1938,6 +1938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeManager
   _upGradeSetting: {fileID: 11400000, guid: 8a08de537b2f8fe45a24ff7e765bd38d, type: 2}
   _currentUpGradeList: []
+  index: 0
 --- !u!4 &1791375173
 Transform:
   m_ObjectHideFlags: 0
@@ -5234,6 +5235,7 @@ MonoBehaviour:
   - {fileID: 1872966426}
   - {fileID: 151334187}
   - {fileID: 2023704288}
+  - {fileID: 1791375171}
   gameConfigData: {fileID: 11400000, guid: d3739073affc31b4a94262b6a7003c6f, type: 2}
   health: {fileID: 1663461056}
 --- !u!4 &2022187102
@@ -5267,7 +5269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2023704289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10351,7 +10353,7 @@ SceneRoots:
   - {fileID: 2022187102}
   - {fileID: 151334189}
   - {fileID: 2023704290}
+  - {fileID: 1791375173}
   - {fileID: 6638130367943028860}
   - {fileID: 53237380051122827}
   - {fileID: 1108454188344415300}
-  - {fileID: 1791375173}

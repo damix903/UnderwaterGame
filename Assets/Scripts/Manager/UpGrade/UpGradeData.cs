@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ProjectileSystem;
 using UnityEngine;
 
 namespace Manager.UpGrade
@@ -13,18 +12,12 @@ namespace Manager.UpGrade
         
         public string UpgradeName => upgradeName;
 
-        public void Apply(RunTimeState state)
+        public void Apply(RunState state)
         {
-            if (effects == null || effects.Count == 0) throw new ArgumentNullException(nameof(upgradeName));
+            if (effects == null || effects.Count == 0) return;//throw new ArgumentNullException(nameof(upgradeName));
             
             foreach (var e in effects)
                 e.Apply(state);
         }
-    }
-
-    public class RunTimeState
-    {
-        public List<IProjectileModifier> ProjModifiers = new List<IProjectileModifier>();
-        
     }
 }

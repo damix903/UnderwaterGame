@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using MessagePipe;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 public class AIController : MonoBehaviour, ICharacterController
 {
     private StateMachine _stateMachine;
-
     public GameObject GameObject => gameObject;
 
     public Transform Target { get; private set; }
@@ -14,7 +15,7 @@ public class AIController : MonoBehaviour, ICharacterController
     private IDetectable detectable;
     //private EnemyData _enemyData;
     private EnemyContext _ctx;
-
+    
     public void Initialize(EnemyContext ctx)
     {
         _ctx = ctx;

@@ -9,7 +9,7 @@ namespace ProjectileSystem
         public abstract void OnHitToObstacle(Projectile p);
         public abstract void OnHitToDamageable(Projectile p, IDamageable damageable);
 
-        public override void Apply(RunTimeState state)
+        public override void Apply(RunState state)
         {
             state.ProjModifiers.Add(this);
         }
