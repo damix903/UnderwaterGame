@@ -5,10 +5,11 @@ using MessagePipe;
 using UnityEngine;
 using Utility.Lottery;
 using VContainer;
+using VContainer.Unity;
 using Random = UnityEngine.Random;
 
 
-public class StatgeGenerator : MonoBehaviour
+public class StatgeGenerator : MonoBehaviour, IStartable
 {
     private IEntityFactory<Room> _factory;
     [SerializeField] private StageConfig stageConfig;
@@ -25,11 +26,12 @@ public class StatgeGenerator : MonoBehaviour
     public void Construct(IEntityFactory<Room> factory)
     {
         _factory = factory;
+        
     }
 
-    private void Start()
+    public void Start()
     {
-        Generate();
+        StartCoroutine(DelayGenerate(.5f));
     }
 
     [ContextMenu("Generate")]
@@ -40,9 +42,9 @@ public class StatgeGenerator : MonoBehaviour
         StartCoroutine(DelayGenerate());
     }
 
-    private IEnumerator DelayGenerate()
+    private IEnumerator DelayGenerate(float delay = .1f)
     {
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(delay);
         Generate();
     }
     

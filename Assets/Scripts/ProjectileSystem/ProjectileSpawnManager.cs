@@ -1,21 +1,17 @@
-﻿using ProjectileSystem;
-using UnityEngine;
-using VContainer;
+﻿using UnityEngine;
 
 namespace ProjectileSystem
 {
-    public class ProjectileSpawnManager : MonoBehaviour
+    public interface IProjectileService
     {
-        [SerializeField] private ObjectPoolManager _objectPoolManager;
+        Projectile Spawn(EntityData data, Transform spawnPoint);
+    }
+
+    public class ProjectileSpawnManager : IProjectileService
+    {
         private IEntityFactory<Projectile>  _factory;
-
-        private void Awake()
-        {
-            //_factory = new PoolableEntityFactory<ProjectileBase>(_objectPoolManager);
-        }
-
-        [Inject]
-        public void Construct(IEntityFactory<Projectile> factory)
+        
+        public ProjectileSpawnManager(IEntityFactory<Projectile> factory)
         {
             _factory = factory;
         }
@@ -23,7 +19,6 @@ namespace ProjectileSystem
         public Projectile Spawn(EntityData data, Transform spawnPoint)
         {
             var proj = _factory.Create(data, spawnPoint);
-            Debug.Log(proj);
             return proj;
         }
     }

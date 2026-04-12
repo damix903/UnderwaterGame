@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     
     [SerializeField] private BaseAnimData animData;
     private IAnimPlayable _anim;
-    private CharacterMovement2 _movement2;
 
     private void Awake()
     {
@@ -27,15 +26,13 @@ public class PlayerController : MonoBehaviour
         _input.EnableActions(transform);
         _input.OnAttack += OnAttackStarted;
         _anim = GetComponentInChildren<IAnimPlayable>();
-        _movement2 = GetComponent<CharacterMovement2>();
     }
 
     private void Update()
     {
         //_stateMachine.Update();
         _movement.SetMovementInput(new Vector2(_input.MoveInput.x, 0f));
-        _movement2.SetMovementInput(_input.MoveInput);
-        
+
         HandleFlip();
         _aimable.SetAimDirection(_input.AimDir);
         
