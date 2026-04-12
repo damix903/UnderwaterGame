@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 1961512104127391418}
   - component: {fileID: 8304697166866579842}
   - component: {fileID: 7504810967070006215}
-  - component: {fileID: 300496141439686704}
   m_Layer: 8
   m_Name: Proto4
   m_TagString: Untagged
@@ -193,22 +192,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   scanRate: 1
---- !u!114 &300496141439686704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3455810939790289845}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fabebaaf41279e74c93a3c35035d442d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyLifeTimeScope
-  parentReference:
-    TypeName: GameLifeTimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!1 &6706133807795234476
 GameObject:
   m_ObjectHideFlags: 0

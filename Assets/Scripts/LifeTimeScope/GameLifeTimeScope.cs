@@ -1,59 +1,44 @@
-﻿using EnemyAI;
-using Manager.UpGrade;
-using MessagePipe;
-using PlayerSystem;
-using ProjectileSystem;
-using UnityEngine;
+﻿using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using Manager.Upgrade;
+using PlayerSystem;
+using ProjectileSystem;
+using UI;
 
-
-public class GameLifeTimeScope : LifetimeScope
+namespace LifeTimeScope
 {
-    [SerializeField] private GameConfigData gameConfigData;
-    [SerializeField] private EntityHealth health;
-    
-    protected override void Configure(IContainerBuilder builder)
+    public class GameLifeTimeScope : LifetimeScope
     {
-        base.Configure(builder);
+        [SerializeField] private GameConfigData gameConfigData;
+        
+        protected override void Configure(IContainerBuilder builder)
+        {
+            base.Configure(builder);
 
-        var options = builder.RegisterMessagePipe();
-        builder.RegisterMessageBroker<EventPublisher, HealthChangeEvent>(options);
-        builder.RegisterMessageBroker<DeathEvent>(options);
-        builder.RegisterMessageBroker<ReleaseType>(options);
-        builder.RegisterMessageBroker<ComboEvent>(options);
-        builder.RegisterMessageBroker<EventPublisher, ItemEvent>(options);
-        builder.RegisterMessageBroker<EventPublisher, DamageResult>(options);
-        builder.RegisterMessageBroker<EventPublisher, LandedEvent>(options);
+            builder.RegisterInstance<GameConfigData>(gameConfigData).AsImplementedInterfaces();
 
-        builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
+            new EnemyInstaller().Install(builder);
+            new FactoryInstaller().Install(builder);
+            new MessagePipeInstaller().Install(builder);
 
-        builder.RegisterComponentInHierarchy<UI>();
-        //builder.RegisterInstance(health).AsImplementedInterfaces();
-        //builder.Register<PlayerHealthManager>(Lifetime.Singleton);
-        //builder.RegisterEntryPoint<PlayerHealthManager>(Lifetime.Singleton).AsSelf();
-        builder.Register<EntityHealth>(Lifetime.Transient).AsImplementedInterfaces();
-        builder.Register<EmptyCostable>(Lifetime.Transient).AsImplementedInterfaces();
 
-        builder.RegisterComponentOnNewGameObject<ProjectileSpawnManager>(Lifetime.Singleton, "Proj").UnderTransform(transform);
-        builder.RegisterComponentOnNewGameObject<ObjectPoolManager>(Lifetime.Singleton, "Pool").UnderTransform(transform);
-        builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
-        builder.RegisterComponentOnNewGameObject<ItemManager>(Lifetime.Singleton).UnderTransform(transform);
-        builder.RegisterComponentInHierarchy<PlayerStatsManager>();
-        builder.RegisterComponentInHierarchy<UpGradeManager>();
-        builder.Register<PoolableEntityFactory<Projectile>>(Lifetime.Singleton).As<IEntityFactory<Projectile>>();
+            builder.RegisterComponentInHierarchy<UIHUD>();
+            builder.RegisterEntryPoint<UpgradePresenter>();
+            builder.RegisterComponentInHierarchy<UpgradeView>().AsImplementedInterfaces();
+            builder.RegisterComponentInHierarchy<UpgradeManager>().AsImplementedInterfaces();
+            builder.Register<RunState>(Lifetime.Singleton);
 
-        builder.RegisterComponentInHierarchy<StatgeGenerator>();
-        builder.Register<PoolableEntityFactory<Room>>(Lifetime.Singleton).As<IEntityFactory<Room>>();
-        builder.Register<PoolableEntityFactory<Enemy>>(Lifetime.Singleton).As<IEntityFactory<Enemy>>();
-        builder.Register<PoolableEntityFactory<Item>>(Lifetime.Singleton).As<IEntityFactory<Item>>();
-        builder.Register<Room>(Lifetime.Transient);
-        builder.Register<Item>(Lifetime.Transient);
-        builder.Register<Enemy>(Lifetime.Transient);
+            builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<InputReader>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<ProjectileSpawnManager>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.RegisterComponentOnNewGameObject<ObjectPoolManager>(Lifetime.Singleton).UnderTransform(transform);
+            builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
+            builder.RegisterComponentOnNewGameObject<ItemManager>(Lifetime.Singleton).UnderTransform(transform);
+            builder.RegisterComponentInHierarchy<PlayerStatsManager>();
 
-        builder.Register<EnemyMessageBroker>(Lifetime.Transient);
-
-        builder.RegisterInstance(gameConfigData).AsImplementedInterfaces();
+            builder.RegisterComponentInHierarchy<StatgeGenerator>();
+        }
     }
 }
 

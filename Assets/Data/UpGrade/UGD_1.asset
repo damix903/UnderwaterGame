@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: UGD_1
   m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeData
   upgradeName: 1
-  effects: []
+  image: {fileID: 0}
+  effects:
+  - {fileID: 11400000, guid: dbfb3cea1cd1ae34089b42d34d014151, type: 2}

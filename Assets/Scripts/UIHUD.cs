@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-public class UI : MonoBehaviour
+public class UIHUD : MonoBehaviour
 {
     [Inject] private ISubscriber<EventPublisher, HealthChangeEvent> _subscriber;
     private HealthBar _healthBar;

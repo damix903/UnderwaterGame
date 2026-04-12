@@ -13,7 +13,7 @@ namespace ProjectileSystem
 
         private float _lifeTimeTimer;
         private readonly HashSet<GameObject> _hitObjects = new HashSet<GameObject>();
-        private List<IProjectileModifier> _modifiers = new List<IProjectileModifier>();
+        private IReadOnlyList<IProjectileModifier> _modifiers = new List<IProjectileModifier>();
 
         public BaseProjectileData ProjData { get; private set; }
         public ProjectileSpawnParams SpawnParams { get; private set; }
@@ -35,7 +35,7 @@ namespace ProjectileSystem
                 OnLifeTimeReached();
         }
 
-        public void Initialize(BaseProjectileData projData, ProjectileSpawnParams param, IProjectileBehaviour behaviour, List<IProjectileModifier> modifiers)
+        public void Initialize(BaseProjectileData projData, ProjectileSpawnParams param, IProjectileBehaviour behaviour, IReadOnlyList<IProjectileModifier> modifiers)
         {
             ProjData = projData;
             _behaviour = behaviour;

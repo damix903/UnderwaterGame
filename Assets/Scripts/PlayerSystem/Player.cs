@@ -1,5 +1,5 @@
 ﻿using System;
-using Manager.UpGrade;
+using Manager.Upgrade;
 using MessagePipe;
 using PlayerSystem;
 using Stat;
@@ -28,8 +28,8 @@ public class Player : MonoBehaviour
     public void ApplyRunState(RunState runState)
     {
         // debug runstate upgrade
-        foreach (var upGrade in runState.UpGradeList)
-            Debug.Log($"Player received upgrade: {upGrade.UpgradeName}");
+        // foreach (var upGrade in runState.UpGradeList)
+        //     Debug.Log($"Player received upgrade: {upGrade.UpgradeName}");
     }
 
     private void OnEnable()

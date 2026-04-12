@@ -1,9 +1,9 @@
-﻿using Manager.UpGrade;
+﻿using Manager.Upgrade;
 using UnityEngine;
 
 namespace ProjectileSystem
 {
-    public abstract class BaseProjectileModifier : BaseUpGradeEffect, IProjectileModifier
+    public abstract class BaseProjectileModifier : BaseUpgradeEffect, IProjectileModifier
     {
         public abstract void OnSpawn(Projectile p);
         public abstract void OnHitToObstacle(Projectile p);

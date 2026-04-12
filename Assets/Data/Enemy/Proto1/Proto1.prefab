@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8365107320332727265}
   - component: {fileID: 942559631305075131}
   - component: {fileID: 5687267381533200858}
-  - component: {fileID: 7227661353739188750}
   - component: {fileID: 8812418733961770621}
   - component: {fileID: 3585680780109625511}
   - component: {fileID: 1277778933151001471}
@@ -144,22 +143,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   baseStats: {fileID: 11400000, guid: a2ae9135dd8066644ae7ee481fb33107, type: 2}
---- !u!114 &7227661353739188750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7419926818705587296}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fabebaaf41279e74c93a3c35035d442d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyLifeTimeScope
-  parentReference:
-    TypeName: GameLifeTimeScope
-  autoRun: 1
-  autoInjectGameObjects: []
 --- !u!114 &8812418733961770621
 MonoBehaviour:
   m_ObjectHideFlags: 0

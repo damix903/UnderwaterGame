@@ -2,7 +2,10 @@
 using VContainer;
 using VContainer.Unity;
 
-
+/// <summary>
+/// 使ってない。
+/// ボス用になると思う
+/// </summary>
 public class EnemyLifeTimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)

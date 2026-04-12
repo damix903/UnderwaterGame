@@ -2,15 +2,15 @@
 using Utility;
 using UnityEngine;
 
-namespace Manager.UpGrade
+namespace Manager.Upgrade
 {
     [CreateAssetMenu(fileName = "UpGradeList", menuName = "Data/UpGrade/List", order = 0)]
-    public class UpGradeSetting : ScriptableObject
+    public class UpgradeSetting : ScriptableObject
     {
         [SerializeField] private int upGradeCount = 3;
-        [SerializeField] private List<UpGradeData> upGradeList;
+        [SerializeField] private List<UpgradeData> upGradeList;
         
-        public List<UpGradeData> GetRandomUpGrade(IEnumerable<UpGradeData> exceptList)
+        public List<UpgradeData> GetRandomUpGrade(IEnumerable<UpgradeData> exceptList)
         {
             return  Selection.RandomSelect(upGradeList, upGradeCount, exceptList);
         }
