@@ -9,7 +9,7 @@ using VContainer.Unity;
 using Random = UnityEngine.Random;
 
 
-public class StatgeGenerator : MonoBehaviour, IStartable
+public class StageGenerator : MonoBehaviour, IStartable
 {
     private IEntityFactory<Room> _factory;
     [SerializeField] private StageConfig stageConfig;
@@ -19,6 +19,8 @@ public class StatgeGenerator : MonoBehaviour, IStartable
     public Transform StageEndPoint {get; private set;}
     private Transform _lastEndPoint;
     
+    public event Action<Vector3> OnStageGenerated;
+    
     [Inject] private IPublisher<ReleaseType> _publisher;
     [Inject] private EnemySpawner _spawner;
 
@@ -26,12 +28,11 @@ public class StatgeGenerator : MonoBehaviour, IStartable
     public void Construct(IEntityFactory<Room> factory)
     {
         _factory = factory;
-        
     }
 
     public void Start()
     {
-        StartCoroutine(DelayGenerate(.5f));
+        //StartCoroutine(DelayGenerate(.5f));
     }
 
     [ContextMenu("Generate")]
@@ -39,7 +40,8 @@ public class StatgeGenerator : MonoBehaviour, IStartable
     {
         _publisher?.Publish(ReleaseType.Room);
         _publisher?.Publish(ReleaseType.Enemy);
-        StartCoroutine(DelayGenerate());
+        Generate();
+        //StartCoroutine(DelayGenerate());
     }
 
     private IEnumerator DelayGenerate(float delay = .1f)
@@ -69,6 +71,7 @@ public class StatgeGenerator : MonoBehaviour, IStartable
         
         GenerateRoom(stageConfig.ExitRoom);
         StageEndPoint = _lastEndPoint;
+        OnStageGenerated?.Invoke(StageStartPoint.position);
     }
 
     private void GenerateRoom(RoomData data)
@@ -89,4 +92,4 @@ public class StatgeGenerator : MonoBehaviour, IStartable
     }
 }
 
-public enum ReleaseType { Room, Enemy}
+public enum ReleaseType { Room, Enemy, Projectile, Item }

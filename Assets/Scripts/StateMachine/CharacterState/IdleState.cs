@@ -2,5 +2,6 @@
 
 public class IdleState : CharacterBaseState
 {
-    public IdleState(IAnimPlayable anim, AnimationClip clip) : base(anim, clip) { }
+    protected override AnimType AnimType => AnimType.Idle;
+    public IdleState(IAnimPlayable anim) : base(anim) { }
 }

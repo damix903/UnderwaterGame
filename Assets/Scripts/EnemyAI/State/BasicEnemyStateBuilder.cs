@@ -1,4 +1,5 @@
 ﻿using Attack;
+using Underwater.StateMachine;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ESB_", menuName = "Data/State/BasicEnemy")]
@@ -10,8 +11,8 @@ public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
     
     public override StateMachine Build(ICharacterController controller, EnemyContext ctx)
     {
-        var idle = new IdleState(ctx.Anim, ctx.Data.AnimData.IdleClip);
-        var move = new MoveState(ctx.Anim, ctx.Data.AnimData.MoveClip, ResolveMoveable(ctx.Movement));
+        var idle = new IdleState(ctx.Anim);
+        var move = new MoveState(ctx.Anim, ResolveMoveable(ctx.Movement));
         
         var stateMachine = new StateMachine();
         stateMachine.AddTransition(idle, move, new FuncPredicate(() => true));
@@ -19,12 +20,12 @@ public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
 
         if (canChase)
         {
-            var chase = new ChaseState(controller, ctx.Anim, ctx.Data.AnimData.MoveClip, new Chase(ctx.Movement, controller.GameObject.transform));
+            var chase = new ChaseState(controller, ctx.Anim, new Chase(ctx.Movement, controller.GameObject.transform));
             var attackData = ctx.Data.AttackData;
             if (attackData != null)
             {
                 var attackable = ctx.Data.AttackData.CreateAttack(controller.GameObject.transform, ctx.EventListenable);
-                var attack = new AttackState(controller, ctx.Anim, ctx.Data.AnimData.AttackClip, attackable);
+                var attack = new AttackState(controller, ctx.Anim, attackable);
                 stateMachine.AddAnyTransition(attack, new FuncPredicate(()=> controller.Target != null && attackable.CanAttack(controller.Target)));
                 stateMachine.AddTransition(attack, idle, new FuncPredicate(() => attackable.IsCompleted));
             }

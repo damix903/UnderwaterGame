@@ -5,7 +5,7 @@ namespace Manager.Upgrade
 {
     public interface IUpgradeModel
     {
-        event Action<List<UpgradeData>> OnUpgradeSelection;
+        event Action<List<UpgradeData>> OnUpgradePhaseStarted;
         void SelectUpGrade(UpgradeData upgrade);
     }
 }

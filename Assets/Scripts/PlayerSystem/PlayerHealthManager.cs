@@ -54,7 +54,7 @@ public class PlayerHealthManager : IDisposable, ITickable, ICostable
 
     public void Consume(float amount)
     {
-        _health.ChangeHealth(-amount);
+        _health?.ChangeHealth(-amount);
     }
     
     public void Dispose()

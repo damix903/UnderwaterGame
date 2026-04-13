@@ -27,6 +27,13 @@ namespace PlayerSystem
             return true;
         }
 
+        public void SetPosition(Vector3 position)
+        {
+            if (_player == null) return;
+            
+            _player.transform.position = position;
+        }
+
         public void RegisterPlayer(Player player)
         {
             _player = player;

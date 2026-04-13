@@ -13,6 +13,7 @@ public class AnimationSystem : MonoBehaviour, IAnimPlayable
 {
     private Animator _anim;
     private IAnimEventListenable _listener;
+    private AnimData _animData;
     
     private AnimationClip _baseClip;
     
@@ -28,11 +29,6 @@ public class AnimationSystem : MonoBehaviour, IAnimPlayable
     private const int OverlayLayer = 1;
 
     private CancellationTokenSource _overlayCts = new();
-
-    public void Initialize(IAnimEventListenable listener)
-    {
-        _listener = listener;
-    }
     
     private void Awake()
     {
@@ -64,6 +60,22 @@ public class AnimationSystem : MonoBehaviour, IAnimPlayable
     {
         if (_graph.IsValid()) _graph.Destroy();
     }
+
+    public void Initialize(IAnimEventListenable listener, AnimData animData)
+    {
+        _listener = listener;
+        _animData = animData;
+    }
+
+    public void Play(AnimType animType)
+    {
+        if (_animData == null)
+        {
+            Debug.LogWarning("AnimData is not set." + gameObject.name);
+            return;
+        }
+        PlayBaseClip(_animData.GetAnim(animType));
+    } 
     
     public void PlayBaseClip(AnimationClip clip)
     {
