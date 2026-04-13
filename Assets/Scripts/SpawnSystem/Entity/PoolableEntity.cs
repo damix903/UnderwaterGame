@@ -1,5 +1,7 @@
 ﻿using System;
+using MessagePipe;
 using UnityEngine;
+using VContainer;
 
 public abstract class PoolableEntity : Entity, IPoolable
 {
@@ -12,6 +14,10 @@ public abstract class PoolableEntity : Entity, IPoolable
 
     private Action _releaseAction;
     private bool _isActive;
+    
+    protected abstract ReleaseType ReleaseType { get; }
+    private IDisposable _subscription;
+    [Inject] private ISubscriber<ReleaseType> _subscriber;
 
     public void InitializePool(Action release)
     {
@@ -28,6 +34,20 @@ public abstract class PoolableEntity : Entity, IPoolable
         
         _releaseAction?.Invoke();
         _isActive = false;
-    } 
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        _subscription = _subscriber.Subscribe((type) =>
+        {
+            if (type == ReleaseType) Release();
+        });
+    }
     
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        _subscription?.Dispose();
+    }
 }

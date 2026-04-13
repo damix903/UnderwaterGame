@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Manager;
 using MessagePipe;
+using Stage;
 using UnityEngine;
 using VContainer;
 
@@ -14,19 +16,33 @@ public class Room : PoolableEntity, IEnemySpawnPointHolder
     [SerializeField] private int maxSpawnCount;
     [SerializeField] private List<EnemySpawnPoint> spawnPoints;
     
+    [Space]
+    [SerializeField] private ColliderDetector clearPoint;
+    
     public Transform StartPoint => startPoint;
     public Transform EndPoint => endPoint;
     public IReadOnlyList<EnemySpawnPoint> SpawnPoints => spawnPoints;
     public int MaxSpawnCount => maxSpawnCount;
+    
+    protected override ReleaseType ReleaseType => ReleaseType.Room;
+    [Inject] private IPublisher<LevelClearedMessage> _levelClearedPub;
 
-    [Inject] private ISubscriber<ReleaseType> _subscriber;
-
-    protected override void OnInitialize()
+    protected override void OnEnable()
     {
-        base.OnInitialize();
-        _subscriber?.Subscribe((type) =>
-        {
-            if (type == ReleaseType.Room) Release();
-        });
+        base.OnEnable();
+        if (clearPoint != null)
+            clearPoint.OnTargetDetected += HandlePlayerDetected;
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        if (clearPoint != null)
+            clearPoint.OnTargetDetected -= HandlePlayerDetected;
+    }
+
+    private void HandlePlayerDetected(GameObject obj)
+    {
+        _levelClearedPub.Publish(new LevelClearedMessage());
     }
 }

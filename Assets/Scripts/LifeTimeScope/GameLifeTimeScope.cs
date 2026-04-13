@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using Manager;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Manager.Upgrade;
 using PlayerSystem;
 using ProjectileSystem;
 using UI;
+using Underwater.Utility.Timer;
 
 namespace LifeTimeScope
 {
@@ -26,7 +28,7 @@ namespace LifeTimeScope
             builder.RegisterComponentInHierarchy<UIHUD>();
             builder.RegisterEntryPoint<UpgradePresenter>();
             builder.RegisterComponentInHierarchy<UpgradeView>().AsImplementedInterfaces();
-            builder.RegisterComponentInHierarchy<UpgradeManager>().AsImplementedInterfaces();
+            builder.RegisterComponentInHierarchy<UpgradeManager>().AsImplementedInterfaces().AsSelf();
             builder.Register<RunState>(Lifetime.Singleton);
 
             builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
@@ -36,8 +38,13 @@ namespace LifeTimeScope
             builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentOnNewGameObject<ItemManager>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentInHierarchy<PlayerStatsManager>();
+            builder.RegisterEntryPoint<RunManager>(Lifetime.Singleton);
 
-            builder.RegisterComponentInHierarchy<StatgeGenerator>();
+            builder.RegisterComponentInHierarchy<StageGenerator>();
+
+            var timer = new TimerManager();
+            builder.RegisterInstance(timer).AsImplementedInterfaces();
+            Timer.Initialize(timer);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace PlayerSystem
         public event Action<Player> OnPlayerChanged;
         public bool TryGetPlayer(out GameObject player);
         public bool TryGetPlayerClass(out Player player);
+        public void SetPosition(Vector3 position);
     }
     
     public interface IPlayerRegisterable

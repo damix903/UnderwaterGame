@@ -104,6 +104,8 @@ namespace ProjectileSystem
         {
             Release();
         }
+
+        protected override ReleaseType ReleaseType => ReleaseType.Projectile;
     }
 
     public struct ProjectileSpawnParams

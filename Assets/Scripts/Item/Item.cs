@@ -9,6 +9,7 @@ public class Item : PoolableEntity
     protected ItemData itemData;
     
     private SpriteRenderer sr;
+    protected override ReleaseType ReleaseType => ReleaseType.Item;
 
     protected override void OnInitialize()
     {
@@ -20,4 +21,5 @@ public class Item : PoolableEntity
         if (itemData.Sprite != null)
             sr.sprite = itemData.Sprite;
     }
+
 }

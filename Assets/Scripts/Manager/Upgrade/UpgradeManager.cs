@@ -16,17 +16,15 @@ namespace Manager.Upgrade
         [Inject] private RunState _runState;
 
         [Inject] private IPlayerProvider _playerProvider;
-        public event Action<List<UpgradeData>> OnUpgradeSelection; 
+        public event Action<List<UpgradeData>> OnUpgradePhaseStarted;
+        public event Action OnUpgradePhaseEnded;
         
         [ContextMenu("StartUpGrade")]
-        public void StartUpGrade()
+        public void StartUpGradePhase()
         {
             var upGrades = upgradeSetting.GetRandomUpGrade(_currentUpgradeList);
             
-            OnUpgradeSelection?.Invoke(upGrades);
-            
-            // プレイヤーの選択を待機するべき？
-            //_upGradeSelectEventPub.Publish(new UpGradeSelectEvent(upGrades));
+            OnUpgradePhaseStarted?.Invoke(upGrades);
         }
 
         public void SelectUpGrade(UpgradeData upgrade)
@@ -37,6 +35,7 @@ namespace Manager.Upgrade
             if(_playerProvider.TryGetPlayerClass(out var player))
                 player.ApplyRunState(_runState);
             
+            OnUpgradePhaseEnded?.Invoke();
         }
     }
     
@@ -44,16 +43,5 @@ namespace Manager.Upgrade
     {
         public List<IProjectileModifier> ProjModifiers = new List<IProjectileModifier>();
         public List<UpgradeData> UpGradeList = new List<UpgradeData>();
-    }
-    
-    // UpgradeをUIに伝えるためのイベント
-    public class UpGradeSelectEvent
-    {        
-        public List<UpgradeData> UpGradeList { get; }
-
-        public UpGradeSelectEvent(List<UpgradeData> upGradeList)
-        {
-            UpGradeList = upGradeList;
-        }
     }
 }

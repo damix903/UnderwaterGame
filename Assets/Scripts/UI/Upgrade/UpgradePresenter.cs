@@ -18,7 +18,7 @@ namespace UI
 
         public void Initialize()
         {
-            _model.OnUpgradeSelection += HandleUpgradeSelection;
+            _model.OnUpgradePhaseStarted += HandleUpgradeSelection;
             _view.OnUpgradeSelected += HandleUpgradeSelected;
             _view.HideUpgrade();
         }
@@ -36,7 +36,7 @@ namespace UI
         
         public void Dispose()
         {
-            _model.OnUpgradeSelection -= HandleUpgradeSelection;
+            _model.OnUpgradePhaseStarted -= HandleUpgradeSelection;
             _view.OnUpgradeSelected -= HandleUpgradeSelected;
             _view?.HideUpgrade();
         }

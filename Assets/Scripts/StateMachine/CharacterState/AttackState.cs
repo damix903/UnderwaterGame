@@ -4,12 +4,14 @@ using Attack;
 
 public class AttackState : CharacterBaseState<ICharacterController>
 {
+    protected override AnimType AnimType => AnimType.Attack;
     private readonly IAttackable2 _attackable;
 
-    public AttackState(ICharacterController owner, IAnimPlayable anim, AnimationClip clip, IAttackable2 attackable) : base(owner, anim, clip)
+    public AttackState(ICharacterController owner, IAnimPlayable anim, IAttackable2 attackable) : base(owner, anim)
     {
         _attackable = attackable;
     }
+
 
     public override void OnEnter()
     {

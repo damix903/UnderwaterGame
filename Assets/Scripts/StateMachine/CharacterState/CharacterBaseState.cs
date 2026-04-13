@@ -1,20 +1,20 @@
-﻿using UnityEngine;
+﻿using Underwater.StateMachine;
+using UnityEngine;
 
 public abstract class CharacterBaseState : IState
 {
     protected readonly IAnimPlayable Anim;
-    private readonly AnimationClip Clip;
+    protected abstract AnimType AnimType { get; }
 
-    public CharacterBaseState(IAnimPlayable anim, AnimationClip clip = null)
+    public CharacterBaseState(IAnimPlayable anim)
     {
         Anim = anim;
-        Clip = clip;
     }
 
     public virtual void OnEnter()
     {
         Debug.Log($"Entering {GetType().Name}");
-        Anim?.PlayBaseClip(Clip);
+        Anim?.Play(AnimType);
     }
     public virtual void Update(){}
     public virtual void FixedUpdate(){}
@@ -26,7 +26,7 @@ public abstract class CharacterBaseState<T> : CharacterBaseState where T : class
     protected readonly T owner;
 
 
-    protected CharacterBaseState(T owner, IAnimPlayable anim, AnimationClip clip = null) : base(anim, clip)
+    protected CharacterBaseState(T owner, IAnimPlayable anim) : base(anim)
     {
         this.owner = owner;
     }

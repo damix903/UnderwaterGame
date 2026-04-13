@@ -7,13 +7,13 @@ public class EnemyData : EntityData
 {
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private BaseEnemyStateBuilder stateBuilder;
-    [SerializeField] private BaseAnimData animData;
+    [SerializeField] private AnimData animData;
     [SerializeField] private float maxHealth = 1f;
     [SerializeField] private EnemyBaseAttackData attackData;
 
     public EnemyType EnemyType => enemyType;
     public BaseEnemyStateBuilder StateBuilder => stateBuilder;
-    public BaseAnimData AnimData => animData;
+    public AnimData AnimData => animData;
     public float MaxHealth => maxHealth;
     public EnemyBaseAttackData AttackData => attackData;
 }

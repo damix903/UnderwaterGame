@@ -14,6 +14,7 @@ public class Enemy : PoolableEntity
     private EntityHealth _health;
     
     private EnemyContext _ctx;
+    protected override ReleaseType ReleaseType => ReleaseType.Enemy;
 
     protected override void Awake()
     {
@@ -39,9 +40,10 @@ public class Enemy : PoolableEntity
             _ctx.SetData(enemyData);
             _controller.Initialize(_ctx);
             _health.Initialize(enemyData.MaxHealth, TeamID.Enemy);
-            _ctx.Anim.Initialize(_ctx.EventListenable);
+            _ctx.Anim.Initialize(_ctx.EventListenable, enemyData.AnimData);
         }
     }
+
 
     protected override void OnEnable()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using ProjectileSystem;
+using Underwater.StateMachine;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private IAimable _aimable;
     private IAttackable _attackable;
     
-    [SerializeField] private BaseAnimData animData;
+    [SerializeField] private AnimData animData;
     private IAnimPlayable _anim;
 
     private void Awake()
@@ -36,9 +37,9 @@ public class PlayerController : MonoBehaviour
         HandleFlip();
         _aimable.SetAimDirection(_input.AimDir);
         
-        if (!_movement.IsGrounded) _anim.PlayBaseClip(animData.FallClip);
-        else if (Mathf.Abs(_input.MoveInput.x) > 0.01f) _anim.PlayBaseClip(animData.MoveClip);
-        else _anim.PlayBaseClip(animData.IdleClip);
+        if (!_movement.IsGrounded) _anim.PlayBaseClip(animData.GetAnim(AnimType.Fall));
+        else if (Mathf.Abs(_input.MoveInput.x) > 0.01f) _anim.PlayBaseClip(animData.GetAnim(AnimType.Move));
+        else _anim.PlayBaseClip(animData.GetAnim(AnimType.Idle));
         
     }
 
