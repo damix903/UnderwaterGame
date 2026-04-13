@@ -26,7 +26,8 @@ namespace LifeTimeScope
 
 
             builder.RegisterComponentInHierarchy<UIHUD>();
-            builder.RegisterEntryPoint<UpgradePresenter>();
+            //builder.RegisterEntryPoint<UpgradePresenter>().AsSelf();
+            builder.Register<UpgradePresenter>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<UpgradeView>().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<UpgradeManager>().AsImplementedInterfaces().AsSelf();
             builder.Register<RunState>(Lifetime.Singleton);

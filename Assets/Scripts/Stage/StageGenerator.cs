@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using MessagePipe;
+using UI;
 using UnityEngine;
 using Utility.Lottery;
 using VContainer;
@@ -33,6 +35,13 @@ public class StageGenerator : MonoBehaviour, IStartable
     public void Start()
     {
         //StartCoroutine(DelayGenerate(.5f));
+    }
+    
+    [Inject] private UpgradePresenter _upgradePresenter;
+    [ContextMenu("StartUpGrade")]
+    public void StartUpGradePhase()
+    {
+        _upgradePresenter.StartUpgradeSelectionAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
     [ContextMenu("Generate")]
