@@ -1,4 +1,6 @@
-﻿public class EnemyContext
+﻿using Movement;
+
+public class EnemyContext
 {
     public EnemyData Data { get; private set; }
     public CharacterMovement Movement { get; private set; }

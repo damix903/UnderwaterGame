@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Stage
+namespace Sensor
 {
     [RequireComponent(typeof(Collider2D))]
     public class ColliderDetector : MonoBehaviour, IDetectable
@@ -9,7 +9,7 @@ namespace Stage
         [SerializeField] private LayerMask targetLayer;
         
         public event Action<GameObject> OnTargetDetected;
-        public event Action OnTargetLost;
+        public event Action<GameObject> OnTargetLost;
         
         private void OnTriggerEnter2D(Collider2D other)
         {
@@ -23,7 +23,7 @@ namespace Stage
         {
             if (((1 << other.gameObject.layer) & targetLayer) != 0)
             {
-                OnTargetLost?.Invoke();
+                OnTargetLost?.Invoke(other.gameObject);
             }
         }
 

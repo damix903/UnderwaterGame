@@ -4,5 +4,5 @@ using UnityEngine;
 public interface IDetectable
 {
     public event Action<GameObject> OnTargetDetected;
-    public event Action OnTargetLost;
+    public event Action<GameObject> OnTargetLost;
 }

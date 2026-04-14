@@ -40,7 +40,7 @@ public class AIController : MonoBehaviour, ICharacterController
     }
 
     private void HandleTargetDetect(GameObject obj) => Target = obj.transform;
-    private void HandleTargetLost() => Target = null;
+    private void HandleTargetLost(GameObject obj) => Target = null;
 
     private void Update()
     {

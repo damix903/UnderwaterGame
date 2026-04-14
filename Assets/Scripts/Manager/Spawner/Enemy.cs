@@ -1,6 +1,7 @@
 ﻿using System;
 using EnemyAI;
 using MessagePipe;
+using Movement;
 using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Manager;
 using MessagePipe;
-using Stage;
+using Sensor;
 using UnityEngine;
 using VContainer;
 

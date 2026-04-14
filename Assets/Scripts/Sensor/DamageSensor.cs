@@ -5,7 +5,7 @@ using VContainer;
 public class DamageSensor : IDetectable, IDisposable
 {
     public event Action<GameObject> OnTargetDetected;
-    public event Action OnTargetLost;
+    public event Action<GameObject> OnTargetLost;
 
     private IDamageable _damageable;
     

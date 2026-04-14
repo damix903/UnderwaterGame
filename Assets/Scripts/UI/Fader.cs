@@ -12,6 +12,7 @@ namespace UI
         private void Awake()
         {
             canvasGroup.alpha = 0f; // 初期状態は透明
+            gameObject.SetActive(true);
         }
 
         public async UniTask FadeInAsync(CancellationToken ct) => await FadeAsync(1f, 0f, ct);
