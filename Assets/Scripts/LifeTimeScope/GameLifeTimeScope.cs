@@ -26,12 +26,15 @@ namespace LifeTimeScope
 
 
             builder.RegisterComponentInHierarchy<UIHUD>();
-            //builder.RegisterEntryPoint<UpgradePresenter>().AsSelf();
+            builder.RegisterComponentInHierarchy<IFader>();
             builder.Register<UpgradePresenter>(Lifetime.Singleton);
+
             builder.RegisterComponentInHierarchy<UpgradeView>().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<UpgradeManager>().AsImplementedInterfaces().AsSelf();
             builder.Register<RunState>(Lifetime.Singleton);
 
+            builder.RegisterComponentInHierarchy<CameraManager>();
+            
             builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<InputReader>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<ProjectileSpawnManager>(Lifetime.Singleton).AsImplementedInterfaces();

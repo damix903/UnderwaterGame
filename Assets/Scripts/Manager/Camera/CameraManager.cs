@@ -5,13 +5,18 @@ using MessagePipe;
 using VContainer;
 
 
-[RequireComponent(typeof(CinemachineImpulseSource), typeof(CinemachineImpulseListener))]
+[RequireComponent(
+        typeof(CinemachineCamera),
+        typeof(CinemachineImpulseSource),
+        typeof(CinemachineImpulseListener)
+    )
+]
 public class CameraManager : MonoBehaviour
 {
     [Inject] private ISubscriber<DamageResult> _sub;
-    [SerializeField] private CameraShakeData lightData;
-    [SerializeField] private CameraShakeData heavyData;
-
+    
+    private CinemachineCamera _vCam;
+    private CinemachinePositionComposer _vCamComposer;
     private CinemachineImpulseSource _impulseSource;
     private CinemachineImpulseListener _impulseListener;
 
@@ -19,6 +24,8 @@ public class CameraManager : MonoBehaviour
     
     private void Awake()
     {
+        _vCam = GetComponent<CinemachineCamera>();
+        _vCamComposer = _vCam.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
         _impulseSource = GetComponent<CinemachineImpulseSource>();
         _impulseListener = GetComponent<CinemachineImpulseListener>();
         _subscription = _sub?.Subscribe(HandleDamageEvent);
@@ -42,33 +49,18 @@ public class CameraManager : MonoBehaviour
         ShakeCamera(result.DamageInfo.EffectData.CameraShakeData, result.Defender.transform.position);
     }
 
-    // private CameraShakeData ResolveData(CameraShakeEvent e)
-    // {
-    //     return e.Type switch
-    //     {
-    //         CameraShakeType.Light => lightData,
-    //         CameraShakeType.Heavy => heavyData,
-    //         CameraShakeType.Custom => e.Data,
-    //         _ => null
-    //     };
-    // }
+    public void SetLookaheadEnabled(bool isEnabled)
+    {
+        if (_vCamComposer == null) return;
+
+        var settings = _vCamComposer.Lookahead;
+        settings.Enabled = isEnabled;
+        _vCamComposer.Lookahead = settings;
+        _vCam.PreviousStateIsValid = isEnabled;
+    }
 
     private void OnDestroy()
     {
         _subscription?.Dispose();
     }
 }
-
-// public enum CameraShakeType {None, Light, Heavy, Custom }
-//
-// public struct CameraShakeEvent
-// {
-//     public readonly CameraShakeType Type;
-//     public readonly CameraShakeData Data;
-//
-//     public CameraShakeEvent(CameraShakeType type, CameraShakeData data)
-//     {
-//         Type = type;
-//         Data = data;
-//     }
-// }

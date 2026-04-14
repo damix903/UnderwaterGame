@@ -11,17 +11,13 @@ using VContainer.Unity;
 using Random = UnityEngine.Random;
 
 
-public class StageGenerator : MonoBehaviour, IStartable
+public class StageGenerator : MonoBehaviour
 {
     private IEntityFactory<Room> _factory;
     [SerializeField] private StageConfig stageConfig;
     [SerializeField] private int roomCount;
 
-    public Transform StageStartPoint {get; private set;}
-    public Transform StageEndPoint {get; private set;}
     private Transform _lastEndPoint;
-    
-    public event Action<Vector3> OnStageGenerated;
     
     [Inject] private IPublisher<ReleaseType> _publisher;
     [Inject] private EnemySpawner _spawner;
@@ -30,11 +26,6 @@ public class StageGenerator : MonoBehaviour, IStartable
     public void Construct(IEntityFactory<Room> factory)
     {
         _factory = factory;
-    }
-
-    public void Start()
-    {
-        //StartCoroutine(DelayGenerate(.5f));
     }
     
     [Inject] private UpgradePresenter _upgradePresenter;
@@ -45,24 +36,16 @@ public class StageGenerator : MonoBehaviour, IStartable
     }
 
     [ContextMenu("Generate")]
-    public void GenerateFromEditor()
+    public Vector3 Generate()
     {
         _publisher?.Publish(ReleaseType.Room);
         _publisher?.Publish(ReleaseType.Enemy);
-        Generate();
-        //StartCoroutine(DelayGenerate());
-    }
-
-    private IEnumerator DelayGenerate(float delay = .1f)
-    {
-        yield return new WaitForSeconds(delay);
-        Generate();
+        return ProcessGenerate();
     }
     
-    public void Generate()
+    private Vector3 ProcessGenerate()
     {
         var entrance = _factory.Create(stageConfig.EntranceRoom, transform);
-        StageStartPoint = entrance.StartPoint;
         _lastEndPoint = entrance.EndPoint;
         
         int count = 0;
@@ -79,8 +62,8 @@ public class StageGenerator : MonoBehaviour, IStartable
         }
         
         GenerateRoom(stageConfig.ExitRoom);
-        StageEndPoint = _lastEndPoint;
-        OnStageGenerated?.Invoke(StageStartPoint.position);
+        
+        return entrance.StartPoint.position;
     }
 
     private void GenerateRoom(RoomData data)
