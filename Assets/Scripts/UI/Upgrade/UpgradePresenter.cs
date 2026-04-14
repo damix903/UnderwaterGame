@@ -1,44 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Manager.Upgrade;
-using VContainer.Unity;
 
 namespace UI
 {
-    public class UpgradePresenter : IInitializable, IDisposable
+    /// <summary>
+    /// アップグレードの処理を担当するクラス
+    /// UpgradeViewとUpgradeManagerを仲介する役割を持つ
+    /// </summary>
+    public class UpgradePresenter : IDisposable
     {
         private readonly IUpgradeView _view;
         private readonly IUpgradeModel _model;
+        
+        private CancellationTokenSource _cts = new CancellationTokenSource();
         
         public UpgradePresenter(IUpgradeView view, IUpgradeModel model)
         {
             _view = view;
             _model = model;
-        }
-
-        public void Initialize()
-        {
-            _model.OnUpgradePhaseStarted += HandleUpgradeSelection;
-            _view.OnUpgradeSelected += HandleUpgradeSelected;
             _view.HideUpgrade();
         }
         
-        private void HandleUpgradeSelection(List<UpgradeData> upgrades)
+        // 上位のRunManagerから呼び出されることを想定
+        public async UniTask StartUpgradeSelectionAsync(CancellationToken ct)
         {
-            _view.ShowUpgrade(upgrades);
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            var upgrades = _model.GetUpGradeList();
+            _view.ShowUpgrades(upgrades);
+
+            try
+            {
+                var data = await _view.OnUpgradeSelectedAsync(_cts.Token);
+                _model.SelectUpGrade(data);
+            }
+            catch (OperationCanceledException)
+            {
+                
+            }
+            finally
+            {
+                _view?.HideUpgrade();
+            }
         }
 
-        private void HandleUpgradeSelected(UpgradeData upgrade)
-        {
-            _model.SelectUpGrade(upgrade);
-            _view.HideUpgrade();
-        }
-        
         public void Dispose()
         {
-            _model.OnUpgradePhaseStarted -= HandleUpgradeSelection;
-            _view.OnUpgradeSelected -= HandleUpgradeSelected;
             _view?.HideUpgrade();
+            
+            _cts?.Cancel();
+            _cts?.Dispose();
         }
     }
 }

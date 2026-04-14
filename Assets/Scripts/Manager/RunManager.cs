@@ -1,7 +1,9 @@
 ﻿using System;
-using Manager.Upgrade;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using MessagePipe;
 using PlayerSystem;
+using UI;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,50 +11,60 @@ namespace Manager
 {
     public class RunManager : IDisposable, IPostStartable
     {
-        private readonly UpgradeManager _upgradeManager;
+        private readonly UpgradePresenter _upgradePresenter;
         private readonly StageGenerator _stageGenerator;
         private readonly IPlayerProvider _playerProvider;
+        [Inject] private IFader _fader;
+        [Inject] private CameraManager _cameraManager;
         
         [Inject] private ISubscriber<LevelClearedMessage> _levelClearedMessage;
         private IDisposable _subscription;
         
-        public RunManager(UpgradeManager upgradeManager,
+        private CancellationTokenSource _cts = new CancellationTokenSource();
+        
+        public RunManager(UpgradePresenter upgradePresenter,
             StageGenerator stageGenerator, 
             IPlayerProvider playerProvider,
             ISubscriber<LevelClearedMessage> levelClearedSub)
         {
-            _upgradeManager = upgradeManager;
+            _upgradePresenter = upgradePresenter;
             _stageGenerator = stageGenerator;
             _playerProvider = playerProvider;
 
-            _subscription = levelClearedSub.Subscribe(_ => ProcessUpGrade());
-            _upgradeManager.OnUpgradePhaseEnded += ProcessGenerate;
-            _playerProvider.OnPlayerChanged += player => { ProcessGenerate(); };
-            _stageGenerator.OnStageGenerated += vector3 => {_playerProvider?.SetPosition(vector3); };
+            _subscription = levelClearedSub.Subscribe(_ => ProcessUpgrade().Forget());
+        }
+        
+        public void PostStart()
+        {
+            ProcessGenerate().Forget();
         }
 
-        private void ProcessGenerate()
+        private async UniTask ProcessGenerate()
         {
             if (!_playerProvider.TryGetPlayer(out var player)) return;
             
-            _stageGenerator.GenerateFromEditor();
-            //_playerProvider?.SetPosition(_stageGenerator.StageStartPoint.position);
+            _cameraManager.SetLookaheadEnabled(false);
+            await _fader.FadeOutAsync(_cts.Token);
+            
+            var start= _stageGenerator.Generate();
+            _playerProvider?.SetPosition(start);
+
+            await _fader.FadeInAsync(_cts.Token);
+            _cameraManager.SetLookaheadEnabled(true);
         }
         
-        private void ProcessUpGrade()
+        private async UniTask ProcessUpgrade()
         {
-            _upgradeManager.StartUpGradePhase();
+            await _upgradePresenter.StartUpgradeSelectionAsync(_cts.Token);
+            
+            ProcessGenerate().Forget();
         }
 
         public void Dispose()
         {
             _subscription?.Dispose();
-            _upgradeManager.OnUpgradePhaseEnded -= ProcessUpGrade;
-        }
-
-        public void PostStart()
-        {
-            ProcessGenerate();
+            _cts?.Cancel();
+            _cts?.Dispose();
         }
     }
     

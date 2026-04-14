@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Manager.Upgrade;
 
 namespace UI
 {
     public interface IUpgradeView
     {
-        public event Action<UpgradeData> OnUpgradeSelected;
-        public void ShowUpgrade(List<UpgradeData> upgrades);
+        public void ShowUpgrades(List<UpgradeData> upgrades);
         public void HideUpgrade();
+        UniTask<UpgradeData> OnUpgradeSelectedAsync(CancellationToken ct);
     }
 }

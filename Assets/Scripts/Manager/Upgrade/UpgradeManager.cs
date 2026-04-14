@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MessagePipe;
 using PlayerSystem;
 using ProjectileSystem;
 using UnityEngine;
@@ -14,17 +13,20 @@ namespace Manager.Upgrade
         [SerializeField] private List<UpgradeData> _currentUpgradeList = new List<UpgradeData>();
 
         [Inject] private RunState _runState;
-
         [Inject] private IPlayerProvider _playerProvider;
-        public event Action<List<UpgradeData>> OnUpgradePhaseStarted;
-        public event Action OnUpgradePhaseEnded;
-        
+
         [ContextMenu("StartUpGrade")]
         public void StartUpGradePhase()
         {
-            var upGrades = upgradeSetting.GetRandomUpGrade(_currentUpgradeList);
-            
-            OnUpgradePhaseStarted?.Invoke(upGrades);
+            // var upGrades = upgradeSetting.GetRandomUpGrade(_currentUpgradeList);
+            //
+            // OnUpgradePhaseStarted?.Invoke(upGrades);
+            //_upgradePresenter.StartUpgradeSelectionAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        }
+
+        public List<UpgradeData> GetUpGradeList()
+        {
+            return upgradeSetting.GetRandomUpGrade(_currentUpgradeList);
         }
 
         public void SelectUpGrade(UpgradeData upgrade)
@@ -34,8 +36,6 @@ namespace Manager.Upgrade
             _runState.UpGradeList.Add(upgrade);
             if(_playerProvider.TryGetPlayerClass(out var player))
                 player.ApplyRunState(_runState);
-            
-            OnUpgradePhaseEnded?.Invoke();
         }
     }
     
