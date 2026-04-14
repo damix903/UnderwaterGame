@@ -346,8 +346,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6428e5284c4b2054a8650cd66d030913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraManager
-  lightData: {fileID: 0}
-  heavyData: {fileID: 0}
 --- !u!114 &117137852
 MonoBehaviour:
   m_ObjectHideFlags: 0
