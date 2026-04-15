@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     
     [Inject] private IPublisher<EventPublisher, HealthChangeEvent> _healthPub;
     [Inject] private IPublisher<EventPublisher, DamageResult> _damagePub;
+    [Inject] private IPublisher<DamageResult> _damageResultPub;
 
     [Inject] private IPlayerRegisterable _playerRegisterable;
     [Inject] private ILayerConfig _layerConfig;
@@ -60,7 +61,10 @@ public class Player : MonoBehaviour
     }
 
     private void HandleDamage(DamageResult result)
-        => _damagePub.Publish(EventPublisher.Player, result);
+    {
+        _damagePub?.Publish(EventPublisher.Player, result);
+        _damageResultPub?.Publish(result);
+    }
 
     private void HandleHealthChange(HealthChangeEvent obj) 
         => _healthPub?.Publish(EventPublisher.Player, obj);

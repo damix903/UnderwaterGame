@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-[CreateAssetMenu(menuName =  "Data/CameraShake")]
+[CreateAssetMenu(menuName =  "Data/Effect/CameraShake")]
 public class CameraShakeData : ScriptableObject
 {
     [Header("Impulse Source Settings")]

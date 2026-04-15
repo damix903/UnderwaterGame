@@ -194,6 +194,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32903186}
   m_CullTransparentMesh: 1
+--- !u!1 &42777599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 42777601}
+  - component: {fileID: 42777600}
+  m_Layer: 0
+  m_Name: Time
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &42777600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42777599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d9396e538cb7414bae5f87268aef0c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimeManager
+--- !u!4 &42777601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42777599}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.33635, y: -1.03515, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &117137845
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
   ImpulseDefinition:
     ImpulseChannel: 1
-    ImpulseShape: 2
+    ImpulseShape: 4
     CustomImpulseShape:
       serializedVersion: 2
       m_Curve: []
@@ -393,7 +437,7 @@ MonoBehaviour:
       m_RotationOrder: 4
     ImpulseDuration: 0.2
     ImpulseType: 0
-    DissipationRate: 0.25
+    DissipationRate: 0
     RawSignal: {fileID: 0}
     AmplitudeGain: 1
     FrequencyGain: 1
@@ -7054,6 +7098,7 @@ MonoBehaviour:
   - {fileID: 1663461048}
   - {fileID: 1011711784}
   - {fileID: 2028303595}
+  - {fileID: 42777599}
   gameConfigData: {fileID: 11400000, guid: d3739073affc31b4a94262b6a7003c6f, type: 2}
 --- !u!4 &2022187102
 Transform:
@@ -12232,3 +12277,4 @@ SceneRoots:
   - {fileID: 53237380051122827}
   - {fileID: 1108454188344415300}
   - {fileID: 2793464734681754854}
+  - {fileID: 42777601}

@@ -77,6 +77,7 @@ public class Enemy : PoolableEntity
 
     private void HandleDamageEvent(DamageResult result)
     {
+        _messageBroker?.Publish(result);
     }
 
     private void HandleDeathEvent(DeathEvent e)

@@ -1,4 +1,5 @@
 using System;
+using Manager;
 using UnityEngine;
 using Unity.Cinemachine;
 using MessagePipe;
@@ -13,7 +14,8 @@ using VContainer;
 ]
 public class CameraManager : MonoBehaviour
 {
-    [Inject] private ISubscriber<DamageResult> _sub;
+    [Inject] private ISubscriber<DamageResult> _damageSub;
+    [Inject] private ISubscriber<EffectData> _effectSub;
     
     private CinemachineCamera _vCam;
     private CinemachinePositionComposer _vCamComposer;
@@ -28,7 +30,26 @@ public class CameraManager : MonoBehaviour
         _vCamComposer = _vCam.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachinePositionComposer;
         _impulseSource = GetComponent<CinemachineImpulseSource>();
         _impulseListener = GetComponent<CinemachineImpulseListener>();
-        _subscription = _sub?.Subscribe(HandleDamageEvent);
+        
+        SubscribeEvents();
+    }
+
+    private void SubscribeEvents()
+    {
+        var bag = DisposableBag.CreateBuilder();
+        _damageSub?.Subscribe(HandleDamageEvent).AddTo(bag);
+        _effectSub?.Subscribe((x) =>
+        {
+            if (x == null) return;
+            ShakeCamera(x.CameraShakeData);
+        }).AddTo(bag);
+        _subscription = bag.Build();
+    }
+
+    private void HandleDamageEvent(DamageResult e)
+    {
+        if (e.DamageInfo.EffectData == null) return;
+        ShakeCamera(e.DamageInfo.EffectData.CameraShakeData);
     }
 
     public void ShakeCamera(CameraShakeData data, Vector3 position = default)
@@ -42,11 +63,6 @@ public class CameraManager : MonoBehaviour
         
         _impulseSource.ImpulseDefinition = data.CreateDefinition();
         _impulseSource.GenerateImpulseAt(position, data.Velocity);
-    }
-
-    private void HandleDamageEvent(DamageResult result)
-    {
-        ShakeCamera(result.DamageInfo.EffectData.CameraShakeData, result.Defender.transform.position);
     }
 
     public void SetLookaheadEnabled(bool isEnabled)
