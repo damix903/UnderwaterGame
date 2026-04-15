@@ -1,5 +1,6 @@
 ﻿using System;
 using MessagePipe;
+using PlayerSystem;
 using TMPro;
 using UnityEngine;
 using VContainer;
@@ -10,36 +11,35 @@ public class PlayerStatsManager : MonoBehaviour
     [SerializeField] private float comboTime = 5f;
     
     [Inject] private IPublisher<ComboEvent> _publisher;
+    [Inject] private IPlayerProvider _playerProvider;
 
+    private ICollisionDetectable _playerCollision;
     private IDisposable _subscription;
     private int _comboCounter;
-    private float _comboTimer;
 
     [Inject]
     public void Construct(ISubscriber<DeathEvent> deathSub,
-        ISubscriber<EventPublisher, DamageResult> damageSub,
-        ISubscriber<EventPublisher, LandedEvent> landedSub)
+        ISubscriber<EventPublisher, DamageResult> damageSub)
     {
         if (_subscription != null) return;
         var bag = DisposableBag.CreateBuilder();
         deathSub.Subscribe(HandleDeathEvent).AddTo(bag);
         damageSub.Subscribe(EventPublisher.Player, result => ChangeComboCount(true)).AddTo(bag);
-        landedSub.Subscribe(EventPublisher.Player, @event => ChangeComboCount(true)).AddTo(bag);
         _subscription = bag.Build();
         
         _comboCounter = 0;
-        _comboTimer = 0f;
         ChangeText();
     }
 
-    private void Update()
+    private void Start()
     {
-        // _comboTimer = Mathf.Max(0f, _comboTimer - Time.deltaTime);
-        // if (_comboTimer <= 0f && _comboCounter != 0)
-        //     ChangeComboCount(true);
-        //
-        // ChangeText();
+        if (!_playerProvider.TryGetPlayerClass(out var player)) return;
+
+        _playerCollision = player.gameObject.GetComponent<ICollisionDetectable>();
+        if (_playerCollision != null) _playerCollision.OnLanded += HandleLanded;
     }
+
+    private void HandleLanded() => ChangeComboCount(true);
 
     private void HandleDeathEvent(DeathEvent e)
     {
@@ -50,18 +50,11 @@ public class PlayerStatsManager : MonoBehaviour
 
     private void ChangeComboCount(bool isReset = false)
     {
-        if (isReset)
-        {
-            _comboCounter = 0;
-            _comboTimer = 0f;
-        }
-        else
-        {
-            _comboCounter++;
-            _comboTimer = comboTime;
-        }
+        _comboCounter = isReset ? 0 : _comboCounter + 1;
         
-        _publisher?.Publish(new ComboEvent(_comboCounter, _comboTimer));
+        if (_playerCollision.IsGrounded) _comboCounter = 0; 
+        
+        _publisher?.Publish(new ComboEvent(_comboCounter, 0f));
         ChangeText();
     }
 
@@ -75,6 +68,7 @@ public class PlayerStatsManager : MonoBehaviour
     private void OnDestroy()
     {
         _subscription?.Dispose();
+        if (_playerCollision != null) _playerCollision.OnLanded -= HandleLanded;
     }
 }
 

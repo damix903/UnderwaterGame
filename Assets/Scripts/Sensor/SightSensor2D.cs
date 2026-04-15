@@ -13,7 +13,7 @@ public class SightSensor2D : MonoBehaviour, IDetectable
     private GameObject _currentTarget;
 
     public event Action<GameObject> OnTargetDetected;
-    public event Action OnTargetLost;
+    public event Action<GameObject> OnTargetLost;
 
     private bool _isTargetInSight;
     private float _lostTimer;
@@ -97,8 +97,8 @@ public class SightSensor2D : MonoBehaviour, IDetectable
 
         if (_lostTimer < 0f)
         {
+            OnTargetLost?.Invoke(_currentTarget);
             _currentTarget = null;
-            OnTargetLost?.Invoke();
         }
     }
 

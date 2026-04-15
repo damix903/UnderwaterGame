@@ -19,8 +19,9 @@ namespace ProjectileSystem
         public ProjectileSpawnParams SpawnParams { get; private set; }
         public ProjectileRunTimeStats RunTimeStats { get; set; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _rb = GetComponent<Rigidbody2D>();
             if (_rb == null) _rb = gameObject.AddComponent<Rigidbody2D>();
             RunTimeStats = new ProjectileRunTimeStats();

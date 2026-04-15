@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using System;
 using Stat;
-using MessagePipe;
-using VContainer;
 
 public class EntityHealth : MonoBehaviour, IDamageable, IHealth
 {
     [SerializeField] protected float maxHealth = 100f;
     [SerializeField] protected TeamID teamID;
-    
     public float CurrentHealth { get; private set; }
     public float MaxHealth => maxHealth;
     public event Action<HealthChangeEvent> OnHealthChanged;
@@ -50,7 +47,7 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
         OnHealthChanged?.Invoke(new HealthChangeEvent(CurrentHealth, maxHealth, amount));
     }
 
-    protected virtual void OnDamageTaken(DamageInfo info)
+    private void OnDamageTaken(DamageInfo info)
     {
         ChangeHealth(-info.Damage);
         var result = new DamageResult
@@ -63,7 +60,7 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
         OnDamaged?.Invoke(result);
     }
 
-    protected virtual void HandleDeath(DamageInfo info)
+    private void HandleDeath(DamageInfo info)
     {
         var e = new DeathEvent(gameObject, teamID, info);
         OnDeath?.Invoke(e);

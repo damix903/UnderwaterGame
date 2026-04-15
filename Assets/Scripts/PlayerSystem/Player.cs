@@ -1,4 +1,5 @@
 ﻿using System;
+using Animation;
 using Manager.Upgrade;
 using MessagePipe;
 using PlayerSystem;
@@ -8,21 +9,28 @@ using VContainer;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private float invincibleDuration = 1f;
+    
     [Inject] private IPublisher<EventPublisher, HealthChangeEvent> _healthPub;
     [Inject] private IPublisher<EventPublisher, DamageResult> _damagePub;
-    [Inject] private IPublisher<EventPublisher, LandedEvent> _landedPub;
-    
+
     [Inject] private IPlayerRegisterable _playerRegisterable;
+    [Inject] private ILayerConfig _layerConfig;
     
     private IDamageable _damageable;
     private IHealth _health;
-    private ICollisionDetectable _collisionDetectable;
-
+    private InvincibleHandler _invincibleHandler;
+    
     private void Awake()
     {
         _damageable = GetComponent<IDamageable>();
         _health = GetComponent<IHealth>();
-        _collisionDetectable = GetComponent<ICollisionDetectable>();
+
+        _invincibleHandler = new InvincibleHandler.Builder(gameObject, _damageable)
+            .WithDuration(invincibleDuration)
+            .WithBlinker(GetComponentsInChildren<ISpriteBlinker>())
+            .WithInvincibleLayer(_layerConfig.InvincibleLayer)
+            .Build();
     }
     
     public void ApplyRunState(RunState runState)
@@ -36,7 +44,7 @@ public class Player : MonoBehaviour
     {
         _health.OnHealthChanged += HandleHealthChange;
         _damageable.OnDamaged += HandleDamage;
-        _collisionDetectable.OnLanded += HandleLanded;
+        //_collisionDetectable.OnLanded += HandleLanded;
         _playerRegisterable?.RegisterPlayer(this);
     }
 
@@ -44,27 +52,16 @@ public class Player : MonoBehaviour
     {
         if (_health != null)
             _health.OnHealthChanged -= HandleHealthChange;
-        
-        if (_collisionDetectable != null)
-            _collisionDetectable.OnLanded -= HandleLanded;
-        
+
         if (_damageable != null)
             _damageable.OnDamaged -= HandleDamage;
         
         _playerRegisterable?.UnregisterPlayer();
     }
 
-    private void HandleDamage(DamageResult result) 
-        =>_damagePub.Publish(EventPublisher.Player, result);
-
-    private void HandleLanded() 
-        => _landedPub.Publish(EventPublisher.Player, new LandedEvent());
+    private void HandleDamage(DamageResult result)
+        => _damagePub.Publish(EventPublisher.Player, result);
 
     private void HandleHealthChange(HealthChangeEvent obj) 
         => _healthPub?.Publish(EventPublisher.Player, obj);
-}
-
-public struct LandedEvent
-{
-    
 }

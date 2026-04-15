@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Movement;
+using UnityEngine;
 
 public class StraightMove : BaseMove
 {
