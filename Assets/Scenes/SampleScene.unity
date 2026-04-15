@@ -1506,6 +1506,7 @@ GameObject:
   - component: {fileID: 795339825}
   - component: {fileID: 795339826}
   - component: {fileID: 795339827}
+  - component: {fileID: 795339828}
   m_Layer: 0
   m_Name: Upper
   m_TagString: Untagged
@@ -1621,6 +1622,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 340eda8e4c2f4c309cb32330154b0fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimParamHandler
+--- !u!114 &795339828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795339823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a1e05985034c8e99d727a3efbedb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animation.SpriteBlinker
+  interval: 0.1
 --- !u!1 &829923855
 GameObject:
   m_ObjectHideFlags: 0
@@ -2326,6 +2340,7 @@ GameObject:
   - component: {fileID: 1148581583}
   - component: {fileID: 1148581585}
   - component: {fileID: 1148581586}
+  - component: {fileID: 1148581587}
   m_Layer: 0
   m_Name: Lower
   m_TagString: Untagged
@@ -2453,6 +2468,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a7562cb4f424f3d8d097c50f9219c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Animation.AnimEventReceiver
+--- !u!114 &1148581587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148581581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94a1e05985034c8e99d727a3efbedb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animation.SpriteBlinker
+  interval: 0.1
 --- !u!1 &1189530470
 GameObject:
   m_ObjectHideFlags: 0
@@ -3187,7 +3215,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 3837353a5d2850647a884afbf3f344ca, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3312,6 +3340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d6110e663f46299aed17d87177da9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  invincibleDuration: 1
 --- !u!114 &1663461061
 MonoBehaviour:
   m_ObjectHideFlags: 0

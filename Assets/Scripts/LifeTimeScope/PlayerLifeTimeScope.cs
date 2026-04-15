@@ -1,4 +1,5 @@
-﻿using ProjectileSystem;
+﻿using Animation;
+using ProjectileSystem;
 using VContainer;
 using VContainer.Unity;
 
@@ -22,6 +23,11 @@ namespace LifeTimeScope
 
             builder.Register<PlayerHealthManager>(Lifetime.Scoped).AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<EntityHealth>().UnderTransform(transform).AsImplementedInterfaces();
+            
+            // var blinkers = GetComponentsInChildren<SpriteBlinker>(true);
+            // foreach (var b in blinkers)
+            //     builder.RegisterComponent(b).AsImplementedInterfaces();
+                //builder.RegisterComponentInHierarchy<SpriteBlinker>().UnderTransform(transform).AsImplementedInterfaces();
         }
     }
 }
