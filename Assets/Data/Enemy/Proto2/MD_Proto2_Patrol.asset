@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61c3e2cba0145a299d646cc53a4d582, type: 3}
+  m_Name: MD_Proto2_Patrol
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI.Move.PatrolMoveData
+  dir: {x: 1, y: 0}
+  isRandomDir: 0
+  flipTime: 0

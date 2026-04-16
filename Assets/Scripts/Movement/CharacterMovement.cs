@@ -108,7 +108,7 @@ namespace Movement
             {
                 _currentStats = baseStats.Stats;
                 foreach (var m in _modifiers)
-                    m.Apply(ref _currentStats);
+                    m?.Apply(ref _currentStats);
 
                 _isDirty = false;
             }
