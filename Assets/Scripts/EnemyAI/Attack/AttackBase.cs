@@ -1,56 +1,75 @@
 ﻿using UnityEngine;
 
-namespace Attack
+namespace EnemyAI.Attack
 {
-    public abstract class AttackBase<T> : IAttackable2 where T : EnemyBaseAttackData
+    public abstract class AttackBase<T> : IAttackable where T : BaseAttackData
     {
-        protected readonly Transform owner;
-        protected readonly T attackData;
-        protected readonly IAnimEventListenable listener;
+        protected readonly ICharacterController owner;
+        protected readonly T data;
+        protected readonly IAnimEventListenable listenable;
         
         private float _lastAttackTime;
-        protected bool IsInCoolDown => Time.time - _lastAttackTime < attackData.Cooldown;
+        protected bool IsInCoolDown => Time.time - _lastAttackTime < data.Cooldown;
+        protected bool IsTargetAvailable => owner != null && owner.Target != null;
+        protected bool IsInAttackRange
+        {
+            get
+            {
+                if (!IsTargetAvailable) return false;
+                float distance = Vector3.Distance(owner.GameObject.transform.position, owner.Target.position);
+                return distance <= data.Range;
+            }
+        }
+
+        public virtual bool CanAttack
+        {
+            get
+            {
+                if (!IsTargetAvailable) return false;
+                
+                return !IsInCoolDown && IsInAttackRange;
+            }
+        }
+
+        public virtual bool IsCompleted { get; protected set; }
         
-        public AttackBase(Transform owner, EnemyBaseAttackData attackData, IAnimEventListenable listener)
+        public AttackBase(ICharacterController owner, T data, IAnimEventListenable listenable)
         {
             this.owner = owner;
-            this.listener = listener;
-
-            if (attackData is T data)
-            {
-                this.attackData = data;
-                _lastAttackTime = 0;
-            }
-            else
-            {
-                Debug.LogError($"Attack data type mismatch. Expected {typeof(T)}, got {attackData.GetType()}");
-            }
+            this.listenable = listenable;
+            this.data = data;
+            _lastAttackTime = 0;
         }
         
-        public void Attack(Transform target)
+        public void StartAttack()
         {
-            listener?.Register(AnimationEventType.FinishAnim, OnAnimFinished);
+            listenable?.Register(AnimationEventType.FinishAnim, OnAnimFinished);
             IsCompleted = false;
-            AttackInternal(target);
+            StartAttackInternal();
+        }
+        
+        public void CancelAttack()
+        {
+            Cleanup();
+            CancelAttackInternal();
+        }
+        
+        private void OnAnimFinished(bool isStarted)
+        {
+            if (!isStarted) return;
+            Cleanup();
+            OnAnimFinished();
         }
 
-        protected virtual void OnAnimFinished(bool obj)
+        protected abstract void StartAttackInternal();
+        protected virtual void CancelAttackInternal() {}
+        protected virtual void OnAnimFinished() {}
+
+        protected void Cleanup()
         {
             IsCompleted = true;
             _lastAttackTime = Time.time;
+            listenable?.Remove(AnimationEventType.FinishAnim, OnAnimFinished);
         }
-
-        public virtual bool CanAttack(Transform target)
-        {
-            if (target == null || owner == null) return false;
-            if (IsInCoolDown) return false;
-            
-            float distance = Vector3.Distance(owner.position, target.position);
-            return distance <= attackData.Range;
-        }
-
-
-        protected abstract void AttackInternal(Transform target);
-        public virtual bool IsCompleted { get; protected set; }
     }
 }

@@ -115,7 +115,7 @@ namespace ProjectileSystem
         public readonly LayerMask DetectionLayer;
         public readonly TeamID OwnerTeamID;
 
-        public ProjectileSpawnParams(GameObject owner, Vector2 dir, LayerMask detectionLayer, TeamID ownerTeamID)
+        public ProjectileSpawnParams(GameObject owner, LayerMask detectionLayer, TeamID ownerTeamID)
         {
             Owner = owner;
             DetectionLayer = detectionLayer;
@@ -136,7 +136,7 @@ namespace ProjectileSystem
             DamageInfo = new DamageInfo(
                 param.Owner,
                 data.Damage,
-                new EffectData()
+                data.EffectData
                 );
         }
     }

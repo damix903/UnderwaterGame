@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
-namespace Attack
+namespace EnemyAI.Attack
 {
-    public interface IAttackable2
+    public interface IAttackable
     {
-        public void Attack(Transform target);
-        public bool CanAttack(Transform target);
+        public void StartAttack();
+        public void CancelAttack();
+        public bool CanAttack { get; }
         public bool IsCompleted { get; }
     }
 }

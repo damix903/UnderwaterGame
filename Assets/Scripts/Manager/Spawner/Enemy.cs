@@ -2,7 +2,6 @@
 using EnemyAI;
 using MessagePipe;
 using Movement;
-using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 
@@ -13,6 +12,7 @@ public class Enemy : PoolableEntity
 
     private AIController _controller;
     private EntityHealth _health;
+    private CharacterMovement _movement;
     
     private EnemyContext _ctx;
     protected override ReleaseType ReleaseType => ReleaseType.Enemy;
@@ -22,9 +22,9 @@ public class Enemy : PoolableEntity
         base.Awake();
         _controller = GetComponent<AIController>();
         _health = GetComponent<EntityHealth>();
+        _movement = GetComponent<CharacterMovement>();
         
         _ctx = new EnemyContext.Builder()
-            .WithMovement(GetComponent<CharacterMovement>())
             .WithAnim(GetComponentInChildren<IAnimPlayable>())
             .WithEventListenable(GetComponentInChildren<IAnimEventListenable>())
             .Build();
@@ -42,6 +42,11 @@ public class Enemy : PoolableEntity
             _controller.Initialize(_ctx);
             _health.Initialize(enemyData.MaxHealth, TeamID.Enemy);
             _ctx.Anim.Initialize(_ctx.EventListenable, enemyData.AnimData);
+
+            var moveable = enemyData.BaseMoveData?.CreateMove(_movement, transform);
+            var chaseMoveable = enemyData.ChaseMoveData?.CreateMove(_movement, transform);
+            _ctx.SetMoveable(moveable);
+            _ctx.SetChaseMoveable(chaseMoveable);
         }
     }
 
@@ -77,6 +82,7 @@ public class Enemy : PoolableEntity
 
     private void HandleDamageEvent(DamageResult result)
     {
+        _messageBroker?.Publish(result);
     }
 
     private void HandleDeathEvent(DeathEvent e)

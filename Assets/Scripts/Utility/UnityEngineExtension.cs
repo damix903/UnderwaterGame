@@ -7,8 +7,6 @@ namespace Utility
         /// <summary>
         /// レイヤーマスクが単一のレイヤーを表している場合、そのレイヤー番号を返す。
         /// </summary>
-        /// <param name="mask"></param>
-        /// <returns></returns>
         public static int MaskToInt(this LayerMask mask)
         {
             int layer = 0;
@@ -24,5 +22,54 @@ namespace Utility
             Debug.LogError($"LayerMask {mask} does not correspond to a single layer.");
             return -1;
         }
+        
+        /// <summary>
+        /// ベクトルを受け取って8方向のうち最も近い方向を返す。
+        /// </summary>
+        public static Direction8 ToDirection8(this Vector2 dir)
+        {
+            if (dir == Vector2.zero) return Direction8.Right; // デフォルトは右
+            
+            // atan2は-180°から180°の範囲で角度を返すため、0°から360°の範囲に変換する
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            if (angle < 0) angle += 360;
+
+            switch (angle)
+            {
+                case >= 337.5f:
+                case < 22.5f:
+                    return Direction8.Right;
+                case >= 22.5f and < 67.5f:
+                    return Direction8.UpRight;
+                case >= 67.5f and < 112.5f:
+                    return Direction8.Up;
+                case >= 112.5f and < 157.5f:
+                    return Direction8.UpLeft;
+                case >= 157.5f and < 202.5f:
+                    return Direction8.Left;
+                case >= 202.5f and < 247.5f:
+                    return Direction8.DownLeft;
+                case >= 247.5f and < 292.5f:
+                    return Direction8.Down;
+                case >= 292.5f and < 337.5f:
+                    return Direction8.DownRight;
+                default:
+                    // 理論上ここには来ないはず
+                    Debug.LogError($"Unexpected angle {angle} for direction {dir}");
+                    return Direction8.Right; // デフォルトは右
+            }
+        }
+    }
+    
+    public enum Direction8
+    {
+        Up,
+        UpRight,
+        Right,
+        DownRight,
+        Down,
+        DownLeft,
+        Left,
+        UpLeft
     }
 }

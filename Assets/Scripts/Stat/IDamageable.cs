@@ -1,4 +1,5 @@
 ﻿using System;
+using Manager;
 using UnityEngine;
 
 public interface IDamageable
@@ -23,7 +24,7 @@ public struct DamageInfo
         AttackID = Guid.NewGuid();
         Attacker = attacker;
         Damage = damage;
-        EffectData = effectData;
+        this.EffectData = effectData;
     }
 }
 
@@ -52,17 +53,3 @@ public struct DeathEvent
 public enum TeamID { None, Player, Enemy, Others }
 
 public enum DefenseState {None, Invincible, Just }
-
-public struct EffectData
-{
-    public readonly HitStopData HitStopData;
-    public readonly CameraShakeData CameraShakeData;
-    //public readonly DamageReactionData ReactionData;
-
-    public EffectData(HitStopData hitStop, CameraShakeData cameraShake)//, DamageReactionData damageReactionData)
-    {
-        HitStopData = hitStop;
-        CameraShakeData = cameraShake;
-        //ReactionData = damageReactionData;
-    }
-}

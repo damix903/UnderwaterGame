@@ -1,33 +1,38 @@
 using System;
 using System.Collections;
+using Manager;
 using UnityEngine;
-// using Cysharp.Threading.Tasks;
 using MessagePipe;
 using VContainer;
 
 public class TimeManager : MonoBehaviour
 {
-    [Inject] private ISubscriber<DamageResult> _subscriber;
     private Coroutine _hitStopCoroutine;
+    private IDisposable _subscription;
 
-    private void Awake()
+    [Inject]
+    public void Construct(ISubscriber<DamageResult> damageSub, ISubscriber<EffectData> effectSub)
     {
-        _subscriber?.Subscribe(HandleDamageEvent);
+        var bag = DisposableBag.CreateBuilder();
+        damageSub?.Subscribe(HandleDamageEvent).AddTo(bag);
+        effectSub?.Subscribe((x) =>
+        {
+            if (x == null) return;
+            StartHitStop(x.HitStopData);
+        }).AddTo(bag);
+        
+        _subscription = bag.Build();
     }
 
     private void HandleDamageEvent(DamageResult e)
     {
-        var data = e.DamageInfo.EffectData.HitStopData;
-        if (data == null)　return;
-        
-        StartHitStop(data);
-
-        //Stop(info.Duration).Forget();
-        //Debug.Log($"{info.Duration}, {info.TimeScale}");
+        if (e.DamageInfo.EffectData == null) return;
+        StartHitStop(e.DamageInfo.EffectData.HitStopData);
     }
 
     public void StartHitStop(HitStopData data)
     {
+        if (data == null) return;
         StopHitStopCoroutine();
         _hitStopCoroutine = StartCoroutine(HitStopCoroutine(data));
     }
@@ -46,9 +51,9 @@ public class TimeManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    // private async UniTaskVoid Stop(float duration)
-    // {
-    //     await UniTask.Delay(TimeSpan.FromSeconds(duration), DelayType.UnscaledDeltaTime, cancellationToken: this.GetCancellationTokenOnDestroy());
-    //     Time.timeScale = 1f;
-    // }
+    private void OnDestroy()
+    {
+        StopHitStopCoroutine();
+        _subscription?.Dispose();
+    }
 }

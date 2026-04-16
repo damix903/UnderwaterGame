@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EnemyAI.Move;
+using UnityEngine;
 
 public class ChaseState : CharacterBaseState<ICharacterController>
 {
@@ -11,12 +12,17 @@ public class ChaseState : CharacterBaseState<ICharacterController>
         _moveable = moveable;
     }
 
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        _moveable?.Start();
+    }
 
     public override void FixedUpdate()
     {
         if (owner == null || owner.Target == null) return;
         
-        _moveable?.Move(owner.Target.position);
+        _moveable?.MoveTick(owner.Target.position);
     }
 
     public override void OnExit()

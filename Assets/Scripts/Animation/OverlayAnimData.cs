@@ -23,7 +23,7 @@ public class OverlayAnimData : ScriptableObject
     {
         HitScan,
         CanTransition,
-        MoveForAttack,
+        MoveTrigger,
         FinishAnim
     }
 

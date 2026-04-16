@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Data/HitStop", order = 0)]
+[CreateAssetMenu(menuName = "Data/Effect/HitStop", order = 0)]
 public class HitStopData : ScriptableObject
 {
     [SerializeField] private float duration;

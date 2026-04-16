@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EnemyAI.Move;
+using UnityEngine;
 
 public class MoveState : CharacterBaseState
 {
@@ -9,10 +10,16 @@ public class MoveState : CharacterBaseState
     {
         _moveable = moveable;
     }
-    
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        _moveable?.Start();
+    }
+
     public override void FixedUpdate()
     {
-        _moveable?.Move();
+        _moveable?.MoveTick();
     }
 
     public override void OnExit()

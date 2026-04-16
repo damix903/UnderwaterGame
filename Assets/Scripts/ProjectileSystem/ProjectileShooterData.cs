@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Manager;
+using UnityEngine;
 
 namespace ProjectileSystem
 {
@@ -10,6 +11,7 @@ namespace ProjectileSystem
         [SerializeField] private float cost = 5f;
         [SerializeField] private float cooldown = .5f;
         [SerializeField] private BaseProjectileData projectileData;
+        [SerializeField] private EffectData effectData;
 
         [Header("Shoot Position")]
         [SerializeField] private Vector2 shootCenter;
@@ -21,5 +23,6 @@ namespace ProjectileSystem
         public BaseProjectileData ProjectileData => projectileData;
         public Vector2 ShootCenter => shootCenter;
         public float ShootRadius => shootRadius;
+        public EffectData EffectData => effectData;
     }
 }

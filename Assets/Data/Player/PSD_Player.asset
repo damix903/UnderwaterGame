@@ -16,5 +16,6 @@ MonoBehaviour:
   cost: 5
   cooldown: 0.3
   projectileData: {fileID: 11400000, guid: c6cf456402d9d7248932840453a5c5dd, type: 2}
+  effectData: {fileID: 11400000, guid: 1647334e54a3032409b1960fb5138feb, type: 2}
   shootCenter: {x: 0, y: 0.74}
   shootRadius: 0.82

@@ -6,36 +6,26 @@ namespace Animation
 {
     public class AnimEventReceiver : MonoBehaviour, IAnimEventListenable
     {
-        private readonly Dictionary<AnimationEventType, List<Action<bool>>> _register = new();
+        private readonly Dictionary<AnimationEventType, Action<bool>> _registerDict = new();
 
         public void Register(AnimationEventType type, Action<bool> action)
         {
-            if (_register.TryGetValue(type, out var actions))
-            {
-                actions.Add(action);
-                return;
-            }
-        
-            _register.Add(type, new List<Action<bool>> {action});
+            if (!_registerDict.TryAdd(type, action))
+                _registerDict[type] += action;
         }
 
         public void Remove(AnimationEventType type, Action<bool> action)
         {
-            if (_register.TryGetValue(type, out var actions))
-            {
-                actions.Remove(action);
-            }
+            if (!_registerDict.ContainsKey(type)) return;
+            
+            _registerDict[type] -= action;
+            if (_registerDict[type] == null) _registerDict.Remove(type);
         }
     
         public void OnAnimEvent(AnimationEventType type, bool isActive)
         {
-            if (_register.TryGetValue(type, out var actions))
-            {
-                foreach (var a in actions)
-                {
-                    a.Invoke(isActive);
-                }
-            }
+            if (_registerDict.TryGetValue(type, out var actions))
+                actions?.Invoke(isActive);
         }
         
         public void SendStartEvent(AnimationEventType type) => OnAnimEvent(type, true);

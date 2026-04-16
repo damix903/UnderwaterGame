@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Attack.MeleeAttackData
   range: 10
   cooldown: 3
-  stopDuration: 0
+  speed: 8

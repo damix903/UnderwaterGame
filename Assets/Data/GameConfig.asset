@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: Assembly-CSharp::GameConfigData
   damage: 10
-  cameraShake: {fileID: 0}
+  effectData: {fileID: 11400000, guid: 3f1ea66fd9773c24a8912503a4c1a309, type: 2}
   allDamageableLayer:
     serializedVersion: 2
     m_Bits: 4992

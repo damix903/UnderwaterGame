@@ -15,4 +15,8 @@ MonoBehaviour:
   prefab: {fileID: 7417795706667178980, guid: f607b7ca246beff4083c7dda532898ce, type: 3}
   enemyType: 1
   stateBuilder: {fileID: 11400000, guid: 6dba5d37cffa3a5468c0b10a2e287f40, type: 2}
+  baseMoveData: {fileID: 11400000, guid: a8c4f469517a8d0439ee7d3dd6e64952, type: 2}
+  chaseMoveData: {fileID: 0}
   animData: {fileID: 11400000, guid: 347f81096b84a904da1f4667750dd9e7, type: 2}
+  maxHealth: 1
+  attackData: {fileID: 0}

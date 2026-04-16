@@ -16,3 +16,4 @@ MonoBehaviour:
   maxSpeed: 8
   damage: 10
   lifeTime: 5
+  effectData: {fileID: 11400000, guid: 2f863a91f44db1444beacc6ebb7bd781, type: 2}
