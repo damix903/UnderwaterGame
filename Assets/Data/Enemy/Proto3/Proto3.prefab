@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 8902744545850561829}
   - component: {fileID: 5982820341838764729}
   - component: {fileID: 1324188693028964557}
+  - component: {fileID: 5948328636200548335}
   m_Layer: 0
   m_Name: Graphic
   m_TagString: Untagged
@@ -319,3 +320,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62c8299202e9564d82e39a43c0b65a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationSystem
+--- !u!114 &5948328636200548335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6706133807795234476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a7562cb4f424f3d8d097c50f9219c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Animation.AnimEventReceiver

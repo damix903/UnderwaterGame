@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Proto3_Move
+  m_Name: Proto3_Attack
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -22,11 +22,11 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -1406562524, guid: d5a3ade158e86c044aed3f4ac04d2bbe, type: 3}
-    - time: 0.1
-      value: {fileID: 1597671125, guid: d5a3ade158e86c044aed3f4ac04d2bbe, type: 3}
-    - time: 0.2
-      value: {fileID: -1537620769, guid: d5a3ade158e86c044aed3f4ac04d2bbe, type: 3}
     - time: 0.3
+      value: {fileID: 1597671125, guid: d5a3ade158e86c044aed3f4ac04d2bbe, type: 3}
+    - time: 0.5
+      value: {fileID: -1537620769, guid: d5a3ade158e86c044aed3f4ac04d2bbe, type: 3}
+    - time: 0.7
       value: {fileID: -648120317, guid: d5a3ade158e86c044aed3f4ac04d2bbe, type: 3}
     attribute: m_Sprite
     path: 
@@ -59,7 +59,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.4
+    m_StopTime: 0.8
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -79,10 +79,17 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.2
+  - time: 0.3
     functionName: SendStartEvent
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 2
+    messageOptions: 0
+  - time: 0.7
+    functionName: SendStartEvent
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 3
     messageOptions: 0

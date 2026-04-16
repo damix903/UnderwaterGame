@@ -8,8 +8,7 @@ using VContainer;
 public class PlayerStatsManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
-    [SerializeField] private float comboTime = 5f;
-    
+
     [Inject] private IPublisher<ComboEvent> _publisher;
     [Inject] private IPlayerProvider _playerProvider;
 

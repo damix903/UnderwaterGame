@@ -1,5 +1,5 @@
 using System;
-using Attack;
+using EnemyAI.Attack;
 using EnemyAI.Move;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ public class EnemyData : EntityData
     [Header("Behavior Data")]
     [SerializeField] private BaseMoveData baseMoveData;
     [SerializeField] private BaseMoveData chaseMoveData;
-    [SerializeField] private EnemyBaseAttackData attackData;
+    [SerializeField] private BaseAttackData attackData;
     [SerializeField] private BaseEnemyStateBuilder stateBuilder;
     
     [Space]
@@ -24,7 +24,7 @@ public class EnemyData : EntityData
     public BaseMoveData ChaseMoveData => chaseMoveData;
     public AnimData AnimData => animData;
     public float MaxHealth => maxHealth;
-    public EnemyBaseAttackData AttackData => attackData;
+    public BaseAttackData AttackData => attackData;
 }
 
 [Serializable]

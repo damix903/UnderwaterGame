@@ -1,7 +1,4 @@
-﻿using Attack;
-using EnemyAI.Move;
-using Movement;
-using Underwater.StateMachine;
+﻿using Underwater.StateMachine;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ESB_", menuName = "Data/State/BasicEnemy")]
@@ -24,9 +21,9 @@ public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
             var attackData = ctx.Data.AttackData;
             if (attackData != null)
             {
-                var attackable = ctx.Data.AttackData.CreateAttack(controller.GameObject.transform, ctx.EventListenable);
-                var attack = new AttackState(controller, ctx.Anim, attackable);
-                stateMachine.AddAnyTransition(attack, new FuncPredicate(()=> controller.Target != null && attackable.CanAttack(controller.Target)));
+                var attackable = ctx.Data.AttackData.CreateAttack(controller, ctx.EventListenable);
+                var attack = new AttackState(ctx.Anim, attackable);
+                stateMachine.AddAnyTransition(attack, new FuncPredicate(()=> attackable.CanAttack));
                 stateMachine.AddTransition(attack, idle, new FuncPredicate(() => attackable.IsCompleted));
             }
             stateMachine.AddAnyTransition(chase, new FuncPredicate(() => controller.Target != null));

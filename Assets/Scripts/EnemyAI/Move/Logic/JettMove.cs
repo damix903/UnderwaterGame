@@ -19,7 +19,7 @@ namespace EnemyAI.Move
         public override void Start(Vector2 position = default)
         {
             base.Start(position);
-            _listenable?.Register(AnimationEventType.MoveForAttack, OnMove);
+            _listenable?.Register(AnimationEventType.MoveTrigger, OnMove);
         }
 
         private void OnMove(bool isStarted)
@@ -35,7 +35,7 @@ namespace EnemyAI.Move
         public override void Stop()
         {
             base.Stop();
-            _listenable?.Remove(AnimationEventType.MoveForAttack, OnMove);
+            _listenable?.Remove(AnimationEventType.MoveTrigger, OnMove);
         }
     }
 }

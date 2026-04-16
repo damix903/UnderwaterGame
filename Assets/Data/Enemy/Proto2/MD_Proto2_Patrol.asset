@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI.Move.PatrolMoveData
   dir: {x: 1, y: 0}
   isRandomDir: 0
-  flipTime: 0
+  flipTime: 2

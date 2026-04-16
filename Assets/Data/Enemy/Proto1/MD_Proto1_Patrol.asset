@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e61c3e2cba0145a299d646cc53a4d582, type: 3}
   m_Name: MD_Proto1_Patrol
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI.Move.PatrolMoveData
-  dir: {x: 0, y: 0}
+  dir: {x: 1, y: 0}
   isRandomDir: 1
   flipTime: 2

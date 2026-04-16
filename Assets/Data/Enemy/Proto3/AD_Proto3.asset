@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c02a837b7bd944ce89f66bb3d03e34ec, type: 3}
-  m_Name: EAD_Prot4
-  m_EditorClassIdentifier: Assembly-CSharp::Attack.MeleeAttackData
-  range: 10
-  cooldown: 3
-  speed: 8
+  m_Name: AD_Proto3
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI.Attack.ChargeAttackData
+  range: 4
+  cooldown: 2
+  speed: 10
