@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -18,6 +19,7 @@ public abstract class PoolableEntity : Entity, IPoolable
     protected abstract ReleaseType ReleaseType { get; }
     private IDisposable _subscription;
     [Inject] private ISubscriber<ReleaseType> _subscriber;
+    protected CancellationTokenSource Cts { get; private set; } = new CancellationTokenSource();
 
     public void InitializePool(Action release)
     {
@@ -43,11 +45,23 @@ public abstract class PoolableEntity : Entity, IPoolable
         {
             if (type == ReleaseType) Release();
         });
+        
+        Cts = new CancellationTokenSource();
     }
     
     protected override void OnDisable()
     {
         base.OnDisable();
         _subscription?.Dispose();
+        CancelTokenSource();
+    }
+    
+    private void CancelTokenSource()
+    {
+        if (Cts == null || Cts.IsCancellationRequested) return;
+        
+        Cts.Cancel();
+        Cts.Dispose();
+        Cts = null;
     }
 }

@@ -28,6 +28,7 @@ public class ObjectPoolManager : MonoBehaviour
             return null;
         }
 
+        obj.transform.SetParent(transform);
         poolable.InitializePool(() => pool.Release(obj));
         return poolable;
     }

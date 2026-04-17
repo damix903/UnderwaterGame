@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
+using Manager.AudioSystem;
 using Movement;
 using ProjectileSystem;
 using Underwater.StateMachine;
@@ -15,6 +17,9 @@ public class PlayerController : MonoBehaviour
 
     private IAimable _aimable;
     private IAttackable _attackable;
+    [SerializeField] private SoundManager _soundManager;
+    [SerializeField] private SoundData _soundData;
+    [SerializeField] private SoundData _soundData2;
     
     [SerializeField] private AnimData animData;
     private IAnimPlayable _anim;
@@ -42,6 +47,11 @@ public class PlayerController : MonoBehaviour
         else if (Mathf.Abs(_input.MoveInput.x) > 0.01f) _anim.PlayBaseClip(animData.GetAnim(AnimType.Move));
         else _anim.PlayBaseClip(animData.GetAnim(AnimType.Idle));
         
+        var token = this.GetCancellationTokenOnDestroy();
+        var data = _input.MoveInput.x > 0f ? _soundData : _soundData2;
+        
+        if (Mathf.Abs(_input.MoveInput.x) > 0.01f)
+        _soundManager.StartBGM(data,3f, ct: token).Forget();
     }
 
     private void HandleFlip()
@@ -57,6 +67,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!started) return;
         _attackable.Attack(_input.AimDir);
+        _soundManager.PlaySound(_soundData, Vector3.zero);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

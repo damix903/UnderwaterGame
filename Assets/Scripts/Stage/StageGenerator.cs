@@ -84,4 +84,4 @@ public class StageGenerator : MonoBehaviour
     }
 }
 
-public enum ReleaseType { Room, Enemy, Projectile, Item }
+public enum ReleaseType { Room, Enemy, Projectile, Item, Audio }
