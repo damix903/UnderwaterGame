@@ -13,7 +13,7 @@ namespace LifeTimeScope
             builder.Register<Enemy>(Lifetime.Transient);
             builder.Register<EmptyCostable>(Lifetime.Singleton).AsImplementedInterfaces(); // コストなしなのでシングルトンで十分
             builder.Register<EnemyMessageBroker>(Lifetime.Transient);
-            builder.Register<EmptyModifierProvider>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<EmptyProjModifierProvider>(Lifetime.Singleton).AsImplementedInterfaces();
         }
     }
 }

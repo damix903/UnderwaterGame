@@ -7,6 +7,6 @@ public class NormalProjectileData : BaseProjectileData
 {
     public override void OnUpdate(Rigidbody2D rb, Projectile proj)
     {
-        rb.linearVelocity = proj.transform.right * MaxSpeed;
+        rb.linearVelocity = proj.transform.right * proj.RunTimeStats.Speed;
     }
 }

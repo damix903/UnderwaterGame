@@ -1,3 +1,4 @@
+using System.Collections;
 using Manager;
 using MessagePipe;
 using Movement;
@@ -14,7 +15,7 @@ namespace ProjectileSystem
         [Inject] private IProjectileService _manager;
         [Inject] private ILayerConfig _layerConfig;
         [Inject] private ICostable _costable;
-        [Inject] private IModifierProvider _modifierProvider;
+        [Inject] private IProjModifierProvider projModifierProvider;
         [Inject] private IPublisher<EffectData> _effectPub;
 
         private float _cooldownTimer;
@@ -24,6 +25,9 @@ namespace ProjectileSystem
             transform.position + (Vector3)data.ShootCenter + (Vector3)_aimDir * data.ShootRadius;
 
         private LayerMask detectionLayer;
+        
+        private ShooterContext _context;
+        private Coroutine _fireCo;
 
         private void Start()
         {
@@ -37,19 +41,51 @@ namespace ProjectileSystem
             _cooldownTimer -= Time.deltaTime;
         }
 
+        [SerializeField] private float angle;
+        [SerializeField] private int count;
+        
         public void Fire(Vector2 dir)
         {
             if (!CanAttack) return;
+            
+            _context = new ShooterContext
+            {
+                recoil = data.Recoil,
+                cost = data.Cost,
+                cooldown = data.Cooldown
+            };
+            if (projModifierProvider.ShooterModifiers is { Count: > 0 })
+            {
+                foreach (var mod in projModifierProvider.ShooterModifiers)
+                    mod.Modify(_context);
+            }
 
-            ShootProjectile(dir);
+            _context.spreadCount = count;
+            _context.spreadAngle = angle;
+
+            if (_fireCo != null) StopCoroutine(_fireCo);
+            _fireCo = StartCoroutine(FireRoutine());
+
             _effectPub.Publish(data.EffectData);
 
             var overwrite = _movement.Velocity.x * dir.x > 0f;
             _movement.AddImpulseForce(-_aimDir * data.Recoil, overwrite);
             _movement.BlockMovement(.5f, 1f);
            
-            _costable.Consume(data.Cost);
-            _cooldownTimer = data.Cooldown;
+            _costable.Consume(_context.cost);
+            _cooldownTimer = _context.cooldown;
+        }
+
+        private IEnumerator FireRoutine()
+        {
+            for (int i = 0; i < _context.burstCount; i++)
+            {
+                if (_context.spreadCount > 1) FireSpread(_aimDir);
+                else ShootProjectile(default);
+                
+                if (_context.burstInterval > 0f)
+                    yield return new WaitForSeconds(_context.burstInterval);
+            }
         }
 
         private void ShootProjectile(Vector2 dir)
@@ -61,13 +97,23 @@ namespace ProjectileSystem
             obj.transform.right = _aimDir;
             var param = new ProjectileSpawnParams(gameObject, detectionLayer, TeamID.Player);
 
-            obj.Initialize(data.ProjectileData, param, data.ProjectileData, _modifierProvider.Modifiers);
+            obj.Initialize(data.ProjectileData, param, data.ProjectileData, projModifierProvider.Modifiers);
+        }
+
+        private void FireSpread(Vector2 direction)
+        {
+            int count = _context.spreadCount;
+            
+                for (int i = 0; i < count; i++)
+                {
+                    float angle = -_context.spreadAngle / 2f + _context.spreadAngle / (count - 1) * i;
+                    var dir = Quaternion.Euler(0f, 0f, angle) * direction;
+                    ShootProjectile(dir);
+                }
         }
 
         public void SetAimDirection(Vector2 direction) => _aimDir = direction;
-
         public void Attack(Vector2 direction = default) => Fire(direction);
-
         public bool CanAttack => _cooldownTimer <= 0f;
 
 #if UNITY_EDITOR

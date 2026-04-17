@@ -26,6 +26,16 @@ namespace Utility
         }
         
         /// <summary>
+        /// ゲームオブジェクトのレイヤーが指定したレイヤーマスクに含まれているかどうかを判定する。
+        /// </summary>
+        public static bool IsInLayerMask(this GameObject obj, LayerMask mask)
+        {
+            // ゲームオブジェクトのレイヤーがマスクに含まれているかをビット演算で判定
+            // 例えば、obj.layerが3で、mask.valueが(1 << 3) | (1 << 5)の場合、(mask.value & (1 << obj.layer))は(1 << 3)となり、0でないためtrueを返す
+            return (mask.value & (1 << obj.layer)) != 0;
+        }
+        
+        /// <summary>
         /// ベクトルを受け取って8方向のうち最も近い方向を返す。
         /// </summary>
         public static Direction8 ToDirection8(this Vector2 dir)

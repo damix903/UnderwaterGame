@@ -15,7 +15,7 @@ namespace LifeTimeScope
             //  .AsSelf();
 
             builder.RegisterComponentInHierarchy<ProjectileShooter>().UnderTransform(transform);
-            builder.Register<ModifierProvider>(Lifetime.Scoped).AsImplementedInterfaces();
+            builder.Register<ProjModifierProvider>(Lifetime.Scoped).AsImplementedInterfaces();
         
             builder.RegisterComponentInHierarchy<PlayerController>().UnderTransform(transform);
             builder.RegisterComponentInHierarchy<AnimParamHandler>().UnderTransform(transform);

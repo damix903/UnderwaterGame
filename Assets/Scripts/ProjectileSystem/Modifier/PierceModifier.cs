@@ -9,7 +9,7 @@ namespace ProjectileSystem
         
         public override void OnSpawn(Projectile p)
         {
-            p.RunTimeStats.Durability = pierceCount;
+            p.RunTimeStats.Durability += pierceCount - 1;
         }
 
         public override void OnHitToObstacle(Projectile p)

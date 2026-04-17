@@ -35,6 +35,7 @@ public class PlayerHealthManager : IDisposable, ITickable, ICostable
 
     private void HandleComboEvent(ComboEvent e)
     {
+        if (e. Count == 0) return;
         var amount = 5f;
         if (e.Count >= 5)
         {

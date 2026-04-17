@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace ProjectileSystem
 {
@@ -8,7 +9,6 @@ namespace ProjectileSystem
     public class Projectile : PoolableEntity
     {
         private Rigidbody2D _rb;
-
         private IProjectileBehaviour _behaviour;
 
         private float _lifeTimeTimer;
@@ -22,8 +22,7 @@ namespace ProjectileSystem
         protected override void Awake()
         {
             base.Awake();
-            _rb = GetComponent<Rigidbody2D>();
-            if (_rb == null) _rb = gameObject.AddComponent<Rigidbody2D>();
+            _rb = gameObject.GetOrAddComponent<Rigidbody2D>();
             RunTimeStats = new ProjectileRunTimeStats();
         }
 
@@ -72,9 +71,10 @@ namespace ProjectileSystem
 
         private bool CanHit(Collider2D other)
         {
-            return other.gameObject != SpawnParams.Owner 
-                   && (SpawnParams.DetectionLayer.value & (1 << other.gameObject.layer)) > 0
-                   && !_hitObjects.Contains(other.gameObject);
+            var obj = other.gameObject;
+            return obj != SpawnParams.Owner 
+                   && obj.IsInLayerMask(SpawnParams.DetectionLayer)
+                   && !_hitObjects.Contains(obj);
         }
 
         private void OnHitToDamageable(IDamageable damageable)
@@ -108,7 +108,7 @@ namespace ProjectileSystem
 
         protected override ReleaseType ReleaseType => ReleaseType.Projectile;
     }
-
+    
     public struct ProjectileSpawnParams
     {
         public readonly GameObject Owner;
@@ -120,24 +120,6 @@ namespace ProjectileSystem
             Owner = owner;
             DetectionLayer = detectionLayer;
             OwnerTeamID = ownerTeamID;
-        }
-    }
-
-    public class ProjectileRunTimeStats
-    {
-        public int Durability;
-        public float LifeTime;
-        public DamageInfo DamageInfo;
-
-        public void Initialize(BaseProjectileData data, ProjectileSpawnParams param)
-        {
-            Durability = 0;
-            LifeTime = data.LifeTime;
-            DamageInfo = new DamageInfo(
-                param.Owner,
-                data.Damage,
-                data.EffectData
-                );
         }
     }
 }

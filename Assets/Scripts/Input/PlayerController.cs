@@ -67,7 +67,6 @@ public class PlayerController : MonoBehaviour
     {
         if (!started) return;
         _attackable.Attack(_input.AimDir);
-        _soundManager.PlaySound(_soundData, Vector3.zero);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
