@@ -1,4 +1,5 @@
 ﻿using Manager;
+using Manager.AudioSystem;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -45,6 +46,7 @@ namespace LifeTimeScope
             builder.RegisterEntryPoint<RunManager>(Lifetime.Singleton);
 
             builder.RegisterComponentInHierarchy<StageGenerator>();
+            builder.RegisterComponentInHierarchy<SoundManager>();
 
             var timer = new TimerManager();
             builder.RegisterInstance(timer).AsImplementedInterfaces();

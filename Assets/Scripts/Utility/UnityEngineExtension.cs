@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Utility
 {
@@ -58,6 +60,22 @@ namespace Utility
                     Debug.LogError($"Unexpected angle {angle} for direction {dir}");
                     return Direction8.Right; // デフォルトは右
             }
+        }
+        
+        /// <summary>
+        /// startからtargetに向かって、duration秒かけて線形補間するコルーチン。
+        /// </summary>
+        public static IEnumerator LerpCoroutine(float start, float target, float duration, System.Action<float> onUpdate)
+        {
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float value = Mathf.Lerp(start, target, elapsed / duration);
+                onUpdate?.Invoke(value);
+                yield return null;
+            }
+            onUpdate?.Invoke(target); // 最終的にターゲット値を確実に設定する
         }
     }
     

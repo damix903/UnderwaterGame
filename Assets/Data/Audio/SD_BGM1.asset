@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18b323f23d9419b8114e4ce97fc3e29, type: 3}
+  m_Name: SD_BGM1
+  m_EditorClassIdentifier: Assembly-CSharp::Manager.AudioSystem.SoundData
+  prefab: {fileID: 7452394450577174351, guid: 9649808ae0570fd4fa1e8c466856a2cb, type: 3}
+  clip: {fileID: 8300000, guid: 4352ed8953fdf4748be43bdb0f5a259c, type: 3}
+  mixer: {fileID: 0}
+  loop: 1
+  playOnAwake: 0
+  frequentSound: 0
+  randomPitch: 0
+  randomPitchRange: 0.05
+  randomVolume: 0
+  randomVolumeRange: 0.1

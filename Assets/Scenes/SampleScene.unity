@@ -497,7 +497,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsManager
   text: {fileID: 695607585}
-  comboTime: 5
 --- !u!4 &151334189
 Transform:
   m_ObjectHideFlags: 0
@@ -2371,6 +2370,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043846151}
   m_CullTransparentMesh: 1
+--- !u!1 &1098979403
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1098979405}
+  - component: {fileID: 1098979404}
+  m_Layer: 0
+  m_Name: Sound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1098979404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098979403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d51995e43fe54e8cb692437ad2a5f6aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Manager.AudioSystem.SoundManager
+  maxFrequentSoundCount: 10
+  soundPrefab: {fileID: 0}
+--- !u!4 &1098979405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098979403}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.33635, y: -1.03515, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1148581581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3342,7 +3387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileShooter
   data: {fileID: 11400000, guid: e54220c5765db6340b5503452e696b77, type: 2}
-  mod1: {fileID: 11400000, guid: dbfb3cea1cd1ae34089b42d34d014151, type: 2}
 --- !u!114 &1663461057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3371,6 +3415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d4326c746048c98cbcd99b38a2c71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController2
+  _soundManager: {fileID: 1098979404}
+  _soundData: {fileID: 11400000, guid: bd6485637543fed4e8dd5bee264051d4, type: 2}
+  _soundData2: {fileID: 11400000, guid: 58a5fce81ec38714e8f5113d4e823393, type: 2}
   animData: {fileID: 11400000, guid: f85001a1cac0b8c4eb29d4af7630e87f, type: 2}
 --- !u!114 &1663461060
 MonoBehaviour:
@@ -7099,6 +7146,7 @@ MonoBehaviour:
   - {fileID: 1011711784}
   - {fileID: 2028303595}
   - {fileID: 42777599}
+  - {fileID: 1098979403}
   gameConfigData: {fileID: 11400000, guid: d3739073affc31b4a94262b6a7003c6f, type: 2}
 --- !u!4 &2022187102
 Transform:
@@ -12272,6 +12320,7 @@ SceneRoots:
   - {fileID: 2022187102}
   - {fileID: 151334189}
   - {fileID: 2023704290}
+  - {fileID: 1098979405}
   - {fileID: 1791375173}
   - {fileID: 6638130367943028860}
   - {fileID: 53237380051122827}
