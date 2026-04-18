@@ -61,7 +61,7 @@ namespace ProjectileSystem
             if (projModifierProvider.ShooterModifiers is { Count: > 0 })
             {
                 foreach (var mod in projModifierProvider.ShooterModifiers)
-                    mod.Modify(_context);
+                    mod.Apply(_context);
             }
 
             _context.spreadCount = count;

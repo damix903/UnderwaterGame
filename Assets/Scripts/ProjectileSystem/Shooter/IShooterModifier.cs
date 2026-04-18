@@ -2,7 +2,7 @@
 {
     public interface IShooterModifier
     {
-        public void Modify(ShooterContext context);
+        public void Apply(ShooterContext context);
     }
 
     public class ShooterContext
