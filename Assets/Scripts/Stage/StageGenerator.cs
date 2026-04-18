@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MessagePipe;
+using SpawnSystem;
 using UI;
 using UnityEngine;
 using Utility.Lottery;
@@ -45,7 +46,7 @@ public class StageGenerator : MonoBehaviour
     
     private Vector3 ProcessGenerate()
     {
-        var entrance = _factory.Create(stageConfig.EntranceRoom, transform);
+        var entrance = _factory.Create(stageConfig.EntranceRoom, new SpawnPoint());
         _lastEndPoint = entrance.EndPoint;
         
         int count = 0;
@@ -68,7 +69,7 @@ public class StageGenerator : MonoBehaviour
 
     private void GenerateRoom(RoomData data)
     {
-        var room = _factory.Create(data, _lastEndPoint);
+        var room = _factory.Create(data, new SpawnPoint());
         var amountToMove = _lastEndPoint.position - room.StartPoint.position;
         room.transform.position += amountToMove;
         

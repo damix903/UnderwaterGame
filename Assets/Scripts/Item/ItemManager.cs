@@ -1,5 +1,6 @@
 ﻿using System;
 using MessagePipe;
+using SpawnSystem;
 using UnityEngine;
 using VContainer;
 
@@ -23,7 +24,7 @@ public class ItemManager : MonoBehaviour
 
     public void Spawn(ItemData data, Transform point)
     {
-        _factory.Create(data, point);
+        _factory.Create(data, new SpawnPoint(point.position, point.rotation));
     }
 
     private void OnDestroy()

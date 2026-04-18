@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SpawnSystem;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Entity/Room")]

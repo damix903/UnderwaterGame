@@ -2,7 +2,9 @@ using System.Collections;
 using Manager;
 using MessagePipe;
 using Movement;
+using SpawnSystem;
 using UnityEngine;
+using Utility;
 using VContainer;
 
 namespace ProjectileSystem
@@ -43,6 +45,8 @@ namespace ProjectileSystem
 
         [SerializeField] private float angle;
         [SerializeField] private int count;
+        [SerializeField] private int count2;
+        [SerializeField] private float interval;
         
         public void Fire(Vector2 dir)
         {
@@ -62,6 +66,8 @@ namespace ProjectileSystem
 
             _context.spreadCount = count;
             _context.spreadAngle = angle;
+            _context.burstCount = count2;
+            _context.burstInterval = interval;
 
             if (_fireCo != null) StopCoroutine(_fireCo);
             _fireCo = StartCoroutine(FireRoutine());
@@ -69,7 +75,7 @@ namespace ProjectileSystem
             _effectPub.Publish(data.EffectData);
 
             var overwrite = _movement.Velocity.x * dir.x > 0f;
-            _movement.AddImpulseForce(-_aimDir * data.Recoil, overwrite);
+            _movement.AddImpulseForce(-_aimDir * _context.recoil, overwrite);
             _movement.BlockMovement(.5f, 1f);
            
             _costable.Consume(_context.cost);
@@ -91,25 +97,24 @@ namespace ProjectileSystem
         private void ShootProjectile(Vector2 dir)
         {
             if (dir != default) _aimDir = dir;
-            var obj = _manager.Spawn(data.ProjectileData, transform);
+   
+            var proj = _manager.Spawn(data.ProjectileData, new SpawnPoint(ShootPos, _aimDir.ToQuaternion()));
 
-            obj.transform.position = ShootPos;
-            obj.transform.right = _aimDir;
             var param = new ProjectileSpawnParams(gameObject, detectionLayer, TeamID.Player);
-
-            obj.Initialize(data.ProjectileData, param, data.ProjectileData, projModifierProvider.Modifiers);
+            proj.Initialize(data.ProjectileData, param, data.ProjectileData, projModifierProvider.Modifiers);
         }
 
         private void FireSpread(Vector2 direction)
         {
             int count = _context.spreadCount;
-            
-                for (int i = 0; i < count; i++)
-                {
-                    float angle = -_context.spreadAngle / 2f + _context.spreadAngle / (count - 1) * i;
-                    var dir = Quaternion.Euler(0f, 0f, angle) * direction;
-                    ShootProjectile(dir);
-                }
+
+            for (var i = 0; i < count; i++)
+            {
+                // 例えばspreadAngleが30でspreadCountが3なら、-15, 0, +15の3発になる
+                var angle = -_context.spreadAngle / 2f + _context.spreadAngle / (count - 1) * i;
+                var dir = Quaternion.Euler(0f, 0f, angle) * direction;
+                ShootProjectile(dir);
+            }
         }
 
         public void SetAimDirection(Vector2 direction) => _aimDir = direction;

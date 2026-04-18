@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class EntityData : ScriptableObject
+namespace SpawnSystem
 {
-    [SerializeField] private GameObject prefab;
+    public class EntityData : ScriptableObject
+    {
+        [SerializeField] private GameObject prefab;
     
-    public GameObject Prefab => prefab;
+        public GameObject Prefab => prefab;
+    }
 }

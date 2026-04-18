@@ -1,6 +1,7 @@
 using System;
 using EnemyAI.Attack;
 using EnemyAI.Move;
+using SpawnSystem;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Entity/Enemy")]

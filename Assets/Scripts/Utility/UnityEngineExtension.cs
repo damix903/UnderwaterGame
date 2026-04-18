@@ -36,6 +36,19 @@ namespace Utility
         }
         
         /// <summary>
+        /// Vector2からQuaternionを作成する。
+        /// </summary>
+        public static Quaternion ToQuaternion(this Vector2 dir, bool useUpward = false)
+        {
+            if (dir == Vector2.zero) return Quaternion.identity; // デフォルトは回転なし
+            
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            if (useUpward) angle -= 90f; // 上向きが0°になるように調整
+            
+            return Quaternion.Euler(0, 0, angle);
+        }
+        
+        /// <summary>
         /// ベクトルを受け取って8方向のうち最も近い方向を返す。
         /// </summary>
         public static Direction8 ToDirection8(this Vector2 dir)

@@ -1,6 +1,7 @@
 using System;
 using Manager;
 using ProjectileSystem;
+using SpawnSystem;
 using UnityEngine;
 
 public abstract class BaseProjectileData : EntityData, IProjectileBehaviour

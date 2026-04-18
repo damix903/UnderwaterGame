@@ -1,4 +1,5 @@
 ﻿using System;
+using SpawnSystem;
 using UnityEngine;
 
 public abstract class Entity : MonoBehaviour

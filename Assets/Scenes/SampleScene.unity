@@ -3387,6 +3387,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileShooter
   data: {fileID: 11400000, guid: e54220c5765db6340b5503452e696b77, type: 2}
+  angle: 100
+  count: 5
+  count2: 0
+  interval: 0
 --- !u!114 &1663461057
 MonoBehaviour:
   m_ObjectHideFlags: 0
