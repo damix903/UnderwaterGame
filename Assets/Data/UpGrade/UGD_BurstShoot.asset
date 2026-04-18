@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5269d54815ec4afa9ceb59731d7ccca5, type: 3}
-  m_Name: UGD_PierceShoot
+  m_Name: UGD_BurstShoot
   m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeData
-  upgradeName: 1
+  upgradeName: BurstShoot
   image: {fileID: 0}
   effects:
-  - {fileID: 11400000, guid: dbfb3cea1cd1ae34089b42d34d014151, type: 2}
-  - {fileID: 11400000, guid: dbfb3cea1cd1ae34089b42d34d014151, type: 2}
+  - {fileID: 11400000, guid: 676224393e5989d4b93a3c84aed10a71, type: 2}

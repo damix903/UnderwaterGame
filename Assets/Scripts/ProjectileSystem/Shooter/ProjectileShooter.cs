@@ -43,43 +43,29 @@ namespace ProjectileSystem
             _cooldownTimer -= Time.deltaTime;
         }
 
-        [SerializeField] private float angle;
-        [SerializeField] private int count;
-        [SerializeField] private int count2;
-        [SerializeField] private float interval;
-        
         public void Fire(Vector2 dir)
         {
             if (!CanAttack) return;
-            
-            _context = new ShooterContext
-            {
-                recoil = data.Recoil,
-                cost = data.Cost,
-                cooldown = data.Cooldown
-            };
-            if (projModifierProvider.ShooterModifiers is { Count: > 0 })
-            {
-                foreach (var mod in projModifierProvider.ShooterModifiers)
-                    mod.Apply(_context);
-            }
 
-            _context.spreadCount = count;
-            _context.spreadAngle = angle;
-            _context.burstCount = count2;
-            _context.burstInterval = interval;
+            _context = new ShooterContext(data.Recoil, data.Cost, data.Cooldown);
+            if (projModifierProvider?.ShooterModifiers is { Count: > 0 })
+                foreach (var mod in projModifierProvider.ShooterModifiers)
+                    mod?.Apply(ref _context);
 
             if (_fireCo != null) StopCoroutine(_fireCo);
             _fireCo = StartCoroutine(FireRoutine());
+            
+            Debug.Log($"{_context.cost}, {_context.recoil}, {_context.cooldown}");
+        }
 
-            _effectPub.Publish(data.EffectData);
-
+        private void ApplyPhysics(Vector2 dir)
+        {
             var overwrite = _movement.Velocity.x * dir.x > 0f;
             _movement.AddImpulseForce(-_aimDir * _context.recoil, overwrite);
             _movement.BlockMovement(.5f, 1f);
            
             _costable.Consume(_context.cost);
-            _cooldownTimer = _context.cooldown;
+            Debug.Log("Apply");
         }
 
         private IEnumerator FireRoutine()
@@ -88,6 +74,10 @@ namespace ProjectileSystem
             {
                 if (_context.spreadCount > 1) FireSpread(_aimDir);
                 else ShootProjectile(default);
+                
+                            
+                _effectPub.Publish(data.EffectData);
+                ApplyPhysics(_aimDir);
                 
                 if (_context.burstInterval > 0f)
                     yield return new WaitForSeconds(_context.burstInterval);
@@ -102,6 +92,8 @@ namespace ProjectileSystem
 
             var param = new ProjectileSpawnParams(gameObject, detectionLayer, TeamID.Player);
             proj.Initialize(data.ProjectileData, param, data.ProjectileData, projModifierProvider.Modifiers);
+            
+            _cooldownTimer = _context.cooldown;
         }
 
         private void FireSpread(Vector2 direction)

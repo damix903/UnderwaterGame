@@ -1,25 +1,21 @@
 ﻿using Manager.Upgrade;
 using UnityEngine;
+using Utility;
 
 namespace ProjectileSystem
 {
     public abstract class BaseShooterModifier : BaseUpgradeEffect, IShooterModifier
     {
-        public abstract void Apply(ShooterContext context);
+        [SerializeField] private int sortPriority;
+        
+        public abstract void Apply(ref ShooterContext context);
 
         public override void Apply(RunState state)
         {
             state.ShooterModifiers.Add(this);
+            state.ShooterModifiers.SortByPriority();
         }
-    }
 
-    public class RecoilShooterModifier : BaseShooterModifier
-    {
-        [SerializeField] private float _recoil;
-
-        public override void Apply(ShooterContext context)
-        {
-            context.recoil += _recoil;
-        }
+        public int SortPriority => sortPriority;
     }
 }

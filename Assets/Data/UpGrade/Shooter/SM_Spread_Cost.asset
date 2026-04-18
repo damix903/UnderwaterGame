@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5269d54815ec4afa9ceb59731d7ccca5, type: 3}
-  m_Name: UGD_3
-  m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeData
-  upgradeName: 3
-  effects: []
+  m_Script: {fileID: 11500000, guid: e25c009c095e4e0b8ca2202f33b303cf, type: 3}
+  m_Name: SM_Spread_Cost
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectileSystem.BasicShooterModifier
+  recoil: 0
+  cooldown: 0
+  cost: 5

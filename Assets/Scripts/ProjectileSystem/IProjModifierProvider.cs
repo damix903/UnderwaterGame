@@ -20,7 +20,7 @@ namespace ProjectileSystem
         private readonly RunState _runState;
         public IReadOnlyList<IProjectileModifier> Modifiers => _runState.ProjModifiers;
         public IReadOnlyList<IShooterModifier> ShooterModifiers => _runState.ShooterModifiers;
-
+        
         public ProjModifierProvider(RunState runState)
         {
             _runState = runState;

@@ -14,7 +14,7 @@ namespace Manager.Upgrade
         
         [Space]
         [SerializeField] private List<BaseUpgradeEffect> effects; 
-        
+
         public string UpgradeName => upgradeName;
         public Image Image => image;
 

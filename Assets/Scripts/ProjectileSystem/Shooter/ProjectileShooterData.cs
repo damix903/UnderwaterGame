@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ProjectileSystem
 {
-    [CreateAssetMenu(fileName = "PSD", menuName = "Data/Projectile/Shooter", order = 0)]
+    [CreateAssetMenu(fileName = "PSD", menuName = "Data/Shooter/Data", order = 0)]
     public class ProjectileShooterData : ScriptableObject
     {
         [Header("Shooter Data")]

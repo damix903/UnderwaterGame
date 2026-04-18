@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5269d54815ec4afa9ceb59731d7ccca5, type: 3}
-  m_Name: UGD_4
+  m_Name: UGD_SmallCost
   m_EditorClassIdentifier: Assembly-CSharp::Manager.UpGrade.UpGradeData
-  upgradeName: 4
-  effects: []
+  upgradeName: SmallShoot
+  image: {fileID: 0}
+  effects:
+  - {fileID: 11400000, guid: 7deaa1377aae3e34ea6edd68915bfacf, type: 2}
