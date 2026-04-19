@@ -1,8 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IDetectable
+namespace Sensor
 {
-    public event Action<GameObject> OnTargetDetected;
-    public event Action<GameObject> OnTargetLost;
+    public interface IDetectable
+    {
+        public event Action<GameObject> OnTargetDetected;
+        public event Action<GameObject> OnTargetLost;
+    }
 }

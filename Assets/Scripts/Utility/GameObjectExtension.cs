@@ -14,5 +14,21 @@ namespace Utility
             
             return component;
         }
+
+        /// <summary>
+        ///     GameObjectがカメラに映っているかどうかを判定する。
+        /// </summary>
+        /// <param name="margin">
+        ///     許容範囲。カメラの外側にどれだけオブジェクトがあっても映っているとみなすかを指定する。パーセンテージで指定。
+        /// </param>
+        public static bool IsInCameraView(this GameObject obj, Camera camera, float margin = 0f)
+        {
+            if (obj == null || camera == null) return false;
+            
+            Vector3 viewportPos = camera.WorldToViewportPoint(obj.transform.position);
+            return viewportPos.x >= -margin && viewportPos.x <= 1 + margin &&
+                   viewportPos.y >= -margin && viewportPos.y <= 1 + margin &&
+                   viewportPos.z > 0;
+        }
     }
 }

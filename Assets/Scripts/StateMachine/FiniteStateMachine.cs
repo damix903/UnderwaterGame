@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Underwater.StateMachine
+namespace StateMachine
 {
-    public class StateMachine
+    public class FiniteStateMachine
     {
         private StateNode _current;
         private readonly Dictionary<Type, StateNode> _nodes = new();

@@ -1,4 +1,4 @@
-﻿using Underwater.StateMachine;
+﻿using StateMachine;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ESB_", menuName = "Data/State/BasicEnemy")]
@@ -6,12 +6,12 @@ public class BasicEnemyStateBuilder : BaseEnemyStateBuilder
 {
     [SerializeField] private bool canChase;
     
-    public override StateMachine Build(ICharacterController controller, EnemyContext ctx)
+    public override FiniteStateMachine Build(ICharacterController controller, EnemyContext ctx)
     {
         var idle = new IdleState(ctx.Anim);
         var move = new MoveState(ctx.Anim, ctx.Moveable);
         
-        var stateMachine = new StateMachine();
+        var stateMachine = new FiniteStateMachine();
         stateMachine.AddTransition(idle, move, new FuncPredicate(() => true));
         stateMachine.AddTransition(move, idle, new FuncPredicate(() => false));
 

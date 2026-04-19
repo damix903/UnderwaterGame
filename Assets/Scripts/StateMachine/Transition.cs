@@ -1,4 +1,4 @@
-﻿namespace Underwater.StateMachine
+﻿namespace StateMachine
 {
     /// <summary>
     /// 遷移情報の定義

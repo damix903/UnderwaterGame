@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using Manager.AudioSystem;
 using Movement;
 using ProjectileSystem;
-using Underwater.StateMachine;
+using StateMachine;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 {
     [Inject] private IInputProvider _input;
     private CharacterMovement _movement;
-    private StateMachine _stateMachine;
+    //private StateMachine _stateMachine;
 
     private IAimable _aimable;
     private IAttackable _attackable;

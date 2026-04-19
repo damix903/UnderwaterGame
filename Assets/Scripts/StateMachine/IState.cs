@@ -1,4 +1,4 @@
-namespace Underwater.StateMachine
+namespace StateMachine
 {
     public interface IState
     {

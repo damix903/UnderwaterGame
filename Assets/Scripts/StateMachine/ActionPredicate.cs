@@ -1,4 +1,4 @@
-﻿namespace Underwater.StateMachine
+﻿namespace StateMachine
 {
     /// <summary>
     /// 外部からイベントを受け取ることが条件

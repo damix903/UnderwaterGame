@@ -6,6 +6,7 @@ public class EnemyContext
     public EnemyData Data { get; private set; }
     public IMoveable Moveable { get; private set; }
     public IMoveable ChaseMoveable { get; private set; }
+    public CharacterMovement Movement { get; private set; }
     public IAnimPlayable Anim { get; private set; }
     public IAnimEventListenable EventListenable { get; private set; }
     
@@ -27,6 +28,12 @@ public class EnemyContext
         public Builder WithMoveable(IMoveable moveable)
         {
             _ctx.Moveable = moveable;
+            return this;
+        }
+        
+        public Builder WithMovement(CharacterMovement movement)
+        {
+            _ctx.Movement = movement;
             return this;
         }
         
