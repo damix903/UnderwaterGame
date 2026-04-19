@@ -1,4 +1,4 @@
-﻿namespace Underwater.StateMachine
+﻿namespace StateMachine
 {
     /// <summary>
     /// 遷移条件の定義

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using SpawnSystem;
 using UnityEngine;
 using VContainer;
 
@@ -22,7 +23,7 @@ namespace Manager.AudioSystem
         {
             if (!CanPlay(soundData)) return null;
             
-            var emitter = _factory.Create(soundData, transform);
+            var emitter = _factory.Create(soundData, new SpawnPoint(transform.position, Quaternion.identity));
             
             if (emitter == null) return null;
 

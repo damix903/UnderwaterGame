@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Underwater.StateMachine
+namespace StateMachine
 {
     public class FuncPredicate : IPredicate
     {

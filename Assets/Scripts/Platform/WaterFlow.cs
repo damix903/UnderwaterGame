@@ -1,5 +1,6 @@
 ﻿using System;
 using Movement;
+using Sensor;
 using UnityEngine;
 
 namespace Platform

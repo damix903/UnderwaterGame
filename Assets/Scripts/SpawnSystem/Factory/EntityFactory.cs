@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
+using Utility;
 
-public class EntityFactory<T> : IEntityFactory<T> where T : Entity
+namespace SpawnSystem
 {
-    public T Create(EntityData data, Transform spawnPoint)
+    public class EntityFactory<T> : IEntityFactory<T> where T : Entity
     {
-        var obj = GameObject.Instantiate(data.Prefab, spawnPoint.position, spawnPoint.rotation);
-
-        if (!obj.TryGetComponent(out T entity))
+        public T Create(EntityData data, SpawnPoint point)
         {
-            entity = obj.AddComponent<T>();
-        }
-        
-        entity.transform.position = spawnPoint.position;
-        entity.transform.rotation = spawnPoint.rotation;
-        entity.Initialize(data);
+            var obj = GameObject.Instantiate(data.Prefab, point.position, point.rotation);
 
-        return entity;
+            var entity = obj.GetOrAddComponent<T>();
+        
+            entity.transform.position = point.position;
+            entity.transform.rotation = point.rotation;
+            entity.Initialize(data);
+
+            return entity;
+        }
     }
 }

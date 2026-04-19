@@ -16,7 +16,9 @@ MonoBehaviour:
   enemyType: 1
   baseMoveData: {fileID: 11400000, guid: 46be263e235abc94f812cb1215b55b89, type: 2}
   chaseMoveData: {fileID: 11400000, guid: 7b13ff51d550f064784bcc31bbe8cde3, type: 2}
+  strafeMoveData: {fileID: 11400000, guid: f3558ca32e23bf64eba54101cb01f9e1, type: 2}
   attackData: {fileID: 11400000, guid: a237cfd896f5a77429861dfccb1d32fc, type: 2}
   stateBuilder: {fileID: 11400000, guid: c3b806bfa6ec39341add1652360883c5, type: 2}
+  stateType: 4
   animData: {fileID: 11400000, guid: a0f021d4e795b3d49a1a4076e5bda362, type: 2}
   maxHealth: 1

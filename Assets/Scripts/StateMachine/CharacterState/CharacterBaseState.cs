@@ -1,4 +1,4 @@
-﻿using Underwater.StateMachine;
+﻿using StateMachine;
 using UnityEngine;
 
 public abstract class CharacterBaseState : IState

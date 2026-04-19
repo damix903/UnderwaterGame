@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SpawnSystem;
+using Unity.Mathematics;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
@@ -33,7 +35,7 @@ public class EnemySpawner : MonoBehaviour
            var point = _spawnPoints[Random.Range(0, _spawnPoints.Count)];
            if (GetEnemyData(enemies, point, out var data))
            {
-               _enemyFactory.Create(data, point.SpawnPoint);
+               _enemyFactory.Create(data, new SpawnPoint(point.SpawnPoint.position, quaternion.identity));
                _currentSpawnCount++;
                _spawnPoints.Remove(point);
            }

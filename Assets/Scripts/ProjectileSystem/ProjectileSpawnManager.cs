@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using SpawnSystem;
+using UnityEngine;
 
 namespace ProjectileSystem
 {
     public interface IProjectileService
     {
-        Projectile Spawn(EntityData data, Transform spawnPoint);
+        Projectile Spawn(BaseProjectileData data, SpawnPoint point);
     }
 
     public class ProjectileSpawnManager : IProjectileService
@@ -16,9 +17,9 @@ namespace ProjectileSystem
             _factory = factory;
         }
 
-        public Projectile Spawn(EntityData data, Transform spawnPoint)
+        public Projectile Spawn(BaseProjectileData data, SpawnPoint point)
         {
-            var proj = _factory.Create(data, spawnPoint);
+            var proj = _factory.Create(data, point);
             return proj;
         }
     }

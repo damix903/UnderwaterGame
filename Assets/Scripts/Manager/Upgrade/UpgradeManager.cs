@@ -42,6 +42,7 @@ namespace Manager.Upgrade
     public class RunState
     {
         public List<IProjectileModifier> ProjModifiers = new List<IProjectileModifier>();
+        public List<IShooterModifier> ShooterModifiers = new List<IShooterModifier>();
         public List<UpgradeData> UpGradeList = new List<UpgradeData>();
     }
 }
