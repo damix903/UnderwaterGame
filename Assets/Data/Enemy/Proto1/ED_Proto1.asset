@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   prefab: {fileID: 7419926818705587296, guid: e07ece84d2b778c43818ed5fa1279030, type: 3}
   enemyType: 1
-  stateBuilder: {fileID: 11400000, guid: 7f980375a2be0ad4eaee7bf88c0a532b, type: 2}
   baseMoveData: {fileID: 11400000, guid: f6f218514de61fd479c8aa3d5ffd149d, type: 2}
   chaseMoveData: {fileID: 11400000, guid: 7b13ff51d550f064784bcc31bbe8cde3, type: 2}
+  strafeMoveData: {fileID: 0}
+  attackData: {fileID: 0}
+  stateBuilder: {fileID: 11400000, guid: 7f980375a2be0ad4eaee7bf88c0a532b, type: 2}
+  stateType: 1
   animData: {fileID: 11400000, guid: 692887adbab41c94d90073dc96c78b36, type: 2}
   maxHealth: 1
-  attackData: {fileID: 0}

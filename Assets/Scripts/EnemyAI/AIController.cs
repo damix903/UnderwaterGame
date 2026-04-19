@@ -23,7 +23,8 @@ public class AIController : MonoBehaviour, ICharacterController
     public void Initialize(EnemyContext ctx)
     {
         _ctx = ctx;
-        _stateMachine = _ctx.Data.StateBuilder.Build(this, _ctx);
+        //_stateMachine = _ctx.Data.StateBuilder.Build(this, _ctx);
+        _stateMachine = _ctx.Data.BuildStateMachine(this, _ctx);
     }
 
     private void HandleTargetDetect(GameObject obj) => Target = obj.transform;

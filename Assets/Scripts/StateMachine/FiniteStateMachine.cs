@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Utility;
 
 namespace StateMachine
 {
@@ -7,7 +8,7 @@ namespace StateMachine
     {
         private StateNode _current;
         private readonly Dictionary<Type, StateNode> _nodes = new();
-        private readonly HashSet<Transition> _anyTransitions = new();
+        private readonly List<Transition> _anyTransitions = new();
 
         public void Update()
         {
@@ -21,10 +22,7 @@ namespace StateMachine
             _current.State?.Update();
         }
 
-        public void FixedUpdate()
-        {
-            _current.State?.FixedUpdate();
-        }
+        public void FixedUpdate() => _current.State?.FixedUpdate();
 
         public void SetInitialState(IState state)
         {
@@ -52,6 +50,7 @@ namespace StateMachine
 
         private Transition GetTransition()
         {
+            // Priority順に取り出される
             foreach (var t in _anyTransitions)
                 if (t.Condition.Evaluate()) return t;
         
@@ -61,14 +60,15 @@ namespace StateMachine
             return null;
         }
 
-        public void AddTransition(IState from, IState to, IPredicate condition)
+        public void AddTransition(IState from, IState to, IPredicate condition, int sortPriority = 0)
         {
-            GetOrAddNode(from).Add(to, condition);
+            GetOrAddNode(from).Add(to, condition, sortPriority);
         }
     
-        public void AddAnyTransition(IState to, IPredicate condition)
+        public void AddAnyTransition(IState to, IPredicate condition, int sortPriority = 0)
         {
-            _anyTransitions.Add(new Transition(GetOrAddNode(to).State, condition));
+            _anyTransitions.Add(new Transition(GetOrAddNode(to).State, condition, sortPriority));
+            _anyTransitions.SortByPriority();
         }
 
         private StateNode GetOrAddNode(IState state)
@@ -90,17 +90,14 @@ namespace StateMachine
         private class StateNode
         {
             public IState State { get; }
-            public HashSet<Transition> Transitions { get; }
+            public List<Transition> Transitions { get; } = new List<Transition>();
         
-            public StateNode(IState state)
-            {
-                State = state;
-                Transitions = new HashSet<Transition>();
-            }
+            public StateNode(IState state) => State = state;
 
-            public void Add(IState to, IPredicate condition)
+            public void Add(IState to, IPredicate condition, int sortPriority = 0)
             {
-                Transitions.Add(new Transition(to, condition));
+                Transitions.Add(new Transition(to, condition, sortPriority));
+                Transitions.SortByPriority();
             }
         }
     }
