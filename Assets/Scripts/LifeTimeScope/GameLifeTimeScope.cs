@@ -6,6 +6,7 @@ using VContainer.Unity;
 using Manager.Upgrade;
 using PlayerSystem;
 using ProjectileSystem;
+using Stage;
 using UI;
 using Underwater.Utility.Timer;
 

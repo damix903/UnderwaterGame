@@ -1,18 +1,27 @@
 using System.Collections.Generic;
 using SpawnSystem;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(menuName = "Data/Entity/Room")]
-public class RoomData : EntityData, IWeightable
+namespace Stage
 {
-    [Header("Room Data")] 
-    [SerializeField] private int weight = 10;
-    [SerializeField] [Range(0f, 1f)] private float flipChance;
+    [CreateAssetMenu(fileName = "RD_", menuName = "Data/Stage/Room")]
+    public class RoomData : EntityData, IWeightable
+    {
+        [Header("Room Data")] 
+        [SerializeField] private RoomType roomType;
+        [SerializeField] [Range(0f, 1f)] private float difficulty;
+        [SerializeField] private int weight = 10;
+        [SerializeField] [Range(0f, 1f)] private float flipChance;
     
-    [Space]
-    [SerializeField] private List<EnemyData> additiveEnemies;
+        [Space]
+        [SerializeField] private List<EnemyData> additiveEnemies;
     
-    public int Weight => weight;
-    public float FlipChance => flipChance;
-    public IReadOnlyList<EnemyData>  AdditiveEnemies => additiveEnemies;
+        public float Difficulty => difficulty;
+        public int Weight => weight;
+        public float FlipChance => flipChance;
+        public IReadOnlyList<EnemyData>  AdditiveEnemies => additiveEnemies;
+    }
+    
+    public enum RoomType {Normal, Resource, Gimmick}
 }

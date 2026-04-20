@@ -1,9 +1,8 @@
-﻿using System;
-using Movement;
+﻿using Movement;
 using Sensor;
 using UnityEngine;
 
-namespace Platform
+namespace Stage
 {
     public class WaterFlow : MonoBehaviour
     {
@@ -39,7 +38,6 @@ namespace Platform
             if (obj.TryGetComponent(out IForceApplicable applicable))
             {
                 applicable.AddConstantForce(ConstantForce);
-                Debug.Log($"Apply force {ConstantForce} to {obj.name}");
             }
         }
         
@@ -48,14 +46,13 @@ namespace Platform
             if (obj.TryGetComponent(out IForceApplicable applicable))
             {
                 applicable.RemoveConstantForce(ConstantForce);
-                Debug.Log($"Remove force {ConstantForce} from {obj.name}");
             }
         }
 
         private void OnValidate()
         {
             if (Application.isPlaying) return;
-            if (!TryGetComponent<IDetectable>(out IDetectable detectable))
+            if (!TryGetComponent<IDetectable>(out var detectable))
             {
                 Debug.LogWarning("WaterFlow requires a component that implements IDetectable to function properly.", this);
             }

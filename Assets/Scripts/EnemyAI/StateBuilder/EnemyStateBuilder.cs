@@ -50,8 +50,10 @@ namespace EnemyAI
         {
             _attackable = _ctx.Data.AttackData.CreateAttack(_controller, _ctx.EventListenable);
             _states.Attack = new AttackState(_ctx.Anim, _attackable);
-            
-            _fsm.AddAnyTransition(_states.Attack, new FuncPredicate(() => _attackable.CanAttack), 5);
+
+            var predicate = new FuncPredicate(() => _attackable.CanAttack);
+            _fsm.AddTransition(_states.Idle, _states.Attack, predicate, 10);
+            _fsm.AddAnyTransition(_states.Attack, predicate, 5);
             _fsm.AddTransition(_states.Attack, _states.Idle, new FuncPredicate(() => _attackable.IsCompleted), 5);
             
             return this;
