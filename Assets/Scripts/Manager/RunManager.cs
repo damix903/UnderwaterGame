@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Input;
 using MessagePipe;
 using PlayerSystem;
+using Stage;
 using UI;
 using VContainer;
 using VContainer.Unity;
@@ -16,6 +18,8 @@ namespace Manager
         private readonly IPlayerProvider _playerProvider;
         [Inject] private IFader _fader;
         [Inject] private CameraManager _cameraManager;
+        [Inject] private InputReader _inputReader;
+        [Inject] private TimeManager _timeManager;
         
         [Inject] private ISubscriber<LevelClearedMessage> _levelClearedMessage;
         private IDisposable _subscription;
@@ -51,10 +55,15 @@ namespace Manager
 
             await _fader.FadeInAsync(_cts.Token);
             _cameraManager.SetLookaheadEnabled(true);
+            _inputReader.TogglePlayerActionMap(true);
+            _timeManager.ResumeGame();
         }
         
         private async UniTask ProcessUpgrade()
         {
+            _inputReader.TogglePlayerActionMap(false);
+            _timeManager.PauseGame();
+            
             await _upgradePresenter.StartUpgradeSelectionAsync(_cts.Token);
             
             ProcessGenerate().Forget();

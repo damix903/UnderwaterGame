@@ -19,10 +19,10 @@ namespace StateMachine
                 ChangeState(transition.To);
             }
         
-            _current.State?.Update();
+            _current?.State?.Update();
         }
 
-        public void FixedUpdate() => _current.State?.FixedUpdate();
+        public void FixedUpdate() => _current?.State?.FixedUpdate();
 
         public void SetInitialState(IState state)
         {
@@ -32,11 +32,11 @@ namespace StateMachine
 
         private void ChangeState(IState state)
         {
-            if (state == _current.State) return;
+            if (_current!= null && state == _current.State) return;
         
             var next = _nodes[state.GetType()];
 
-            _current.State?.OnExit();
+            _current?.State?.OnExit();
             next.State?.OnEnter();
             _current = next;
         }

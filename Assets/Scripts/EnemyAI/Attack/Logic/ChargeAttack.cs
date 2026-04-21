@@ -20,6 +20,7 @@ namespace EnemyAI.Attack
 
         private void OnMove(bool isStarted)
         {
+            if (owner == null || owner.Target == null) return;
             var dir = owner.Target.position - owner.GameObject.transform.position;
             var dir2D = new Vector2(dir.x, dir.y).normalized;
             _forceApplicable.AddImpulseForce(dir2D * data.Speed);
