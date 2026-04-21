@@ -10,6 +10,9 @@ namespace Stage
         [SerializeField] private RoomData entranceRoom;
         [SerializeField] private RoomData exitRoom;
         [SerializeField] private List<RoomData> rooms;
+        [Space] 
+        [SerializeField] private int roomCountMin = 8;
+        [SerializeField] private int roomCountMax = 12;
     
         [Header("Enemy Data")]
         [SerializeField] private List<EnemyData> enemies;
@@ -20,6 +23,7 @@ namespace Stage
         public RoomData EntranceRoom => entranceRoom;
         public RoomData ExitRoom => exitRoom;
         public List<RoomData> Rooms => rooms;
+        public int RoomCount => Random.Range(roomCountMin, roomCountMax);
         public List<EnemyData> Enemies => enemies;
     }
 }

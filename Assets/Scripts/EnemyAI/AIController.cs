@@ -46,5 +46,6 @@ public class AIController : MonoBehaviour, ICharacterController
         detectable.OnTargetDetected -= HandleTargetDetect;
         detectable.OnTargetLost -= HandleTargetLost;
         _stateMachine = null;
+        Target = null;
     }
 }

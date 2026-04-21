@@ -18,8 +18,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b162440c30a4e9f46876ee00156457a5, type: 2}
   - {fileID: 11400000, guid: a80ec7d54a33d5644b423a005bb63031, type: 2}
   - {fileID: 11400000, guid: 56c4b5dca92b04b4ba796f66baa32ba1, type: 2}
+  - {fileID: 11400000, guid: 69ea8765b0483a747aac8ccc769ced48, type: 2}
   enemies:
   - {fileID: 11400000, guid: 113945d2e70d9f449ac136ba79a2bbf8, type: 2}
   - {fileID: 11400000, guid: c8a9cd96a3216574db49551a5008bec6, type: 2}
   - {fileID: 11400000, guid: 17d26efdc822ea04e8e7ceb8451f2d1a, type: 2}
   - {fileID: 11400000, guid: 0cc12c38a4e37144f97063a18be4deec, type: 2}
+  gimmicks: []

@@ -14,8 +14,7 @@ namespace Stage
     {
         private IEntityFactory<Room> _factory;
         [SerializeField] private StageConfig stageConfig;
-        [SerializeField] private int roomCount;
-
+        
         private Transform _lastEndPoint;
     
         [Inject] private IPublisher<ReleaseType> _publisher;
@@ -48,6 +47,7 @@ namespace Stage
             _lastEndPoint = entrance.EndPoint;
         
             int count = 0;
+            int roomCount = stageConfig.RoomCount;
             var lastRoomData = stageConfig.EntranceRoom;
             while (count < roomCount)
             {
