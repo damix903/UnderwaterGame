@@ -107,3 +107,20 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Large assets that are not needed in version control
+/[Aa]ssets/[Ii]gnored[Aa]ssets/
+/[Aa]ssets/*/*.fbx
+/[Aa]ssets/*/*.fbx.meta
+/[Aa]ssets/*/*.obj
+/[Aa]ssets/*/*.obj.meta
+/[Aa]ssets/*/*.mp4
+/[Aa]ssets/*/*.mp4.meta
+/[Aa]ssets/*/*.mov
+/[Aa]ssets/*/*.mov.meta
+/[Aa]ssets/*/*.avi
+/[Aa]ssets/*/*.avi.meta
+/[Aa]ssets/*/*.mp3
+/[Aa]ssets/*/*.mp3.meta
+/[Aa]ssets/*/*.wav
+/[Aa]ssets/*/*.wav.meta
