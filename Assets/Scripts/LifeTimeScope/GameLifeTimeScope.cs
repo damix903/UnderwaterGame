@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using Input;
+using Manager;
 using Manager.AudioSystem;
 using UnityEngine;
 using VContainer;
@@ -38,11 +39,12 @@ namespace LifeTimeScope
             builder.RegisterComponentInHierarchy<CameraManager>();
             
             builder.Register<PlayerProvider>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<InputReader>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<InputReader>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
             builder.Register<ProjectileSpawnManager>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.RegisterComponentOnNewGameObject<ObjectPoolManager>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentOnNewGameObject<ItemManager>(Lifetime.Singleton).UnderTransform(transform);
+            builder.RegisterComponentOnNewGameObject<TimeManager>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentInHierarchy<PlayerStatsManager>();
             builder.RegisterEntryPoint<RunManager>(Lifetime.Singleton);
 

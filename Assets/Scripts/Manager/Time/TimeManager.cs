@@ -36,6 +36,9 @@ public class TimeManager : MonoBehaviour
         StopHitStopCoroutine();
         _hitStopCoroutine = StartCoroutine(HitStopCoroutine(data));
     }
+    
+    public void PauseGame() => Time.timeScale = 0f;
+    public void ResumeGame() => Time.timeScale = 1f;
 
     private IEnumerator HitStopCoroutine(HitStopData data)
     {

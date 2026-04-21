@@ -43,26 +43,31 @@ namespace Stage
     
         private Vector3 ProcessGenerate()
         {
-            var entrance = _factory.Create(stageConfig.EntranceRoom, new SpawnPoint());
+            var entrance = _factory.Create(stageConfig.EntranceRoom, new SpawnPoint(transform.position));
             _lastEndPoint = entrance.EndPoint;
         
+            GenerateMiddleRooms();
+
+            GenerateRoom(stageConfig.ExitRoom);
+        
+            return entrance.StartPoint.position;
+        }
+
+        private void GenerateMiddleRooms()
+        {
             int count = 0;
             int roomCount = stageConfig.RoomCount;
             var lastRoomData = stageConfig.EntranceRoom;
+            
             while (count < roomCount)
             {
                 var data = RandomSelector.SelectWithWeight(stageConfig.Rooms);
-                //var data = stageConfig.Rooms[Random.Range(0, stageConfig.Rooms.Count)];
                 if (data == lastRoomData) continue;
 
                 GenerateRoom(data);
                 lastRoomData = data;
                 count++;
             }
-        
-            GenerateRoom(stageConfig.ExitRoom);
-        
-            return entrance.StartPoint.position;
         }
 
         private void GenerateRoom(RoomData data)
@@ -70,9 +75,8 @@ namespace Stage
             var room = _factory.Create(data, new SpawnPoint());
             var amountToMove = _lastEndPoint.position - room.StartPoint.position;
             room.transform.position += amountToMove;
-        
-            bool shouldFlip = Random.Range(0f, 1f) < data.FlipChance;
-            if (shouldFlip) room.transform.Rotate(0f, 180f, 0f);
+            
+            if (data.ShouldFlip) room.transform.Rotate(0f, 180f, 0f);
             _lastEndPoint = room.EndPoint;
         
             var enemies = new List<EnemyData>(stageConfig.Enemies);

@@ -19,7 +19,7 @@ namespace Stage
     
         public float Difficulty => difficulty;
         public int Weight => weight;
-        public float FlipChance => flipChance;
+        public bool ShouldFlip => Random.value < flipChance;
         public IReadOnlyList<EnemyData>  AdditiveEnemies => additiveEnemies;
     }
     
