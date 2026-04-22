@@ -4,6 +4,7 @@ using MessagePipe;
 using Sensor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Utility;
 using VContainer;
 
 namespace Stage
@@ -20,6 +21,9 @@ namespace Stage
     
         [Space]
         [SerializeField] private ColliderDetector clearPoint;
+        
+        [Space]
+        public TileMapManager tileMapManager;
     
         public Transform StartPoint => startPoint;
         public Transform EndPoint => endPoint;
@@ -34,24 +38,46 @@ namespace Stage
         public void BakeSpawnPoints()
         {
             bakedSpawnPoints.Clear();
-            foreach (var pos in spawnMarkerTilemap.cellBounds.allPositionsWithin)
+
+            var worldPosDict = spawnMarkerTilemap.GetTileDictionary<Vector3>();
+
+            foreach (var pair in worldPosDict)
             {
-                var tile = spawnMarkerTilemap.GetTile(pos);
-                if (tile == null) continue;
-                var worldPos = spawnMarkerTilemap.CellToWorld(pos);
-                var spawnPoint = new EnemySpawnPoint
+                foreach (var pos in pair.Value)
                 {
-                    SpawnPoint = new GameObject($"SpawnPoint_{pos.x}_{pos.y}").transform,
-                    Probability = 1f, // デフォルトの確率を設定
-                    AvailableTypes = new List<EnemyType>() // デフォルトの敵タイプを設定
-                };
-                spawnPoint.SpawnPoint.position = worldPos;
-                foreach (var type in tileBaseSetting.GetEnemyTypes(tile))
-                {
-                    spawnPoint.AvailableTypes.Add(type);
+                    var spawnPoint = new EnemySpawnPoint
+                    {
+                        SpawnPoint = new GameObject($"SpawnPoint_{pos.x}_{pos.y}").transform,
+                        Probability = 1f, // デフォルトの確率を設定
+                        AvailableTypes = new List<EnemyType>() // デフォルトの敵タイプを設定
+                    };
+                    
+                    spawnPoint.SpawnPoint.position = pos;
+                    foreach (var type in tileBaseSetting.GetEnemyTypes(pair.Key))
+                        spawnPoint.AvailableTypes.Add(type);
+                    
+                    bakedSpawnPoints.Add(spawnPoint);
                 }
-                bakedSpawnPoints.Add(spawnPoint);
             }
+            
+            // foreach (var pos in spawnMarkerTilemap.cellBounds.allPositionsWithin)
+            // {
+            //     var tile = spawnMarkerTilemap.GetTile(pos);
+            //     if (tile == null) continue;
+            //     var worldPos = spawnMarkerTilemap.CellToWorld(pos);
+            //     var spawnPoint = new EnemySpawnPoint
+            //     {
+            //         SpawnPoint = new GameObject($"SpawnPoint_{pos.x}_{pos.y}").transform,
+            //         Probability = 1f, // デフォルトの確率を設定
+            //         AvailableTypes = new List<EnemyType>() // デフォルトの敵タイプを設定
+            //     };
+            //     spawnPoint.SpawnPoint.position = worldPos;
+            //     foreach (var type in tileBaseSetting.GetEnemyTypes(tile))
+            //     {
+            //         spawnPoint.AvailableTypes.Add(type);
+            //     }
+            //     bakedSpawnPoints.Add(spawnPoint);
+            // }
         }
     
         protected override ReleaseType ReleaseType => ReleaseType.Room;
@@ -69,6 +95,8 @@ namespace Stage
             base.OnDisable();
             if (clearPoint != null)
                 clearPoint.OnTargetDetected -= HandlePlayerDetected;
+            
+            tileMapManager.ClearTileMap();
         }
 
         private void HandlePlayerDetected(GameObject obj)

@@ -20,3 +20,5 @@ MonoBehaviour:
       Value: 0000000000000000
     - Key: {fileID: 11400000, guid: a30accef3ea0279418af96b85970af7c, type: 2}
       Value: 01000000
+  platformMarkerTileBase: {fileID: 11400000, guid: 4b7dc0f7ceda93042846af23a3e5aba0, type: 2}
+  platformTileBase: {fileID: 11400000, guid: e788aa1f2415ed44592161f1c2936ada, type: 2}
