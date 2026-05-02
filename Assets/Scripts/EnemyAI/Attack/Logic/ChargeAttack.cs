@@ -13,7 +13,7 @@ namespace EnemyAI.Attack
             _forceApplicable = forceApplicable;
         }
 
-        protected override void StartAttackInternal()
+        protected override void OnAttackStarted()
         {
             listenable?.Register(AnimationEventType.MoveTrigger, OnMove);
         }
@@ -26,7 +26,7 @@ namespace EnemyAI.Attack
             _forceApplicable.AddImpulseForce(dir2D * data.Speed);
         }
         
-        protected override void CancelAttackInternal()
+        protected override void OnAttackCancelled()
         {
             listenable?.Remove(AnimationEventType.MoveTrigger, OnMove);
         }

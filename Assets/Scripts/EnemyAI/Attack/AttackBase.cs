@@ -16,20 +16,14 @@ namespace EnemyAI.Attack
             get
             {
                 if (!IsTargetAvailable) return false;
-                float distance = Vector3.Distance(owner.GameObject.transform.position, owner.Target.position);
+
+                float distance = Vector3.Distance(owner.Transform.position, owner.Target.position);
                 return distance <= data.Range;
             }
         }
 
-        public virtual bool CanAttack
-        {
-            get
-            {
-                if (!IsTargetAvailable) return false;
-                
-                return !IsInCoolDown && IsInAttackRange;
-            }
-        }
+        // デフォルトではクールダウン中ではないかつ攻撃範囲にターゲットがいること
+        public virtual bool CanAttack => !IsInCoolDown && IsInAttackRange;
 
         public virtual bool IsCompleted { get; protected set; }
         
@@ -45,13 +39,13 @@ namespace EnemyAI.Attack
         {
             listenable?.Register(AnimationEventType.FinishAnim, OnAnimFinished);
             IsCompleted = false;
-            StartAttackInternal();
+            OnAttackStarted();
         }
         
         public void CancelAttack()
         {
             Cleanup();
-            CancelAttackInternal();
+            OnAttackCancelled();
         }
         
         private void OnAnimFinished(bool isStarted)
@@ -61,8 +55,8 @@ namespace EnemyAI.Attack
             OnAnimFinished();
         }
 
-        protected abstract void StartAttackInternal();
-        protected virtual void CancelAttackInternal() {}
+        protected abstract void OnAttackStarted();
+        protected virtual void OnAttackCancelled() {}
         protected virtual void OnAnimFinished() {}
 
         protected void Cleanup()
