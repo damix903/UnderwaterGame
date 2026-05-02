@@ -70,10 +70,6 @@ public class Enemy : PoolableEntity
         _health.Initialize(_ctx.Data.MaxHealth, TeamID.Enemy);
         _ctx.Anim.Initialize(_ctx.EventListenable, _ctx.Data.AnimData);
 
-        //var moveable = _ctx.Data.BaseMoveData?.CreateMove(_ctx.Movement, transform);
-        //var chaseMoveable = _ctx.Data.ChaseMoveData?.CreateMove(_ctx.Movement, transform);
-        //_ctx.SetMoveable(moveable);
-        //_ctx.SetChaseMoveable(chaseMoveable);
         _controller.Initialize(_ctx);
         _initialized = true;
         Debug.Log("Enemy initialized: " + gameObject.name);
