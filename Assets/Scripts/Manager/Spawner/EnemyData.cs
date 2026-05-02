@@ -2,6 +2,7 @@ using System;
 using EnemyAI;
 using EnemyAI.Attack;
 using EnemyAI.Move;
+using Movement;
 using SpawnSystem;
 using StateMachine;
 using UnityEngine;
@@ -16,7 +17,6 @@ public class EnemyData : EntityData
 	[SerializeField] private BaseMoveData chaseMoveData;
 	[SerializeField] private BaseMoveData strafeMoveData;
 	[SerializeField] private BaseAttackData attackData;
-	//[SerializeField] private BaseEnemyStateBuilder stateBuilder;
 	[SerializeField] private StateType stateType;
 	
 	[Space]
@@ -24,14 +24,22 @@ public class EnemyData : EntityData
 	[SerializeField] private float maxHealth = 1f;
 
 	public EnemyType EnemyType => enemyType;
-	//public BaseEnemyStateBuilder StateBuilder => stateBuilder;
-	public BaseMoveData BaseMoveData => baseMoveData;
-	public BaseMoveData ChaseMoveData => chaseMoveData;
-	public BaseMoveData StrafeMoveData => strafeMoveData;
 	public AnimData AnimData => animData;
 	public float MaxHealth => maxHealth;
-	public BaseAttackData AttackData => attackData;
-	public FiniteStateMachine BuildStateMachine(ICharacterController controller, EnemyContext ctx)
+
+	public IMoveable BaseMoveable(CharacterMovement movement, Transform owner)
+		=> baseMoveData?.CreateMove(movement, owner);
+
+    public IMoveable ChaseMoveable(CharacterMovement movement, Transform owner)
+        => chaseMoveData?.CreateMove(movement, owner);
+
+    public IMoveable StrafeMoveable(CharacterMovement movement, Transform owner)
+        => strafeMoveData?.CreateMove(movement, owner);
+
+	public IAttackable Attackable(ICharacterController controller, IAnimEventListenable listenable)
+		=> attackData.CreateAttack(controller, listenable);
+
+    public FiniteStateMachine BuildStateMachine(ICharacterController controller, EnemyContext ctx)
 		=> EnemyStateRegistry.Build(stateType, controller, ctx);
 }
 
