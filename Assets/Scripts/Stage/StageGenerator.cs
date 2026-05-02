@@ -78,7 +78,11 @@ namespace Stage
             
             if (data.ShouldFlip) room.transform.Rotate(0f, 180f, 0f);
             _lastEndPoint = room.EndPoint;
-        
+
+            var platformPos = room.tileMapManager.PlatformPos;
+            foreach (var pos in platformPos)
+                if (Random.value < 0.5f) room.tileMapManager.SetPlatform(pos, Random.Range(3, 6));
+            
             var enemies = new List<EnemyData>(stageConfig.Enemies);
             foreach (var e in data.AdditiveEnemies)
                 enemies.Add(e);

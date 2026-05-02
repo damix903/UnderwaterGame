@@ -11,6 +11,12 @@ namespace Stage
     {
         [SerializeField] private SerializableDictionary<TileBase, List<EnemyType>> enemySpawnTileBases;
         
+        [SerializeField] private TileBase platformMarkerTileBase;
+        [SerializeField] private TileBase platformTileBase;
+        
+        public TileBase PlatformMarkerTileBase => platformMarkerTileBase;
+        public TileBase PlatformTileBase => platformTileBase;
+        
         public IReadOnlyList<EnemyType> GetEnemyTypes(TileBase tileBase)
         {
             return enemySpawnTileBases.TryGetValue(tileBase, out var enemyTypes)
