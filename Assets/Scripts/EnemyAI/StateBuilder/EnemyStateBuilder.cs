@@ -25,7 +25,7 @@ namespace EnemyAI
 
         public EnemyStateBuilder WithMove()
         {
-            var moveable = _ctx.Data.BaseMoveData.CreateMove(_ctx.Movement, _controller.GameObject.transform);
+            var moveable = _ctx.Data.BaseMoveable(_ctx.Movement, _controller.Transform);
             _states.Move = new MoveState(_ctx.Anim, moveable);
             _fsm.AddTransition(_states.Idle, _states.Move, new FuncPredicate(() => true));
             _fsm.AddTransition(_states.Move, _states.Chase, new FuncPredicate(() => false));
@@ -35,7 +35,7 @@ namespace EnemyAI
         
         public EnemyStateBuilder WithChase()
         {
-            var moveable = _ctx.Data.ChaseMoveData.CreateMove(_ctx.Movement, _controller.GameObject.transform);
+            var moveable = _ctx.Data.ChaseMoveable(_ctx.Movement, _controller.Transform);
             _states.Chase = new ChaseState(_controller, _ctx.Anim, moveable);
             var predicate = new FuncPredicate(() => _controller.Target != null);
             
@@ -48,7 +48,7 @@ namespace EnemyAI
 
         public EnemyStateBuilder WithAttack()
         {
-            _attackable = _ctx.Data.AttackData.CreateAttack(_controller, _ctx.EventListenable);
+            _attackable = _ctx.Data.Attackable(_controller, _ctx.EventListenable);
             _states.Attack = new AttackState(_ctx.Anim, _attackable);
 
             var predicate = new FuncPredicate(() => _attackable.CanAttack);
@@ -61,7 +61,7 @@ namespace EnemyAI
         
         public EnemyStateBuilder WithStrafe()
         {
-            var moveable = _ctx.Data.StrafeMoveData.CreateMove(_ctx.Movement, _controller.GameObject.transform);
+            var moveable = _ctx.Data.StrafeMoveable(_ctx.Movement, _controller.GameObject.transform);
             _states.Strafe = new StrafeState(_controller, _ctx.Anim, moveable);
             
             if (_attackable != null)
