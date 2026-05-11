@@ -35,7 +35,7 @@ namespace ProjectileSystem
         {
             detectionLayer = _layerConfig.AllDamageableLayer | _layerConfig.GroundLayer;
             _movement = GetComponent<CharacterMovement>();
-            Debug.Log(_costable.GetType());
+            //Debug.Log(_costable.GetType());
         }
 
         private void Update()

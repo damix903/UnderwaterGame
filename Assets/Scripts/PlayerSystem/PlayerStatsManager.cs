@@ -16,6 +16,11 @@ public class PlayerStatsManager : MonoBehaviour
     private IDisposable _subscription;
     private int _comboCounter;
 
+    private Transform _player;
+    private float _prevY;
+    private float _lastY;
+    public float TotalDepth {get; private set;}
+
     [Inject]
     public void Construct(ISubscriber<DeathEvent> deathSub,
         ISubscriber<EventPublisher, DamageResult> damageSub)
@@ -36,6 +41,26 @@ public class PlayerStatsManager : MonoBehaviour
 
         _playerCollision = player.gameObject.GetComponent<ICollisionDetectable>();
         if (_playerCollision != null) _playerCollision.OnLanded += HandleLanded;
+        
+        _player = player.transform;
+        _prevY = _player.position.y;
+        _lastY = _prevY;
+    }
+
+    private void Update()
+    {
+        if (_player == null) return;
+
+        float currentY = _player.position.y;
+        float deltaY = _prevY - currentY;
+        
+        if (deltaY > 0 && currentY < _lastY)
+        {
+            TotalDepth += deltaY;
+            _lastY = currentY;
+        }
+
+        _prevY = currentY;
     }
 
     private void HandleLanded() => ChangeComboCount(true);

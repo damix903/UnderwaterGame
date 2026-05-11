@@ -6,6 +6,8 @@ using MessagePipe;
 using PlayerSystem;
 using Stage;
 using UI;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
@@ -20,8 +22,8 @@ namespace Manager
         [Inject] private CameraManager _cameraManager;
         [Inject] private InputReader _inputReader;
         [Inject] private TimeManager _timeManager;
+        [Inject] private GameOverUI _gameOverUI;
         
-        [Inject] private ISubscriber<LevelClearedMessage> _levelClearedMessage;
         private IDisposable _subscription;
         
         private CancellationTokenSource _cts = new CancellationTokenSource();
@@ -29,17 +31,48 @@ namespace Manager
         public RunManager(UpgradePresenter upgradePresenter,
             StageGenerator stageGenerator, 
             IPlayerProvider playerProvider,
-            ISubscriber<LevelClearedMessage> levelClearedSub)
+            ISubscriber<LevelClearedMessage> levelClearedSub,
+            ISubscriber<EventPublisher, DeathEvent> deathSub)
         {
             _upgradePresenter = upgradePresenter;
             _stageGenerator = stageGenerator;
             _playerProvider = playerProvider;
 
-            _subscription = levelClearedSub.Subscribe(_ => ProcessUpgrade().Forget());
+            var bag = DisposableBag.CreateBuilder();
+            levelClearedSub.Subscribe(_ => ProcessUpgrade().Forget()).AddTo(bag);
+            deathSub?.Subscribe(EventPublisher.Player, e => ProcessDeath(e).Forget()).AddTo(bag);
+            
+            _subscription = bag.Build();
         }
-        
+
+        private async UniTask ProcessDeath(DeathEvent e)
+        {
+            _timeManager.PauseGame();
+            _gameOverUI.gameObject.SetActive(true);
+            _cts = new CancellationTokenSource();
+            var selection = await _gameOverUI.WaitSelection(_cts.Token);
+            
+            _gameOverUI.gameObject.SetActive(false);
+            
+            switch (selection)
+            {
+                case GameOverSelection.Restart:
+                    await _fader.FadeOutAsync(_cts.Token);
+                    _cameraManager.SetLookaheadEnabled(false);
+                    
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                    
+                    break;
+                case GameOverSelection.Finish:
+                    Application.Quit();
+                    break;
+            }
+            _timeManager.ResumeGame();
+        }
+
         public void PostStart()
         {
+            _gameOverUI.gameObject.SetActive(false);
             ProcessGenerate().Forget();
         }
 
@@ -64,6 +97,7 @@ namespace Manager
             _inputReader.TogglePlayerActionMap(false);
             _timeManager.PauseGame();
             
+            _cts = new CancellationTokenSource();
             await _upgradePresenter.StartUpgradeSelectionAsync(_cts.Token);
             
             ProcessGenerate().Forget();

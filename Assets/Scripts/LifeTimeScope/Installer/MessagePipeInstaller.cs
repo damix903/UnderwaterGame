@@ -17,6 +17,7 @@ namespace LifeTimeScope
             builder.RegisterMessageBroker<ComboEvent>(options);
             builder.RegisterMessageBroker<EventPublisher, ItemEvent>(options);
             builder.RegisterMessageBroker<EventPublisher, DamageResult>(options);
+            builder.RegisterMessageBroker<EventPublisher, DeathEvent>(options);
             builder.RegisterMessageBroker<DamageResult>(options);
             builder.RegisterMessageBroker<EffectData>(options);
         }
