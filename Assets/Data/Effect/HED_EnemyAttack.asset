@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Manager.HitEffectData
   hitStopData: {fileID: 11400000, guid: b98085c0cbf354548b6dda8f33630012, type: 2}
   cameraShakeData: {fileID: 11400000, guid: 1dd63cbed49d27549a6b36d6590f11ea, type: 2}
+  soundData: {fileID: 11400000, guid: 7d1f841b3f2cdcf499cc6c6f696e299a, type: 2}

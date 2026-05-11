@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18b323f23d9419b8114e4ce97fc3e29, type: 3}
-  m_Name: SoundData
+  m_Name: SE_Damage
   m_EditorClassIdentifier: Assembly-CSharp::Manager.AudioSystem.SoundData
   prefab: {fileID: 7452394450577174351, guid: 9649808ae0570fd4fa1e8c466856a2cb, type: 3}
-  clip: {fileID: 8300000, guid: 51d644505fa3b7f48993708206a44709, type: 3}
+  clip: {fileID: 8300000, guid: 48c38bd3858a11b489eefc30340923d2, type: 3}
   mixer: {fileID: 0}
   loop: 0
   playOnAwake: 0

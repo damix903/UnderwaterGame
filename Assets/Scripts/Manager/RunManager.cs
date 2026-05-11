@@ -2,6 +2,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Input;
+using Manager.AudioSystem;
 using MessagePipe;
 using PlayerSystem;
 using Stage;
@@ -23,6 +24,7 @@ namespace Manager
         [Inject] private InputReader _inputReader;
         [Inject] private TimeManager _timeManager;
         [Inject] private GameOverUI _gameOverUI;
+        [Inject] private IAudioService _audioService;
         
         private IDisposable _subscription;
         
@@ -49,6 +51,8 @@ namespace Manager
         {
             _timeManager.PauseGame();
             _gameOverUI.gameObject.SetActive(true);
+            _audioService?.StopBGM();
+            
             _cts = new CancellationTokenSource();
             var selection = await _gameOverUI.WaitSelection(_cts.Token);
             
@@ -97,8 +101,8 @@ namespace Manager
             _inputReader.TogglePlayerActionMap(false);
             _timeManager.PauseGame();
             
-            _cts = new CancellationTokenSource();
-            await _upgradePresenter.StartUpgradeSelectionAsync(_cts.Token);
+            // _cts = new CancellationTokenSource();
+            // await _upgradePresenter.StartUpgradeSelectionAsync(_cts.Token);
             
             ProcessGenerate().Forget();
         }

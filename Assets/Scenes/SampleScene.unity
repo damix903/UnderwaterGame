@@ -2630,7 +2630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Manager.AudioSystem.SoundManager
   maxFrequentSoundCount: 10
-  soundPrefab: {fileID: 0}
+  bgm: {fileID: 11400000, guid: bd6485637543fed4e8dd5bee264051d4, type: 2}
 --- !u!4 &1098979405
 Transform:
   m_ObjectHideFlags: 0

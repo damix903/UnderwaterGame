@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using MessagePipe;
 using SpawnSystem;
 using UnityEngine;
 using VContainer;
@@ -11,13 +12,32 @@ namespace Manager.AudioSystem
     public class SoundManager : MonoBehaviour, IAudioService
     {
         [SerializeField] private int maxFrequentSoundCount = 10;
-        [SerializeField] private GameObject soundPrefab;
+        [SerializeField] private SoundData bgm;
         
         [Inject] private IEntityFactory<SoundEmitter> _factory;
+        [Inject] private ISubscriber<EffectData> _effectSub;
+        [Inject] private ISubscriber<DamageResult> _damageSub;
+        
+        private IDisposable _subscription;
         
         private readonly Queue<SoundEmitter> _frequentEmitters = new Queue<SoundEmitter>();
         private SoundEmitter _currentBGM;
         private bool _isBGMTransitioning;
+
+        private void Start()
+        {
+            var bag = DisposableBag.CreateBuilder();
+            _effectSub.Subscribe((data => PlaySound(data.SoundData))).AddTo(bag);
+            _damageSub.Subscribe((result => PlaySound(result.DamageInfo.EffectData.SoundData))).AddTo(bag);
+            if (bgm != null) StartBGM(bgm).Forget();
+            
+            _subscription = bag.Build();
+        }
+
+        private void OnDestroy()
+        {
+            _subscription.Dispose();
+        }
 
         public SoundEmitter GetEmitter(SoundData soundData)
         {

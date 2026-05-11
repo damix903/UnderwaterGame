@@ -51,7 +51,7 @@ namespace LifeTimeScope
             builder.RegisterEntryPoint<RunManager>(Lifetime.Singleton);
 
             builder.RegisterComponentInHierarchy<StageGenerator>();
-            builder.RegisterComponentInHierarchy<SoundManager>();
+            builder.RegisterComponentInHierarchy<SoundManager>().AsImplementedInterfaces();
 
             var timer = new TimerManager();
             builder.RegisterInstance(timer).AsImplementedInterfaces();
