@@ -28,4 +28,4 @@
 - ステージ生成方法の単調さ
 - 判断を変えるような敵やギミックの不足
 
-[ビルド済みのゲーム](https://drive.google.com/drive/folders/1vNrC7rbjrbSMF0I5VlPJqN8-iY5x0y1-?usp=sharing)
+[ビルド済みのゲーム](https://drive.google.com/drive/folders/11TMAgpfop1xjf9H17WVWqIMU2X9x1ESy?usp=sharing)
