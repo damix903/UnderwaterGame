@@ -34,9 +34,8 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
         if (DefenseState == DefenseState.Invincible) return false;
         
         OnDamageTaken(info);
-        
-        if (CurrentHealth <= 0)
-            HandleDeath(info);
+
+        if (CurrentHealth <= 0) HandleDeath(info);
 
         return true;
     }
@@ -45,6 +44,8 @@ public class EntityHealth : MonoBehaviour, IDamageable, IHealth
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, maxHealth);
         OnHealthChanged?.Invoke(new HealthChangeEvent(CurrentHealth, maxHealth, amount));
+        
+        if (CurrentHealth <= 0) HandleDeath(new DamageInfo(null, 0, null));
     }
 
     private void OnDamageTaken(DamageInfo info)

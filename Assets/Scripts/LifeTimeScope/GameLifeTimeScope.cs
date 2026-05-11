@@ -31,6 +31,7 @@ namespace LifeTimeScope
             builder.RegisterComponentInHierarchy<UIHUD>();
             builder.RegisterComponentInHierarchy<IFader>();
             builder.Register<UpgradePresenter>(Lifetime.Singleton);
+            builder.RegisterComponentInHierarchy<GameOverUI>();
 
             builder.RegisterComponentInHierarchy<UpgradeView>().AsImplementedInterfaces();
             builder.RegisterComponentInHierarchy<UpgradeManager>().AsImplementedInterfaces().AsSelf();
@@ -45,6 +46,7 @@ namespace LifeTimeScope
             builder.RegisterComponentOnNewGameObject<EnemySpawner>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentOnNewGameObject<ItemManager>(Lifetime.Singleton).UnderTransform(transform);
             builder.RegisterComponentOnNewGameObject<TimeManager>(Lifetime.Singleton).UnderTransform(transform);
+            
             builder.RegisterComponentInHierarchy<PlayerStatsManager>();
             builder.RegisterEntryPoint<RunManager>(Lifetime.Singleton);
 

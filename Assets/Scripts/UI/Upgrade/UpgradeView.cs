@@ -15,6 +15,7 @@ namespace UI
 
         public void ShowUpgrades(List<UpgradeData> upgrades)
         {
+            gameObject.SetActive(true);
             DisposeTcs();
             // アップグレードの選択を待機するためのUniTaskCompletionSourceを作成
             // 1つだけ選択できるようにする
@@ -43,10 +44,13 @@ namespace UI
         {
             foreach (var element in upGradeElements)
             {
+                if (element == null) continue;
+                
                 element.RemoveListener();
                 element.gameObject.SetActive(false);
             }
             DisposeTcs();
+            gameObject.SetActive(false);
         }
 
         public async UniTask<UpgradeData> OnUpgradeSelectedAsync(CancellationToken ct)

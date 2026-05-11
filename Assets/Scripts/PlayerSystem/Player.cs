@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [Inject] private IPublisher<EventPublisher, HealthChangeEvent> _healthPub;
     [Inject] private IPublisher<EventPublisher, DamageResult> _damagePub;
     [Inject] private IPublisher<DamageResult> _damageResultPub;
+    [Inject] private IPublisher<EventPublisher, DeathEvent> _deathPub;
 
     [Inject] private IPlayerRegisterable _playerRegisterable;
     [Inject] private ILayerConfig _layerConfig;
@@ -45,17 +46,18 @@ public class Player : MonoBehaviour
     {
         _health.OnHealthChanged += HandleHealthChange;
         _damageable.OnDamaged += HandleDamage;
-        //_collisionDetectable.OnLanded += HandleLanded;
+        _damageable.OnDeath += HandleDeath;
         _playerRegisterable?.RegisterPlayer(this);
     }
 
+
     private void OnDisable()
     {
-        if (_health != null)
-            _health.OnHealthChanged -= HandleHealthChange;
+        if (_health != null) _health.OnHealthChanged -= HandleHealthChange;
 
-        if (_damageable != null)
-            _damageable.OnDamaged -= HandleDamage;
+        if (_damageable != null) _damageable.OnDamaged -= HandleDamage;
+        
+        if (_damageable != null) _damageable.OnDeath -= HandleDeath;
         
         _playerRegisterable?.UnregisterPlayer();
     }
@@ -68,4 +70,9 @@ public class Player : MonoBehaviour
 
     private void HandleHealthChange(HealthChangeEvent obj) 
         => _healthPub?.Publish(EventPublisher.Player, obj);
+
+    private void HandleDeath(DeathEvent e)
+    {
+        _deathPub?.Publish(EventPublisher.Player, e);
+    }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Manager.AudioSystem;
+using UnityEngine;
 
 namespace Manager
 {
@@ -7,8 +8,10 @@ namespace Manager
     {
         [SerializeField] private HitStopData hitStopData;
         [SerializeField] private CameraShakeData cameraShakeData;
+        [SerializeField] private SoundData soundData;
 
         public HitStopData HitStopData => hitStopData;
         public CameraShakeData CameraShakeData => cameraShakeData;
+        public SoundData SoundData => soundData;
     }
 }

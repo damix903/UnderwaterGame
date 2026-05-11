@@ -15,9 +15,6 @@ namespace Input
 
         private IAimable _aimable;
         private IAttackable _attackable;
-        [SerializeField] private SoundManager _soundManager;
-        [SerializeField] private SoundData _soundData;
-        [SerializeField] private SoundData _soundData2;
     
         [SerializeField] private AnimData animData;
         private IAnimPlayable _anim;
@@ -44,12 +41,6 @@ namespace Input
             if (!_movement.IsGrounded) _anim.PlayBaseClip(animData.GetAnim(AnimType.Fall));
             else if (Mathf.Abs(_input.MoveInput.x) > 0.01f) _anim.PlayBaseClip(animData.GetAnim(AnimType.Move));
             else _anim.PlayBaseClip(animData.GetAnim(AnimType.Idle));
-        
-            var token = this.GetCancellationTokenOnDestroy();
-            var data = _input.MoveInput.x > 0f ? _soundData : _soundData2;
-        
-            if (Mathf.Abs(_input.MoveInput.x) > 0.01f)
-                _soundManager.StartBGM(data,3f, ct: token).Forget();
         }
 
         private void HandleFlip()
