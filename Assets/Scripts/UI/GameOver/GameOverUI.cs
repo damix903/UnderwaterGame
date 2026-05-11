@@ -29,8 +29,8 @@ namespace UI
             restartButton.onClick.RemoveListener(OnRestartClicked);
             finishButton.onClick.RemoveListener(OnFinishClicked);
         }
-        
-        public void SetScore(int score) => scoreText.text = score.ToString();
+
+        public void SetScore(int score) => scoreText.text = $"スコア : {score} m";
 
         public async UniTask<GameOverSelection> WaitSelection(CancellationToken ct)
         {
